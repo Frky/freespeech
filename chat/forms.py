@@ -14,8 +14,8 @@ class ComptoirForm(forms.ModelForm):
         self.base_fields['description'].widget = forms.TextInput(attrs={'placeholder': ""})
         self.base_fields['public'].label = "Public ?"
         self.base_fields['password'].label = "Password"
-        super(GalleryForm, self).__init__(*args, **kwargs)
+        super(ComptoirForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = Gallery
+        model = Comptoir
         fields = ['title', 'description', 'public', 'password']

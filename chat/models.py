@@ -2,10 +2,10 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-from random_primary import RandomPrimaryIdModel
+from chat.random_primary import RandomPrimaryIdModel
 
 
-class Comptoir(RandomPrimaryModel):
+class Comptoir(RandomPrimaryIdModel):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
     public = models.BooleanField(default=True)
