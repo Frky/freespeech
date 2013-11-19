@@ -58,7 +58,8 @@
 
 setInterval(function() {
   var senti = $("#last-msg").val();
-  $.ajax({url:"update", type:"POST", data: {index: senti}, success: function(result){
+  var cid = $("#cid").val()
+  $.ajax({url:"update", type:"POST", data: {cid: cid, index: senti}, success: function(result){
 	var msgs = jQuery.parseJSON(result);
 	var idx = 0;
 	$.each( msgs, function( key, value ) {
