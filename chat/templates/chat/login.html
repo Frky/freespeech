@@ -1,0 +1,14 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+
+<h2>Log In</h2>
+
+<form id="login-form" action="{% url "login" %}" method="post">
+	{% csrf_token %}
+	<input name="username" type="login">
+	<input name="password" type="password">
+	<input type="submit" value="Log in">
+</form>
+
+{% endblock %}

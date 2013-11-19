@@ -23,9 +23,8 @@ def index(request):
     """
 
     template_name = "chat/index.html"
-    
-    context["messages"] = Message.objects.all().order_by('date')
-    context["senti"] = context["messages"][len(context["messages"]) - 1].id
+   
+    context["comptoirs"] = Comptoir.objects.all()
 
     context["comptoir_form"] = ComptoirForm()
 
@@ -38,13 +37,21 @@ def send(request):
 	Redirect to home view after posting
 
     """    
+    
+    # The user must be authenticated to be able to send messages
+    if not request.user.is_authenticated or str(request.user) == "AnonymousUser":
+        return HttpResponse("Error")
+
+    # He also needs to have access to the comptoir
+    if not request.session[request.POST['cid']]:
+        return HttpResponse("Error")
 
     if request.method != "POST":
     	return redirect("home")
 
-    Message(content=request.POST['msg']).save()
+    Message(content=request.POST['msg'], comptoir=Comptoir.objects.get(id=request.POST['cid']), owner=request.user).save()
     
-    return redirect("home")
+    return redirect("join_comptoir", request.POST['cid'])
 
 
 @csrf_exempt
@@ -54,8 +61,10 @@ def update(request):
 
     """
 
+    comptoir = Comptoir.objects.get(id=request.POST["cid"])
+
     index = request.POST['index']
-    return HttpResponse(serializers.serialize("json", Message.objects.all().filter(id__gt=int(index))))
+    return HttpResponse(serializers.serialize("json", Message.objects.all().filter(comptoir=comptoir, id__gt=int(index))))
 
 
 
@@ -66,6 +75,8 @@ def auth(request):
 	Authentication view
 	
     """
+
+    template_name = "chat/login.html"
 
     if request.method == 'POST':
 
@@ -86,7 +97,7 @@ def auth(request):
         return redirect("home")
 
     else:
-        return HttpResponse(status=404)
+        return render(request, template_name, context)
 
 
 def register(request):
@@ -121,3 +132,54 @@ def sign_out(request):
     logout(request)
 
     return redirect("home")
+
+
+def create_comptoir(request):
+
+    form = ComptoirForm(request.POST or None)
+
+    if form.is_valid():
+        data = form.cleaned_data
+        new_comptoir = Comptoir(title=data['title'],
+                              description=data['description'],
+                              public=data['public'],
+                              password=data['password'])
+        new_comptoir.save()
+        
+    return redirect("home")
+
+
+def join_comptoir(request, cid):
+
+    template_name = "chat/see_comptoir.html"
+
+    comptoir = Comptoir.objects.get(id=cid)
+        
+    if comptoir == None:
+        return redirect("home")
+
+    if cid not in request.session.keys():
+        request.session[cid] = False
+    
+    if comptoir.public:
+        request.session[cid] = True
+    
+    context["can_view"] = request.session[cid]
+
+    if request.method == "POST":
+        if request.POST['type'] == "password":
+            if request.POST['password'] == comptoir.password:
+                request.session[cid] = True
+                return redirect("join_comptoir", cid)
+
+    context["title"] = comptoir.title
+    context["description"] = comptoir.description
+    context["id"] = comptoir.id
+
+    context["messages"] = Message.objects.all().filter(comptoir=cid).order_by('date')
+    if len(context["messages"]) > 0:
+        context["senti"] = context["messages"][len(context["messages"]) - 1].id
+    else:
+        context["senti"] = 0
+
+    return render(request, template_name, context)

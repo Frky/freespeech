@@ -3,7 +3,7 @@
 {% block content %}
 <section id="registerForm">
 <h2>Inscription</h2>
-<form class="formContainer" method="post" action="{% url register %}">
+<form class="formContainer" method="post" action="{% url "register" %}">
     {% csrf_token %}
     {% for field in form %}
         <div class="fieldContainer">

@@ -1,0 +1,50 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+
+    <h1>{{ title }}</h1>
+    <h3>{{ description }}</h3>
+
+    {% if can_view %}
+    <div id="chatbox">
+    
+    {% for msg in messages %}
+    
+    <p class="date">{{ msg.date }}</p>
+    <p class="user">{{ msg.owner }}</p>
+    <p class="msg-content">{{ msg.content }}</p>
+    
+    {% endfor %}
+    <input type="hidden" id="last-msg" value="{{ senti }}">
+    </div>
+    
+    <div id="result">
+    </div>
+    
+    {% if user.is_authenticated %} 
+    <form action="{% url "send" %}" method="post">
+    
+    	{% csrf_token %}
+
+        <input type="hidden" id="cid" name="cid" value="{{ id }}">
+        
+    	<input type="text" name="msg">
+    
+    	<input type="submit">
+    
+    </form>
+    {% endif %}
+    {% else %}
+        This comptoir is protected by a password.
+        <form method="post" action="{% url 'join_comptoir' id %}">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="password">
+            <input type="password" name="password">
+            <input type="submit">
+        </form>
+    {% endif %}
+
+    {% load staticfiles %}
+	<script src="{% static 'chat/js/main.js' %}"></script>
+
+{% endblock %}

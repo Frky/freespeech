@@ -6,6 +6,11 @@
 		<title>Freespeech</title>
 		
 		{% load staticfiles %}
+        
+        <link rel="stylesheet" href="{% static 'chat/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'chat/generated/css/style.css' %}" />
+
+		<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
 		<script src="{% static 'chat/js/jquery-2.0.3.min.js' %}"></script>
 		
 	{% endblock %}
@@ -15,9 +20,16 @@
 	
 		<header>
 		{% block header %}
-			<h1>FreeSpeech</h1>
-			<h2>Welcome {{ user }}</h2>
-			<a href="{% url logout %}">Logout</a>
+        <div id="main-block">
+		<div id="main-title"><a href="{% url "home" %}">FreeSpeech</a></div>
+        {% if not user.is_authenticated %}
+            <div id="top-menu"><a href="{% url "login" %}">Log in</a> | <a href="{% url "register" %}">Register</a></div>
+            </div>
+        {% else %}
+            <div id="top-menu"><a href="{% url "logout" %}">Log out</a></div>
+            </div>
+			<div id="user-name">{{ user }}</div>
+        {% endif %}
 		{% endblock %}
 		</header>
 
@@ -30,7 +42,5 @@
 		</footer>
 
 	</body>
-
-	<script src="{% static 'chat/js/main.js' %}"></script>
 
 </html>
