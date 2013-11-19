@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+
+	<head>
+	{% block htmlhead %}
+	
+		<title>Freespeech</title>
+		
+		{% load staticfiles %}
+		<script src="{% static 'chat/js/jquery-2.0.3.min.js' %}"></script>
+		
+	{% endblock %}
+	</head>
+
+	<body>
+	
+		<header>
+		{% block header %}
+			<h1>FreeSpeech</h1>
+			<h2>Welcome {{ user }}</h2>
+			<a href="{% url logout %}">Logout</a>
+		{% endblock %}
+		</header>
+
+		{% block content %}
+		{% endblock %}
+
+		<footer>
+		{% block footer %}
+		{% endblock %}
+		</footer>
+
+	</body>
+
+	<script src="{% static 'chat/js/main.js' %}"></script>
+
+</html>

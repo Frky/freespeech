@@ -1,0 +1,37 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+<div id="chatbox">
+
+{% for msg in messages %}
+
+<p class="msg-content">{{ msg.content }}</p>
+
+{% endfor %}
+<input type="hidden" id="last-msg" value="{{ senti }}">
+</div>
+
+<div id="result">
+</div>
+
+<form action="{% url send %}" method="post">
+
+	{% csrf_token %}
+
+	<input type="text" name="msg">
+
+	<input type="submit">
+
+</form>
+<input type="button" id="click">
+
+<form id="login-form" action="{% url login %}" method="post">
+	{% csrf_token %}
+	<input name="username" type="login">
+	<input name="password" type="password">
+	<input type="submit">
+</form>
+
+{{ comptoir_form.as_p }}
+
+{% endblock %}
