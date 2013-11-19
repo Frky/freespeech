@@ -24,13 +24,24 @@ def index(request):
 
     template_name = "chat/index.html"
    
-    context["comptoirs"] = Comptoir.objects.all()
+    comptoirs = Comptoir.objects.all()
+
+    my_comptoirs = list()
+
+    for cmpt in comptoirs:
+        msg = Message.objects.all().filter(comptoir=cmpt.id)
+        if len(msg) > 0:
+            print msg
+            my_comptoirs.append(cmpt)
+
+    context["comptoirs"] = my_comptoirs
 
     context["comptoir_form"] = ComptoirForm()
 
     return render(request, template_name, context)
 
 
+@csrf_exempt
 def send(request):
     """
 	View used to send messages to a chat synchronously
@@ -51,7 +62,7 @@ def send(request):
 
     Message(content=request.POST['msg'], comptoir=Comptoir.objects.get(id=request.POST['cid']), owner=request.user).save()
     
-    return redirect("join_comptoir", request.POST['cid'])
+    return HttpResponse("OK")
 
 
 @csrf_exempt
@@ -64,7 +75,7 @@ def update(request):
     comptoir = Comptoir.objects.get(id=request.POST["cid"])
 
     index = request.POST['index']
-    return HttpResponse(serializers.serialize("json", Message.objects.all().filter(comptoir=comptoir, id__gt=int(index))))
+    return HttpResponse(serializers.serialize("json", Message.objects.all().filter(comptoir=comptoir, id__gt=int(index)), fields=("owner", "date", "content")))
 
 
 

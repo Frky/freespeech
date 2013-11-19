@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{% static 'chat/generated/css/style.css' %}" />
 
 		<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
-		<script src="{% static 'chat/js/jquery-2.0.3.min.js' %}"></script>
+		<script src="{% static 'chat/js/jquery.min.js' %}"></script>
 		
 	{% endblock %}
 	</head>
@@ -23,12 +23,39 @@
         <div id="main-block">
 		<div id="main-title"><a href="{% url "home" %}">FreeSpeech</a></div>
         {% if not user.is_authenticated %}
-            <div id="top-menu"><a href="{% url "login" %}">Log in</a> | <a href="{% url "register" %}">Register</a></div>
+            <div id="top-menu"><a id="login-button">Log in</a> | <a href="{% url "register" %}">Register</a></div>
             </div>
+            <blockquote id="main-quote">
+                <p>Whereof one cannot speak, thereof one must be silent.<p>
+                <small>L.Wittgenstein in <cite title="Source Title">Tractatus</cite></small>
+            </blockquote>
+            <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
+            	{% csrf_token %}
+                <p><input name="username" type="login" class="form-control" placeholder="Username"></p>
+            	<p><input name="password" type="password" class="form-control" placeholder="Password"></p>
+            	<p><input type="submit" class="btn btn-default" value="Log in"></p>
+            </form>
+
         {% else %}
-            <div id="top-menu"><a href="{% url "logout" %}">Log out</a></div>
+            <div id="top-menu"><span id="user-name">{{ user }}</span> | <a href="{% url "logout" %}">Log out</a></div>
             </div>
-			<div id="user-name">{{ user }}</div>
+            <blockquote id="main-quote">
+                <p>Whereof one cannot speak, thereof one must be silent.<p>
+                <small>L.Wittgenstein in <cite title="Source Title">Tractatus</cite></small>
+            </blockquote>
+
+            <div class="hidden" id="my-comptoirs">
+            <p>Comptoirs I have joined</p>
+            {% for c in comptoirs %}
+            <p>
+                <a href="{% url "join_comptoir" c.id %}">
+                {{ c.id }}
+                </a>
+            </p>
+            {% endfor %}
+            </div>
+            </div>
+
         {% endif %}
 		{% endblock %}
 		</header>
@@ -40,6 +67,15 @@
 		{% block footer %}
 		{% endblock %}
 		</footer>
+
+        <script type="text/javascript">
+            $("#login-button").click(function() {
+                $("#login-form").toggleClass("hidden");
+            });
+            $("#user-name").click(function() {
+                $("#my-comptoirs").toggleClass("hidden");
+            });
+        </script>
 
 	</body>
 

@@ -2,35 +2,38 @@
 
 {% block content %}
 
+<!--
     <h1>{{ title }}</h1>
     <h3>{{ description }}</h3>
-
+    -->
     {% if can_view %}
     <div id="chatbox">
     
     {% for msg in messages %}
-    
-    <p class="date">{{ msg.date }}</p>
-    <p class="user">{{ msg.owner }}</p>
-    <p class="msg-content">{{ msg.content }}</p>
+    <div class= "message {% if msg.owner == user %}me{% else %}others{% endif %}">
+        <p class="msg-info">
+            {% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}
+        </p>
+        <p class="msg-content">
+            <!-- <span class="date">[{{ msg.date }}]</span> -->
+            {{ msg.content }}
+        </p>
+    </div>
     
     {% endfor %}
     <input type="hidden" id="last-msg" value="{{ senti }}">
     </div>
     
-    <div id="result">
-    </div>
-    
     {% if user.is_authenticated %} 
-    <form action="{% url "send" %}" method="post">
+    <form action="{% url "send" %}" method="post" id="send-form">
     
     	{% csrf_token %}
 
         <input type="hidden" id="cid" name="cid" value="{{ id }}">
         
-    	<input type="text" name="msg">
+    	<textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
     
-    	<input type="submit">
+    	<input type="submit" value="Say!" class="btn btn-default submit-button">
     
     </form>
     {% endif %}
@@ -40,7 +43,7 @@
             {% csrf_token %}
             <input type="hidden" name="type" value="password">
             <input type="password" name="password">
-            <input type="submit">
+            <input type="submit" value="Join comptoir">
         </form>
     {% endif %}
 

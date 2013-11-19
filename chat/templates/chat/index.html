@@ -1,20 +1,24 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
-
+<div id="home-content">
+<div id="plus"><a>+</a></div>
+<form action="{% url "create_comptoir" %}" method="post" id="comptoir-form" class="hidden">
 <h3>Create a comptoir</h3>
-<form action="{% url "create_comptoir" %}" method="post">
 	{% csrf_token %}
-    {{ comptoir_form.as_p }}
-    <input type="submit">
+    {% for el in comptoir_form %}
+        <div class="field">
+            <div class="label">{{ el.label }}</div>
+            <div class="input">{{ el }}</div>
+        </div>
+    {% endfor %}
+    <input class="btn btn-default submit-button" type="submit">
 </form>
 
-<h3>List of comptoirs</h3>
-{% for c in comptoirs %}
-<p>
-    <a href="{% url "join_comptoir" c.id %}">
-    {{ c.id }}
-    </a>
-</p>
-{% endfor %}
+</div>
+<script type="text/javascript">
+    $("#plus a").click(function() {
+        $("#comptoir-form").toggleClass("hidden");
+    });
+</script>
 {% endblock %}

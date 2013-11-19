@@ -2,21 +2,28 @@
 @import "fonts.scss";
 
 body {
+    height: 700px;
+    max-height: 700px;
+    position: relative;
+
     color: $wetasphalt; 
-    
+
     a {
         text-decoration: none;
-    }
+}
 
-    a:hover {
-        color: $orange;
-        text-decoration: none;
+a:hover {
+    color: $orange;
+    text-decoration: none;
 
-    }
+}
 
 }
 
 header {
+
+    position: relative;
+    z-index: 99;
 
     #main-block {
         width: 100%;
@@ -27,32 +34,179 @@ header {
     #main-title {
         display: inline-block;
         float: right;
-        
+
         height: 100px;
         line-height: 100px;
         margin-right: 30px;
-
+    
         font-family: Santor;
         font-size: 5em;
     }
-
+    
     #top-menu {
         display: inline-block;
         float: right; 
-
+    
         height: 100px;
         line-height: 100px;
         margin-right: 30px;
-
+    
         font-size: 1em;
     }
-
-    #user-name {
+    
+    #user-content {
         display: block;
         float: right;
         margin-right: 30px;
-
-        font-size: 2em;
+    
     }
 
+    #login-button:hover {
+        cursor: pointer;
+    }
+
+    #main-quote {
+        margin-right: 30px;
+        float:right;
+    }
+
+    #login-form {
+        float: right;
+        text-align: right;
+        margin-right: 30px;
+    }
+
+}
+
+#home-content {
+    
+    z-index: 1;
+
+    position: relative;
+    top: -70px;
+    width: 100%;
+
+    #plus {
+        font-size: 30em;
+        width: 40%;
+        text-align: right;
+    
+        a {
+            color: $midnightblue;
+        }
+    
+        a:hover {
+            color: $orange;
+            cursor: pointer;
+        }
+    
+        display: inline-block;
+    }
+    
+    #comptoir-form {
+    
+        display: inline-block;
+        text-align: center;
+    
+        .field {
+            width: 400px;
+            margin-bottom: 15px;
+        }
+    
+        .label {
+            width: 45%;
+            text-align: right;
+            padding-right: 5px;
+    
+            color: $midnightblue;
+    
+            display: inline-block;
+        }
+    
+        .input {
+            width: 45%;
+            text-align: left;
+            padding-left: 5px;
+    
+            display: inline-block;
+        }
+    }
+}
+
+
+#chatbox {
+
+    width: 70%;
+    min-height: 90%;
+    max-height: 90%;
+
+    overflow: scroll;
+
+    .others {
+        text-align: right;
+        margin-right: 50%;
+    }
+
+    .me {
+        margin-left: 50%; 
+        max-width: 50%;
+    }
+
+    .msg-info {
+            
+        margin-bottom: 0px;
+        
+        .user {
+            font-weight: bold;    
+        }
+
+    }
+
+    .date {
+        font-style: italic;
+        font-size: 0.8em;
+    }
+}
+
+#send-form {
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    #new-msg {
+        width: 400px;
+        height: 100px;
+        padding: 5px;
+        resize: none;
+
+        display: block;
+
+        margin: 30px;
+    }
+
+    .submit-button {
+        display: block;
+        margin: 0px;
+        margin-right: 30px;
+        float: right;
+    }
+
+    float: right;
+
+}
+
+#my-comptoirs {
+    font-size: 0.8em;
+    float: right;
+    text-align: right;
+    margin-right: 30px;
+}
+
+#user-name:hover {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }
