@@ -12,9 +12,14 @@ from django.contrib.auth import login, logout
 from chat.models import Message
 from chat.forms import *
 
+from django_socketio.events import on_message
+
 
 context = dict()
 
+@on_message
+def my_message_handler(request, socket, context, message):
+    print message
 
 def index(request):
     """
@@ -28,10 +33,16 @@ def index(request):
 
     my_comptoirs = list()
 
+    user = request.user
+    if not user.is_authenticated or user.username == "AnonymousUser":
+        user_id = 0
+    else:
+        user_id = user.id
+    
+
     for cmpt in comptoirs:
-        msg = Message.objects.all().filter(comptoir=cmpt.id)
-        if len(msg) > 0:
-            print msg
+        msg = Message.objects.all().filter(comptoir=cmpt.id, owner=user_id)
+        if len(msg) > 0 or cmpt.owner == user:
             my_comptoirs.append(cmpt)
 
     context["comptoirs"] = my_comptoirs
@@ -106,7 +117,6 @@ def auth(request):
         context['username'] = username
 
         return redirect("home")
-
     else:
         return render(request, template_name, context)
 
@@ -151,10 +161,19 @@ def create_comptoir(request):
 
     if form.is_valid():
         data = form.cleaned_data
-        new_comptoir = Comptoir(title=data['title'],
+
+        print request.user.username
+        if request.user.is_authenticated and str(request.user) != "AnonymousUser":
+            user = request.user 
+        else:
+            user = None
+
+        new_comptoir = Comptoir(owner=user,
+                              title=data['title'],
                               description=data['description'],
                               public=data['public'],
                               password=data['password'])
+
         new_comptoir.save()
         
     return redirect("home")
@@ -166,7 +185,7 @@ def join_comptoir(request, cid):
 
     comptoir = Comptoir.objects.get(id=cid)
         
-    if comptoir == None:
+    if comptoir is None:
         return redirect("home")
 
     if cid not in request.session.keys():

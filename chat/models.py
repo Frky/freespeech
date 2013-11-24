@@ -6,6 +6,7 @@ from chat.random_primary import RandomPrimaryIdModel
 
 
 class Comptoir(RandomPrimaryIdModel):
+    owner = models.ForeignKey(User, null=True)
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
     public = models.BooleanField(default=True)

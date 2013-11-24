@@ -49,5 +49,10 @@
 
     {% load staticfiles %}
 	<script src="{% static 'chat/js/main.js' %}"></script>
+    {% if user.is_authenticated %} 
+        {% load socketio_tags %}
+        {% socketio %}
+	    <script src="{% static 'chat/js/chat.js' %}"></script>
+    {% endif %}
 
 {% endblock %}

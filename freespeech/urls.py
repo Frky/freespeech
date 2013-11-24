@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'freespeech.views.home', name='home'),
     # url(r'^freespeech/', include('freespeech.foo.urls')),
+    url("", include('django_socketio.urls')),
 
     url(r'^$', 'chat.views.index', name='home'),
     url(r'^send$', 'chat.views.send', name='send'),
@@ -17,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^login$', 'chat.views.auth', name='login'),
     url(r'^logout$', 'chat.views.sign_out', name='logout'),
     url(r'^register$', 'chat.views.register', name='register'),
-
+    url(r'^create_comptoir$', 'chat.views.create_comptoir', name='create_comptoir'),
+    url(r'^(?P<cid>[-A-Za-z0-9_]+)$', 'chat.views.join_comptoir', name="join_comptoir"),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
