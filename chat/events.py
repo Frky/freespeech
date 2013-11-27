@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 from django_socketio import events
 
 from chat.models import Message, Comptoir

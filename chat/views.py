@@ -130,7 +130,7 @@ def register(request):
 
     template_name = "chat/register.html"
 
-    form = UserCreationForm(request.POST or None)
+    form = RegisterForm(request.POST or None)
 
     if form.is_valid():
         new_user = form.save()
