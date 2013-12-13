@@ -61,7 +61,7 @@ header {
     
     }
 
-    #login-button:hover {
+    #login-button:hover, #register-button:hover {
         cursor: pointer;
     }
 
@@ -70,11 +70,40 @@ header {
         float:right;
     }
 
+    /*
     #login-form {
         float: right;
         text-align: right;
         margin-right: 30px;
     }
+    */
+        
+    #register-form, #login-form {
+        display: block;
+        clear: right;
+        float: right;
+        margin-right: 30px;
+
+        .help-block {
+            display: inline-block;
+            float: right;
+        }
+
+        .form-control {
+            width: 150px;
+            margin: 10px;
+            float: right;
+        }
+        
+        .btn {
+            text-align: right;
+            width: 100px;
+            margin: 10px;
+            float: right;
+        }
+    }
+
+    margin-bottom: -400px;
 
 }
 
@@ -82,8 +111,8 @@ header {
     
     z-index: 1;
 
-    position: relative;
-    top: -70px;
+    position: absolute;
+    top: 10px;
     width: 100%;
 
     #plus {
@@ -104,10 +133,12 @@ header {
     }
     
     #comptoir-form {
-    
+
         display: inline-block;
         text-align: center;
-    
+
+        margin-top: -400px;
+
         .field {
             width: 400px;
             margin-bottom: 15px;

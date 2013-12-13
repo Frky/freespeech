@@ -16,6 +16,7 @@ from django_socketio.events import on_message
 
 
 context = dict()
+context['registerForm'] = RegisterForm()
 
 @on_message
 def my_message_handler(request, socket, context, message):
@@ -137,11 +138,11 @@ def register(request):
         user = authenticate(username=request.POST['username'], password=request.POST['password1'])
         login(request, user)
         # return redirect(request.session['history'][-1])
-        return redirect("home")
     # request.session['redirect'])
     else:
         context['form'] = form
-        return render(request, template_name, context)
+    
+    return redirect("home")
 
 
 def sign_out(request):
