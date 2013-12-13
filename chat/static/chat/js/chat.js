@@ -19,7 +19,7 @@ var addMessage = function(user, content) {
 }
 
 var connected = function() {
-    socket.subscribe("{{ id }}");
+    socket.subscribe($("#cid").val());
     return;
 }
 
