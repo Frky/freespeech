@@ -206,6 +206,7 @@ def join_comptoir(request, cid):
     context["title"] = comptoir.title
     context["description"] = comptoir.description
     context["id"] = comptoir.id
+    context["request"] = request
 
     context["messages"] = Message.objects.all().filter(comptoir=cid).order_by('date')
     if len(context["messages"]) > 0:

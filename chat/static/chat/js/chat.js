@@ -25,7 +25,7 @@ var connected = function() {
 
 
 var submit_msg = function() {
-    data = {cid: $("#cid").val(), content: $("#new-msg").val()};
+    data = {cid: $("#cid").val(), content: $("#new-msg").val(), session_key: $('#session_key').val()};
     socket.send(data);
     $("#new-msg").val("");
 }
