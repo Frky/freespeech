@@ -28,7 +28,6 @@ var submit_msg = function() {
     data = {cid: $("#cid").val(), content: $("#new-msg").val(), session_key: $('#session_key').val()};
     socket.send(data);
     $("#new-msg").val("");
-    $("#new-msg").val().replace("\n", ""));
 }
 
 
@@ -40,6 +39,7 @@ $("#send-form").submit(function(event) {
 
 $('#new-msg').keypress(function(e){
     if(e.which == 13){
+        event.preventDefault();
         submit_msg();
     }
 });
