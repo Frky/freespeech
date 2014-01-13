@@ -29,6 +29,8 @@
     
     	{% csrf_token %}
 
+        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
+
         <input type="hidden" id="cid" name="cid" value="{{ id }}">
         
     	<textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
