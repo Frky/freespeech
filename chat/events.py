@@ -12,7 +12,11 @@ def message(request, socket, context, message):
     session = Session.objects.get(session_key=message['session_key'])
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
+    
+    msg = Message(owner=user, comptoir=comptoir, content=message["content"])
+    msg.save()
+    comptoir.last_message = msg
+    comptoir.save()
 
-    Message(owner=user, comptoir=comptoir, content=message["content"]).save()
     socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"]}, channel=message["cid"])
 
