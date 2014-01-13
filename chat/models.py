@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 from chat.random_primary import RandomPrimaryIdModel
 
+class IndependantMessage(models.Model):
+    owner = models.ForeignKey(User, null=False)
+    content = models.CharField(max_length=2048)
+    date = models.DateTimeField(auto_now_add=True)
+
 
 class Comptoir(RandomPrimaryIdModel):
     owner = models.ForeignKey(User, null=True)
@@ -11,10 +16,8 @@ class Comptoir(RandomPrimaryIdModel):
     description = models.CharField(max_length=255, blank=True, null=True)
     public = models.BooleanField(default=True)
     password = models.CharField(max_length=255, default="", blank=True)
+    last_message = models.ForeignKey(IndependantMessage, null=True)
     
 
-class Message(models.Model):
-    owner = models.ForeignKey(User, null=False)
+class Message(IndependantMessage):
     comptoir = models.ForeignKey(Comptoir, null=False)
-    content = models.CharField(max_length=2048)
-    date = models.DateTimeField(auto_now_add=True)
