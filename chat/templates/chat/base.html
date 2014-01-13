@@ -67,8 +67,12 @@
                 <p>Comptoirs I have joined</p>
                 {% for c in comptoirs %}
                 <p>
-                    <a href="{% url "join_comptoir" c.id %}">
-                    {{ c.id }}
+                    {{ c.title }} 
+                    <a href="{% url "join_comptoir" c.id %}" id="tooltip{{ c.id }}" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="right" rel="tooltip" target=" _blank">
+                        {{ c.id }}
+                        {% if c.last_message != None %}
+                            <script>$("#tooltip{{ c.id }}").tooltip();</script>
+                        {% endif %}
                     </a>
                 </p>
                 {% endfor %}
@@ -88,6 +92,7 @@
 		</footer>
 
         <script type="text/javascript">
+            $("#ttex").tooltip();
             $("#login-button").click(function() {
                 $("#login-form").toggleClass("hidden");
                 $("#register-form").addClass("hidden");
