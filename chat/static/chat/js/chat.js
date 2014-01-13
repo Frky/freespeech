@@ -11,7 +11,7 @@ var addMessage = function(user, content) {
         new_message += "<div class=\"message me\">";
     }
     
-    new_message += "<p class=\"msg-content\">" + content + "</p>";
+    new_message += "<p class=\"msg-content\">" + unescape(content) + "</p>";
     new_message += "</div>";
     
     $("#chatbox").append(new_message);
@@ -23,9 +23,29 @@ var connected = function() {
     return;
 }
 
+var entityMap = {
+    "À": "&Agrave;",
+    "à": "&agrave;",
+    "Â": "&Acirc;",
+    "â": "&acirc;",
+    "Ä": "&Auml;",
+    "ä": "&auml;",
+    "É": "&Éacute;",
+    "é": "&eacute;",
+    "È": "&Ègrave;",
+    "è": "&egrave;",
+    'Ù': "&Ugrave;",
+    'ù': "&Ugrave;",
+  };
+
+var escapeHtml =  function (text) {
+    return String(text).replace(/[ÀàÂâÄäÉéÈèÙù]/g, function (s) {
+        return entityMap[s];
+    });
+}
 
 var submit_msg = function() {
-    data = {cid: $("#cid").val(), content: $("#new-msg").val(), session_key: $('#session_key').val()};
+    data = {cid: $("#cid").val(), content: escape($("#new-msg").val()), session_key: $('#session_key').val()};
     socket.send(data);
     $("#new-msg").val("");
 }

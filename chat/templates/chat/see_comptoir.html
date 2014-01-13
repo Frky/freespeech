@@ -16,7 +16,7 @@
         </p>
         <p class="msg-content">
             <!-- <span class="date">[{{ msg.date }}]</span> -->
-            {{ msg.content }}
+            {{ msg.content|unquote_new }}
         </p>
     </div>
     

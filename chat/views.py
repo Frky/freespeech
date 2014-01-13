@@ -14,6 +14,12 @@ from chat.forms import *
 
 from django_socketio.events import on_message
 
+from django.template.defaultfilters import register
+from urllib import unquote
+
+@register.filter
+def unquote_new(value):
+    return unquote(value)
 
 context = dict()
 context['registerForm'] = RegisterForm()
