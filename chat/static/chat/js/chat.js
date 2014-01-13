@@ -28,6 +28,7 @@ var submit_msg = function() {
     data = {cid: $("#cid").val(), content: $("#new-msg").val()};
     socket.send(data);
     $("#new-msg").val("");
+    $("#new-msg").val().replace("\n", ""));
 }
 
 
