@@ -1,21 +1,27 @@
 var socket = new io.Socket();
 
-var addMessage = function(user, content) {
+var addMessage = function(user, content, msgdate) {
+
+    var tooltip_placement = function(user) {
+        if (user != $("#user-name").html()) return "right";
+        else return "left";
+    }
 
     var new_message = ""
 
     if (user != $("#user-name").html()) {
-        new_message += "<div class=\"message others\">";
-        new_message += "<p class=\"msg-info\"><span class=\"user\">" + user + "</span></p>";
+        new_message +=  '<tr><td>' + unescape(content) + '</td>' + 
+                        '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="right" rel="tooltip"> • </a></td>' + 
+                        '<td></td></tr>';
     } else {
-        new_message += "<div class=\"message me\">";
+        new_message +=  '<tr><td></td>' + 
+                        '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
+                        '<td>' + unescape(content) + '</td></tr>';
     }
-    
-    new_message += "<p class=\"msg-content\">" + unescape(content) + "</p>";
-    new_message += "</div>";
-    
-    $("#chatbox").append(new_message);
+        
+    $("#chatbox table tbody").append(new_message);
 
+    $('.fsp-tooltip').tooltip('destroy').tooltip();
 }
 
 var connected = function() {
@@ -66,7 +72,7 @@ $('#new-msg').keypress(function(e){
 
 var messaged = function(data) {
     if (data.type == "new-message") {
-        addMessage(data.user, data.content);
+        addMessage(data.user, data.content, data.msgdate);
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
     }
 }

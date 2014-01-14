@@ -18,5 +18,5 @@ def message(request, socket, context, message):
     comptoir.last_message = msg
     comptoir.save()
 
-    socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"]}, channel=message["cid"])
+    socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": "yolo"}, channel=message["cid"])
 

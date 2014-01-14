@@ -183,14 +183,19 @@ header {
                 width: 2%;
                 text-align: center;
                 vertical-align: baseline;
+                background-image: url('../../images/line.png');
+                background-repeat: repeat-y;
+                background-position: 11px 0px;
             }
             td:first-child {
                 width: 49%;
                 text-align: right;
+                background: none;
             }
             td:last-child {
                 width: 49%;
                 text-align: left;
+                background: none;
             }
         }
     }

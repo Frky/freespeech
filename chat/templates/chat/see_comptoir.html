@@ -19,9 +19,9 @@
                 </tr>
             {% endifchanged %}
             <tr>
-                <td>{% if msg.owner != user %}<p class="msg-content">{{ msg.content|unquote_new }}</p>{% endif %}</td>
+                <td>{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</td>
                 <td><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
-                <td>{% if msg.owner == user %}<p class="msg-content">{{ msg.content|unquote_new }}{% endif %}</p></td>        
+                <td>{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</td>        
             </tr>
         {% endfor %}
     </table>
