@@ -193,9 +193,12 @@ header {
 
     }
 
-    .date {
-        font-style: italic;
+    .date-of-msg {
         font-size: 0.8em;
+    }
+
+    .others .date-of-msg {
+        margin-left: 10px;
     }
 }
 

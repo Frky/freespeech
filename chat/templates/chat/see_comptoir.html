@@ -11,13 +11,26 @@
     
     {% for msg in messages %}
     <div class= "message {% if msg.owner == user %}me{% else %}others{% endif %}">
-        <p class="msg-info">
-            {% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}
+        <p class="msg-info"> 
+            {# if msg.owner != user #}
+                <span class="user">{{ msg.owner }}</span>
+            {# endif #}
+                <!-- <span class="date-of-msg">[{{ msg.date.hour }}:{{ msg.date.minute }}]</span> -->
         </p>
         <p class="msg-content">
-            <!-- <span class="date">[{{ msg.date }}]</span> -->
+            {% if msg.owner == user %}
+            <a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="left" rel="tooltip">
+                •
+            </a>
+            {% endif %}
             {{ msg.content|unquote_new }}
+            {% if msg.owner != user %}
+            <a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="right" rel="tooltip">
+                •
+            </a>
+            {% endif %}
         </p>
+        <script>$("#tooltip-msg-{{ msg.id }}").tooltip();</script>
     </div>
     
     {% endfor %}
