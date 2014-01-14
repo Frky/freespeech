@@ -9,28 +9,22 @@
     {% if can_view %}
     <div id="chatbox">
     
-    {% for msg in messages %}
-    <div class= "message {% if msg.owner == user %}me{% else %}others{% endif %}">
-        <p class="msg-info"> 
-            {% ifchanged %}<span class="user">{{ msg.owner }}</span>{% endifchanged %}
-            <!-- <span class="date-of-msg">[{{ msg.date.hour }}:{{ msg.date.minute }}]</span> -->
-        </p>
-        <p class="msg-content">
-            {% if msg.owner == user %}
-            <a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="left" rel="tooltip">
-                •
-            </a>
-            {% endif %}
-            {{ msg.content|unquote_new }}
-            {% if msg.owner != user %}
-            <a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="right" rel="tooltip">
-                •
-            </a>
-            {% endif %}
-        </p>
-    </div>
-    
-    {% endfor %}
+    <table>
+        {% for msg in messages %}
+            {% ifchanged %}
+                <tr class="author">
+                    <td>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
+                    <td></td>
+                    <td>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
+                </tr>
+            {% endifchanged %}
+            <tr>
+                <td>{% if msg.owner != user %}<p class="msg-content">{{ msg.content|unquote_new }}</p>{% endif %}</td>
+                <td><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
+                <td>{% if msg.owner == user %}<p class="msg-content">{{ msg.content|unquote_new }}{% endif %}</p></td>        
+            </tr>
+        {% endfor %}
+    </table>
     <input type="hidden" id="last-msg" value="{{ senti }}">
     </div>
     

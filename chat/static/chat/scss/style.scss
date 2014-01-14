@@ -173,14 +173,26 @@ header {
 
     overflow: scroll;
 
-    .others {
-        text-align: right;
-        margin-right: 50%;
-    }
-
-    .me {
-        margin-left: 50%; 
-        max-width: 50%;
+    table {
+        width: 100%;
+        tr {
+            &.author {
+                font-weight: bold;
+            }
+            td {
+                width: 2%;
+                text-align: center;
+                vertical-align: baseline;
+            }
+            td:first-child {
+                width: 49%;
+                text-align: right;
+            }
+            td:last-child {
+                width: 49%;
+                text-align: left;
+            }
+        }
     }
 
     .msg-info {
