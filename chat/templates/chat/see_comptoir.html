@@ -12,10 +12,8 @@
     {% for msg in messages %}
     <div class= "message {% if msg.owner == user %}me{% else %}others{% endif %}">
         <p class="msg-info"> 
-            {# if msg.owner != user #}
-                <span class="user">{{ msg.owner }}</span>
-            {# endif #}
-                <!-- <span class="date-of-msg">[{{ msg.date.hour }}:{{ msg.date.minute }}]</span> -->
+            {% ifchanged %}<span class="user">{{ msg.owner }}</span>{% endifchanged %}
+            <!-- <span class="date-of-msg">[{{ msg.date.hour }}:{{ msg.date.minute }}]</span> -->
         </p>
         <p class="msg-content">
             {% if msg.owner == user %}
