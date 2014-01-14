@@ -70,11 +70,8 @@
                 {% for c in comptoirs %}
                 <p>
                     {{ c.title }} 
-                    <a href="{% url "join_comptoir" c.id %}" id="tooltip{{ c.id }}" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="right" rel="tooltip" target=" _blank">
+                    <a href="{% url "join_comptoir" c.id %}" class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="right">
                         {{ c.id }}
-                        {% if c.last_message != None %}
-                            <script>$("#tooltip{{ c.id }}").tooltip();</script>
-                        {% endif %}
                     </a>
                 </p>
                 {% endfor %}
@@ -94,6 +91,7 @@
 		</footer>
 
         <script type="text/javascript">
+            $('.fsp-tooltip').tooltip();
             $("#ttex").tooltip();
             $("#login-button").click(function() {
                 $("#login-form").toggleClass("hidden");
