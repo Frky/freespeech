@@ -14,13 +14,17 @@
             {% ifchanged %}
                 <tr class="author">
                     <td>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
-                    <td></td>
+                    <td class="nopoint"></td>
                     <td>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
                 </tr>
             {% endifchanged %}
             <tr>
                 <td>{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</td>
-                <td><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
+                {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
+                <td class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
+                {% else %}
+                <td class="nopoint"></td>
+                {% endifchanged %}
                 <td>{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</td>        
             </tr>
         {% endfor %}

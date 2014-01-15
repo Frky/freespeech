@@ -183,9 +183,19 @@ header {
                 width: 2%;
                 text-align: center;
                 vertical-align: baseline;
-                background-image: url('../../images/line.png');
-                background-repeat: repeat-y;
-                background-position: 11px 0px;
+
+                &.nopoint {
+                    background-image: url('../../images/vert-line.png');
+                    background-size: 100%;
+                    background-repeat: repeat-y;
+                }
+                // background-position: 11px 0px;
+
+                &.point {
+                    background-image: url('../../images/vert-line-80.png');
+                    background-size: 100% 100%;
+                }
+
             }
             td:first-child {
                 width: 49%;
