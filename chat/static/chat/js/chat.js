@@ -1,6 +1,6 @@
 var socket = new io.Socket();
 
-var addMessage = function(user, content, msgdate) {
+var addMessage = function(user, cipher, clear, msgdate) {
 
     var tooltip_placement = function(user) {
         if (user != $("#user-name").html()) return "right";
@@ -10,13 +10,13 @@ var addMessage = function(user, content, msgdate) {
     var new_message = ""
 
     if (user != $("#user-name").html()) {
-        new_message +=  '<tr><td>' + unescape(content) + '</td>' + 
+        new_message +=  '<tr><td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>' + 
                         '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="right" rel="tooltip"> • </a></td>' + 
                         '<td></td></tr>';
     } else {
         new_message +=  '<tr><td></td>' + 
                         '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
-                        '<td>' + unescape(content) + '</td></tr>';
+                        '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span></td></tr>';
     }
         
     $("#chatbox table tbody").append(new_message);
@@ -51,7 +51,7 @@ var escapeHtml =  function (text) {
 }
 
 var submit_msg = function() {
-    data = {cid: $("#cid").val(), content: escape($("#new-msg").val()), session_key: $('#session_key').val()};
+    data = {cid: $("#cid").val(), content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val()};
     socket.send(data);
     $("#new-msg").val("");
 }
@@ -72,7 +72,7 @@ $('#new-msg').keypress(function(e){
 
 var messaged = function(data) {
     if (data.type == "new-message") {
-        addMessage(data.user, data.content, data.msgdate);
+        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate);
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
     }
 }
