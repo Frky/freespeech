@@ -15,7 +15,7 @@ var addMessage = function(user, content, msgdate) {
                         '<td></td></tr>';
     } else {
         new_message +=  '<tr><td></td>' + 
-                        '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
+                        '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
                         '<td>' + unescape(content) + '</td></tr>';
     }
         
