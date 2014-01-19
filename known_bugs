@@ -1,0 +1,28 @@
+*** PRIORITY 0 ***
+> injection de code html/js
+        Il est possible d'insérer du code
+        => à corriger absolument !!
+
+
+*** PRIORITY 1 ***
+> date sur les messages socket
+
+> design qui saute
+
+> first message
+
+> High nb of comptoirs => make chatbox move
+
+*** PRIORITY 2 ***
+> retours à la ligne sur des mots looooongs
++ time line bug with multi-line messages
+
+
+
+*** FIXED ***
+> accentuation 
+        L'envoi d'un message comportant
+        un caractère accentué ne fonctionne pas.
+
+> new line on form
+        When a message is sent using "Entry" key, a new line is introduced in the form 
