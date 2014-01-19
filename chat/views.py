@@ -179,7 +179,7 @@ def create_comptoir(request):
                               title=data['title'],
                               description=data['description'],
                               public=data['public'],
-                              password=data['password'])
+                              password=data['password'], key_hash=data['key_hash'])
 
         new_comptoir.save()
         
