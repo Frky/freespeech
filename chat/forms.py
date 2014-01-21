@@ -7,10 +7,6 @@ from chat.models import Comptoir
 
 class ComptoirForm(forms.ModelForm):
 
-    key = forms.CharField(label="Comptoir secret key", max_length=255, min_length=255, widget=forms.TextInput(
-        {'placeholder': "Field requested", 'class': "form-control", 'id': "comptoir_key"
-    }))
-
     def __init__(self, *args, **kwargs):
         self.base_fields['title'].label = "Name"
         self.base_fields['title'].widget = forms.TextInput(attrs={'placeholder': "Field requested", 'class': "form-control"})
@@ -22,8 +18,8 @@ class ComptoirForm(forms.ModelForm):
 #        self.base_fields['key'] = forms.TextInput()
 #        self.key.label="Comptoir secret key"
 #        self.key.widget = forms.TextInput(attrs={'placeholder': "Field requested", 'class': "form-control", 'id':"comptoir_key"})
-        self.base_fields['key_hash'].label="key_hash"
-        self.base_fields['key_hash'].widget = forms.HiddenInput(attrs={'id': "comptoir_hash_key"})
+        self.base_fields['key_hash'].label="Hash of the comptoir secret key"
+        self.base_fields['key_hash'].widget = forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "form-control"})
         super(ComptoirForm, self).__init__(*args, **kwargs)
 
     class Meta:

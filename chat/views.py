@@ -183,7 +183,21 @@ def create_comptoir(request):
 
         new_comptoir.save()
         
+    else:
+        print form
+        print form.errors
     return redirect("home")
+
+
+def check_hash(request):
+
+    if not ('cid' in request.GET.keys()) or not ('hash' in request.GET.keys()):
+        return HttpResponse(False)
+    else:
+        comptoir = Comptoir.objects.get(id=request.GET['cid'])
+
+        return HttpResponse(comptoir.key_hash == request.GET['hash'])
+
 
 
 def join_comptoir(request, cid):
