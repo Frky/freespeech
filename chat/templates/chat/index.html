@@ -7,15 +7,25 @@
 <h3>Create a comptoir</h3>
 	{% csrf_token %}
     {% for el in comptoir_form %}
-        <div class="field">
-            <div class="label">{{ el.label }}</div>
-            <div class="input">{{ el }}</div>
-        </div>
+            <div class="field">
+                <div class="label">{{ el.label }}</div>
+                <div class="input">{{ el }}</div>
+            </div>
     {% endfor %}
+    <div class="field invisible" id="key-field-container">
+        <div class="label">
+            Comptoir secret key
+        </div>
+        <div class="input">
+            <p id="comptoir-key">None</p>
+        </div>
+    </div>
+    <input type="button" class="btn btn-default" id="generate-key" value="Generate a key" />
     <input class="btn btn-default submit-button" type="submit">
 </form>
-
 </div>
+
+{% load staticfiles %}
 <script type="text/javascript">
     $("#plus a").click(function() {
         $("#comptoir-form").toggleClass("hidden");

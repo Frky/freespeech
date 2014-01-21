@@ -49,9 +49,10 @@
     {% endif %}
 
     <div id="comptoir-key-container"> 
-        <p>Key: <input id="comptoir-key" value="">
-        <input type="button" value="Generate key" id="generate-key">
-        <input id="comptoir-key-hash" value="" disabled="disabled">
+        <label class="control-label" for="comptoir-key">Key</label>
+        <input id="comptoir-key" class="form-control" value="">
+        <label class="control-label" for="comptoir-key-hash">Hash</label>
+        <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
     </div>
 
     {% else %}
@@ -65,13 +66,8 @@
     {% endif %}
 
     {% load staticfiles %}
-    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
-	<script src="{% static 'chat/js/aes.js' %}"></script>
-	<script src="{% static 'chat/js/jscrypt.js' %}"></script>
-	<script src="{% static 'chat/js/aesprng.js' %}"></script>
-	<script src="{% static 'chat/js/entropy.js' %}"></script>
-	<script src="{% static 'chat/js/md5.js' %}"></script>
-	<script src="{% static 'chat/js/main.js' %}"></script>
+    <script>$("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);</script>
+
     {% if user.is_authenticated %} 
         {% load socketio_tags %}
         {% socketio %}
