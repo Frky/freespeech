@@ -70,7 +70,11 @@
                 {% for c in comptoirs %}
                 <p>
                     {{ c.title }} 
-                    <a href="{% url "join_comptoir" c.id %}" class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="right">
+                    <a href="{% url "join_comptoir" c.id %}" 
+                        {% if c.last_message.owner != None %} 
+                            class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="right"
+                        {% endif %}
+                        >
                         {{ c.id }}
                     </a>
                 </p>
