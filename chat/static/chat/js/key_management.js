@@ -39,13 +39,20 @@ var hash_field = $("#comptoir-key-hash");
  *
  **/
 var updateKey = function(key_storage, isInput) {
+    var local_key;
     if (isInput) {
-        localStorage.setItem(key_storage, key_field.val());
+        local_key = key_field.val();
     } else {
-        localStorage.setItem(key_storage, key_field.text());
+        local_key = key_field.text();
     }
-    var comptoir_key_hash = CryptoJS.SHA3(localStorage.getItem(key_storage));
-    hash_field.val(comptoir_key_hash);
+        
+    localStorage.setItem(key_storage, local_key);
+    
+    if (local_key != "" && local_key != " ") {
+        console.log(local_key);
+        var comptoir_key_hash = CryptoJS.SHA3(local_key);
+        hash_field.val(comptoir_key_hash);
+    }
 }
 
 /**
@@ -227,6 +234,7 @@ var init = function() {
        temporary register in case this is the first connection since the
        creation of the comptoir */
     findKey();
+    checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
 
     $("#comptoir-key").val(localStorage.getItem(key_id));
     updateKey(key_id, true);

@@ -54,7 +54,7 @@ def index(request):
 
     context["comptoirs"] = my_comptoirs
 
-    context["comptoir_form"] = ComptoirForm()
+    context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() else ComptoirForm()
 
     return render(request, template_name, context)
 
@@ -184,10 +184,9 @@ def create_comptoir(request):
         new_comptoir.save()
         
     else:
-        print form
         print form.errors
-    return redirect("home")
-
+    
+    return index(request);
 
 def check_hash(request):
 

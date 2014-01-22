@@ -17,7 +17,7 @@ class Comptoir(RandomPrimaryIdModel):
     public = models.BooleanField(default=True)
     last_message = models.ForeignKey(IndependantMessage, null=True)
     password = models.CharField(max_length=255, default="", blank=True)
-    key_hash = models.CharField(max_length=512, default="", blank=True)
+    key_hash = models.CharField(max_length=512, default="", blank=False, null=False)
     
 
 class Message(IndependantMessage):
