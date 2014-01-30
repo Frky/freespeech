@@ -21,6 +21,20 @@ var addMessage = function(user, cipher, clear, msgdate) {
     /* Getting the last user to post a message */
     var len = $("#chatbox table tbody td.message").length;
 
+    var last_user = $("#chatbox table tbody td span.user:last").text()
+
+    if (last_user != user) {
+        new_message += '<tr class="author"><td>';
+        if (user != $("#user-name").html()) {
+            new_message += '<span class="user">' + user + '</span>';
+        }
+        new_message += '</td><td class="nopoint"></td><td>';
+        if (user === $("#user-name").html()) {
+            new_message += '<span class="user">' + user + '</span>';
+        }
+        new_message += '</td></tr>';
+    }
+
     /* New message from another user */
     if (user != $("#user-name").html()) {
         new_message +=  '<tr><td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>' + 

@@ -2,13 +2,14 @@
 > injection de code html/js
         Il est possible d'insérer du code
         => à corriger absolument !!
+> compatibility with FF
 
 
 *** PRIORITY 1 ***
 > design qui saute
-> first message
 > High nb of comptoirs => make chatbox move
 > Clear form on successful creation
+
 
 *** PRIORITY 2 ***
 > retours à la ligne sur des mots looooongs
@@ -17,6 +18,8 @@
 
 
 *** FIXED ***
+> Username on async. messages
+> first message
 > Hash verification async. fail first time
 > date sur les messages socket (Heure - 1 ...)
 > accentuation 
