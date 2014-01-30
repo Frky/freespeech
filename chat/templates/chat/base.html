@@ -14,6 +14,12 @@
 
         <script src="{% static 'chat/js/jquery.min.js' %}"></script>
 		<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
+	    <script src="{% static 'chat/js/aes.js' %}"></script>
+	    <script src="{% static 'chat/js/jscrypt.js' %}"></script>
+	    <script src="{% static 'chat/js/aesprng.js' %}"></script>
+	    <script src="{% static 'chat/js/entropy.js' %}"></script>
+	    <script src="{% static 'chat/js/md5.js' %}"></script>
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
 		
 	{% endblock %}
 	</head>
@@ -94,6 +100,8 @@
 		{% endblock %}
 		</footer>
 
+	    <script src="{% static 'chat/js/key_management.js' %}"></script>
+	    <script src="{% static 'chat/js/form_check.js' %}"></script>
         <script type="text/javascript">
             $('.fsp-tooltip').tooltip();
             $("#login-button").click(function() {

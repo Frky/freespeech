@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url("", include('django_socketio.urls')),
 
     url(r'^$', 'chat.views.index', name='home'),
+    url(r'^check_hash', 'chat.views.check_hash', name='check_hash'),
     url(r'^send$', 'chat.views.send', name='send'),
     url(r'^update$', 'chat.views.update', name='update'),
     url(r'^login$', 'chat.views.auth', name='login'),

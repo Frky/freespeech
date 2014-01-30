@@ -7,16 +7,37 @@
 <h3>Create a comptoir</h3>
 	{% csrf_token %}
     {% for el in comptoir_form %}
-        <div class="field">
-            <div class="label">{{ el.label }}</div>
-            <div class="input">{{ el }}</div>
+        <div class="field form-group {% if el.errors %}has-error{% endif %}">
+            <label class="control-label">{{ el.label }}</label>
+            {{ el }}
+            {% if el.label == "Hash of the comptoir secret key" %}
+                <a href="#" class="fsp-popover btn btn-info" rel="popover" data-trigger="hover" data-original-title="What is it ?" data-html="true" data-content="
+                    This is the fingerprint of the secret key used to decipher the messages that will be posted on the 
+                    comptoir. The key will be needed to access the comptoir clear texts, and you need to share
+                    it with people you want to speak with.<br />
+                    More info in <a href='#'>About</a> page.<br /><br />
+                    <b>Note.</b> You don't need to remember it, it will be displayed on the comptoir once created.
+                ">?</a>
+            {% endif %}
+            <div class="help-block error">{{ el.errors }}</div>
         </div>
     {% endfor %}
+    <div class="field invisible" id="key-field-container">
+        <div class="label">
+            Comptoir secret key
+        </div>
+        <div class="input">
+            <p id="comptoir-key">None</p>
+        </div>
+    </div>
+    <input type="button" class="btn btn-default" id="generate-key" value="Generate a key" />
     <input class="btn btn-default submit-button" type="submit">
 </form>
-
 </div>
+
+{% load staticfiles %}
 <script type="text/javascript">
+    $(".fsp-popover").popover();
     $("#plus a").click(function() {
         $("#comptoir-form").toggleClass("hidden");
     });

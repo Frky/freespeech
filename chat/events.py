@@ -13,11 +13,18 @@ def message(request, socket, context, message):
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
     
-    msg = Message(owner=user, comptoir=comptoir, content=message["content"])
-    msg.save()
-    comptoir.last_message = msg
-    comptoir.save()
+    if (comptoir.key_hash != message["hash"]):
+        print comptoir.key_hash
+        print message["hash"]
+        socket.send({"type": "error", "error_msg": "Your message was rejected because your key is not valid."})
 
-    socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg.date.strftime("%I:%M %p")}, channel=message["cid"])
+    else:
+        msg = Message(owner=user, comptoir=comptoir, content=message["content"])
+        msg.save()
+        comptoir.last_message = msg
+        comptoir.save()
+
+        # socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": "yolo"}, channel=message["cid"])
+        socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg.date.strftime("%I:%M %p")}, channel=message["cid"])
 #    b. %d, %Y, %i:%M %p
 
