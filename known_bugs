@@ -5,18 +5,20 @@
 
 
 *** PRIORITY 1 ***
-> date sur les messages socket
 > design qui saute
 > first message
 > High nb of comptoirs => make chatbox move
 > Hash verification async. fail first time
 
+
 *** PRIORITY 2 ***
 > retours à la ligne sur des mots looooongs
 + time line bug with multi-line messages
+> error homepage (js)
 
 
 *** FIXED ***
+> date sur les messages socket (Heure - 1 ...)
 > accentuation 
         L'envoi d'un message comportant
         un caractère accentué ne fonctionne pas.
