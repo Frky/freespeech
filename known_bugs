@@ -8,7 +8,6 @@
 *** PRIORITY 1 ***
 > design qui saute
 > High nb of comptoirs => make chatbox move
-> Clear form on successful creation
 
 
 *** PRIORITY 2 ***
@@ -18,6 +17,7 @@
 
 
 *** FIXED ***
+> Clear form on successful creation
 > Username on async. messages
 > first message
 > Hash verification async. fail first time

@@ -23,6 +23,7 @@ def unquote_new(value):
 
 context = dict()
 context['registerForm'] = RegisterForm()
+comptoir_created = False
 
 @on_message
 def my_message_handler(request, socket, context, message):
@@ -33,6 +34,8 @@ def index(request):
 	Home view
 
     """
+
+    global comptoir_created
 
     template_name = "chat/index.html"
    
@@ -54,7 +57,9 @@ def index(request):
 
     context["comptoirs"] = my_comptoirs
 
-    context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() else ComptoirForm()
+    context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm()
+
+    comptoir_created = False
 
     return render(request, template_name, context)
 
@@ -164,6 +169,8 @@ def sign_out(request):
 
 def create_comptoir(request):
 
+    global comptoir_created
+
     form = ComptoirForm(request.POST or None)
 
     if form.is_valid():
@@ -182,7 +189,11 @@ def create_comptoir(request):
                               password=data['password'], key_hash=data['key_hash'])
 
         new_comptoir.save()
-        
+
+        # Global variable set to True to distinguish between form with error
+        # (that will be filled by index) and form treated that as to be cleaned up
+        comptoir_created = True
+
     else:
         print form.errors
     
