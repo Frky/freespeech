@@ -24,7 +24,5 @@ def message(request, socket, context, message):
         comptoir.last_message = msg
         comptoir.save()
 
-        # socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": "yolo"}, channel=message["cid"])
-        socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg.date.strftime("%I:%M %p")}, channel=message["cid"])
-#    b. %d, %Y, %i:%M %p
+        socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg.date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg.date.strftime("%p") == "PM" else "a.m.")}, channel=message["cid"])
 
