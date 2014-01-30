@@ -6,6 +6,11 @@ from django_socketio import events
 
 from chat.models import Message, Comptoir
 
+import pytz
+
+from freespeech.settings import TIME_ZONE
+
+
 @events.on_message(channel="^")
 def message(request, socket, context, message):
     comptoir = Comptoir.objects.get(id=message["cid"])
@@ -24,5 +29,9 @@ def message(request, socket, context, message):
         comptoir.last_message = msg
         comptoir.save()
 
-        socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg.date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg.date.strftime("%p") == "PM" else "a.m.")}, channel=message["cid"])
+        # At this point the date of the message is in utc format, so we need to correct it 
+        timezone_local = pytz.timezone(TIME_ZONE)
+        msg_local_date = msg.date.astimezone(timezone_local)
+
+        socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg_local_date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg_local_date.strftime("%p") == "PM" else "a.m.")}, channel=message["cid"])
 
