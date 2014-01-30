@@ -8,8 +8,7 @@
 > design qui saute
 > first message
 > High nb of comptoirs => make chatbox move
-> Hash verification async. fail first time
-
+> Clear form on successful creation
 
 *** PRIORITY 2 ***
 > retours à la ligne sur des mots looooongs
@@ -18,6 +17,7 @@
 
 
 *** FIXED ***
+> Hash verification async. fail first time
 > date sur les messages socket (Heure - 1 ...)
 > accentuation 
         L'envoi d'un message comportant

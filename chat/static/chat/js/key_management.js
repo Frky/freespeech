@@ -170,6 +170,7 @@ var checkHashCallback = function(data) {
         tryNextTmpKey()
     } else {
         keyFound(key_id_tmp + tmp_id.toString(), true);
+        checkHashUICallback(data);
     }
 }
 
