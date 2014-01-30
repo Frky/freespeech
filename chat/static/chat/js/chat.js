@@ -18,10 +18,13 @@ var addMessage = function(user, cipher, clear, msgdate) {
 
     var new_message = ""
 
+    /* Getting the last user to post a message */
+    var len = $("#chatbox table tbody td.message").length;
+
     /* New message from another user */
     if (user != $("#user-name").html()) {
         new_message +=  '<tr><td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>' + 
-                        '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="right" rel="tooltip"> • </a></td>' + 
+                        '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="right" rel="tooltip"> • </a></td>' + 
                         '<td></td></tr>';
     /* New message from the client user */
     } else {
@@ -35,7 +38,7 @@ var addMessage = function(user, cipher, clear, msgdate) {
                         '<td>' + unescape(content) + '</td></tr>';
 =======
 */
-                        '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
+                        '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
                         '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span></td></tr>';
 // >>>>>>> develop/security
     }
