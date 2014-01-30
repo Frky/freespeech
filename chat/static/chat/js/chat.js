@@ -19,11 +19,18 @@ var addMessage = function(user, cipher, clear, msgdate) {
     var new_message = ""
 
     /* Getting the last user to post a message */
-    var len = $("#chatbox table tbody td.message").length;
+    var last_date = $("#chatbox table tbody td.point:last a").attr("data-original-title");
+    console.log(last_date);
 
     var last_user = $("#chatbox table tbody td span.user:last").text()
 
+    /* Boolean to indicate if the last message was from a new user */
+    var new_user = false;
+
+    /* If the new message is NOT from the same user as the previous one, 
+       we need to display the nickname of the new user */
     if (last_user != user) {
+        new_user = true;
         new_message += '<tr class="author"><td>';
         if (user != $("#user-name").html()) {
             new_message += '<span class="user">' + user + '</span>';
@@ -35,27 +42,29 @@ var addMessage = function(user, cipher, clear, msgdate) {
         new_message += '</td></tr>';
     }
 
-    /* New message from another user */
+    new_message += '<tr>';
+
     if (user != $("#user-name").html()) {
-        new_message +=  '<tr><td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>' + 
-                        '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="right" rel="tooltip"> • </a></td>' + 
-                        '<td></td></tr>';
-    /* New message from the client user */
+        new_message +=  '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>';
     } else {
-        new_message +=  '<tr><td></td>' + 
-/*
-<<<<<<<< HEAD
-                        '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
-                        '<td>' + unescape(content) + '</td></tr>';
-||||||| merged common ancestors
-                        '<td><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
-                        '<td>' + unescape(content) + '</td></tr>';
-=======
-*/
-                        '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="left" rel="tooltip"> • </a></td>' + 
-                        '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span></td></tr>';
-// >>>>>>> develop/security
+        new_message +=  '<td></td>'; 
     }
+
+    /* If the message is from the same user and the date is the same, we do not include a tooltip */
+    if (!new_user && last_date === msgdate) {
+        new_message += '<td class="nopoint"></td>';
+    /* Otherwise, we need to add the date of the message */
+    } else {
+        new_message += '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="' + tooltip_placement(user) + '" rel="tooltip"> • </a></td>';
+    }
+
+    if (user != $("#user-name").html()) {
+        new_message += '<td></td>';
+    } else {
+        new_message += '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span></td>';
+    }
+
+    new_message += '</tr>';
 
     /* Append the new message to the chatbox */
     $("#chatbox table tbody").append(new_message);
