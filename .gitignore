@@ -1,2 +1,6 @@
+.idea
 *.pyc
+*.sass-cache/
+*generated/
 freespeech/settings.py
+freespeech_db.sqlite
