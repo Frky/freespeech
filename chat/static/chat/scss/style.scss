@@ -31,6 +31,20 @@ header {
         display: block;
     }
 
+    #left-menu {
+        display: inline-block;
+        float:left;
+        margin-top: 20px;
+        margin-left: 20px;
+
+        hr {
+            width: 150px;
+            height: 1px;
+            background-color: black;
+            margin-right: 20px;
+        }
+    }
+    
     #main-title {
         display: inline-block;
         float: right;

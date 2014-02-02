@@ -14,11 +14,6 @@ class ComptoirForm(forms.ModelForm):
         self.base_fields['description'].label = "Description"
         self.base_fields['description'].widget = forms.TextInput(attrs={'placeholder': "", 'class': "form-control"})
         self.base_fields['public'].label = "Public ?"
-        self.base_fields['password'].label = "Password"
-        self.base_fields['password'].widget = forms.TextInput(attrs={'placeholder': "", 'class': "form-control"})
-#        self.base_fields['key'] = forms.TextInput()
-#        self.key.label="Comptoir secret key"
-#        self.key.widget = forms.TextInput(attrs={'placeholder': "Field requested", 'class': "form-control", 'id':"comptoir_key"})
         self.base_fields['key_hash'].validators = [v for v in self.base_fields['key_hash'].validators if not isinstance(v, MinLengthValidator)]
         self.base_fields['key_hash'].validators.append(MinLengthValidator(128))
         self.base_fields['key_hash'].label="Hash of the comptoir secret key"
@@ -27,7 +22,7 @@ class ComptoirForm(forms.ModelForm):
 
     class Meta:
         model = Comptoir
-        fields = ['title', 'description', 'public', 'password', 'key_hash']
+        fields = ['title', 'description', 'public', 'key_hash']
 
 class RegisterForm(UserCreationForm):
 

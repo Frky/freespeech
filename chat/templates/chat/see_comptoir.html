@@ -6,10 +6,10 @@
     <h1>{{ title }}</h1>
     <h3>{{ description }}</h3>
     -->
-    {% if can_view %}
     <div id="chatbox">
     
     <table>
+        <tbody>
         {% for msg in messages %}
             {% ifchanged %}
                 <tr class="author">
@@ -29,6 +29,7 @@
                 <td {% if msg.owner == user %}class="message"{% endif %}><span class="clear"></span><span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span></td>        
             </tr>
         {% endfor %}
+        </tbody>
     </table>
     <input type="hidden" id="last-msg" value="{{ senti }}">
     </div>
@@ -55,16 +56,6 @@
         <label class="control-label" for="comptoir-key-hash">Hash</label>
         <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
     </div>
-
-    {% else %}
-        This comptoir is protected by a password.
-        <form method="post" action="{% url 'join_comptoir' id %}">
-            {% csrf_token %}
-            <input type="hidden" name="type" value="password">
-            <input type="password" name="password">
-            <input type="submit" value="Join comptoir">
-        </form>
-    {% endif %}
 
     {% load staticfiles %}
     <script>$("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);</script>

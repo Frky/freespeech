@@ -17,6 +17,9 @@ from django_socketio.events import on_message
 from django.template.defaultfilters import register
 from urllib import unquote
 
+from django.forms.util import ErrorList
+
+
 @register.filter
 def unquote_new(value):
     return unquote(value)
@@ -176,17 +179,20 @@ def create_comptoir(request):
     if form.is_valid():
         data = form.cleaned_data
 
-        print request.user.username
         if request.user.is_authenticated and str(request.user) != "AnonymousUser":
             user = request.user 
         else:
             user = None
 
+        if not data['public'] and (data['key_hash'] is None or data['key_hash'] == ""):
+            form._errors['key_hash'] = ErrorList("This field is requested to create a private comptoir.")
+            return index(request)
+
         new_comptoir = Comptoir(owner=user,
                               title=data['title'],
                               description=data['description'],
                               public=data['public'],
-                              password=data['password'], key_hash=data['key_hash'])
+                              key_hash=data['key_hash'])
 
         new_comptoir.save()
 
@@ -225,8 +231,6 @@ def join_comptoir(request, cid):
     if comptoir.public:
         request.session[cid] = True
     
-    context["can_view"] = request.session[cid]
-
     if request.method == "POST":
         if request.POST['type'] == "password":
             if request.POST['password'] == comptoir.password:
@@ -236,6 +240,7 @@ def join_comptoir(request, cid):
     context["title"] = comptoir.title
     context["description"] = comptoir.description
     context["id"] = comptoir.id
+    context['public'] = comptoir.public
     context["request"] = request
 
     context["messages"] = Message.objects.all().filter(comptoir=cid).order_by('date')

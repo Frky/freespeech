@@ -7,7 +7,7 @@
 <h3>Create a comptoir</h3>
 	{% csrf_token %}
     {% for el in comptoir_form %}
-        <div class="field form-group {% if el.errors %}has-error{% endif %}">
+        <div id="{{ el.auto_id }}-container" class="field form-group {% if el.errors %}has-error{% endif %}">
             <label class="control-label">{{ el.label }}</label>
             {{ el }}
             {% if el.label == "Hash of the comptoir secret key" %}

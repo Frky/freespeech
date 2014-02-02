@@ -14,7 +14,7 @@ var key_id = "comptoir_key_" + $("#cid").val();
 /* Key temporary register template */
 var key_id_tmp = "comptoir_tmp_key_";
 /* Id for the temporary registers */
-var tmp_id = 0;
+var tmp_id = -1;
 
 /* Field of the key */
 var key_field = $("#comptoir-key");
@@ -49,7 +49,6 @@ var updateKey = function(key_storage, isInput) {
     localStorage.setItem(key_storage, local_key);
     
     if (local_key != "" && local_key != " ") {
-        console.log(local_key);
         var comptoir_key_hash = CryptoJS.SHA3(local_key);
         hash_field.val(comptoir_key_hash);
     }
@@ -65,7 +64,7 @@ var updateKey = function(key_storage, isInput) {
 var generateTmpKeyId = function() {
     /* We have to find the first free index for temporary keys in local storage */
     /* We arbitrary set at 100 the max number of temporary keys */
-    for (var i=0; i < 100; i++) {
+    for (var i=1; i < 100; i++) {
         if (localStorage.getItem(key_id_tmp + i.toString()) == null) {
             return key_id_tmp + i.toString(); 
         }
@@ -76,12 +75,10 @@ var generateTmpKeyId = function() {
    from a tmp register to a permanent register */
 var keyFound = function(id, isTmp) {
     var private_key = localStorage.getItem(id);
-    console.log(private_key);
     if (isTmp) {
         localStorage.setItem(key_id, private_key);
         localStorage.removeItem(id);
     }
-    console.log(localStorage.getItem(key_id));
     $("#comptoir-key").val(private_key);
     updateKey(key_id, true);
 }
@@ -147,9 +144,6 @@ var checkHash = function(callback, hash, cid) {
 
 var checkHashUICallback = function(data) {
 
-    // Hidding loader
-    // document.getElementById("loader").style.display = "none";
-
     // If the server returns False, it means that the username is already used
     if (data === "False") {
         hash_field.parent().removeClass("has-success");
@@ -194,17 +188,15 @@ var tryNextTmpKey = function() {
         return;
     }
 
-    console.log(tmp_id);
-
     hash = CryptoJS.SHA3(localStorage.getItem(key_id_tmp + tmp_id.toString())); 
     checkHash(checkHashCallback, hash, $("#cid").val());
-
 }
 
 var findKey = function() {
     if (localStorage.getItem(key_id) != null) {
         keyFound(key_id, false);
     } else {
+        localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         tryNextTmpKey();
     }
 }
@@ -235,7 +227,9 @@ var init = function() {
        temporary register in case this is the first connection since the
        creation of the comptoir */
     findKey();
-    checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
+    setTimeout(function() {
+        checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
+    }, 500);
 
     $("#comptoir-key").val(localStorage.getItem(key_id));
     updateKey(key_id, true);
