@@ -1,23 +1,26 @@
 *** PRIORITY 0 ***
-> chiffrement        
-    > création de la clef
-    > /!\ arrivée sur un nouveau comptoir (sans la clef)
 
 
 *** PRIORITY 1 ***
+> form control on register/login
+> page About/Infos
+> page Credits
+> page Help/Support
 > new messages
         Display the comptoirs that contain new messages on the "I have joined" list
 > notifications
-> UI mobile
 
 
 *** PRIORITY 2 ***
+> UI mobile
 > interface paramétrable
 > 404 / 501 / autre sur raccourci oour éviter voyeurs/patrons
 > Chargement des messages du plus récent au plus ancien
-> Date asynchrone && bg sur le point si date égale en asynchrone
 
 
 *** DONE ***
+> Date asynchrone && bg sur le point si date égale en asynchrone
 > comptoir names
         Display comptoir names on the list of comptoirs "I have joined"
+> création de la clef
+> /!\ arrivée sur un nouveau comptoir (sans la clef)
