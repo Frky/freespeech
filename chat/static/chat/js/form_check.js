@@ -39,4 +39,3 @@ $("#comptoir-form").submit(function() {
     }
 });
 
-$("#id_key_hash-container").toggle("hidden");

@@ -10,10 +10,11 @@
 		{% load staticfiles %}
         
         <link rel="stylesheet" href="{% static 'chat/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'chat/css/bootstrap-switch.min.css' %}" />
         <link rel="stylesheet" href="{% static 'chat/generated/css/style.css' %}" />
-
         <script src="{% static 'chat/js/jquery.min.js' %}"></script>
 		<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
 	    <script src="{% static 'chat/js/aes.js' %}"></script>
 	    <script src="{% static 'chat/js/jscrypt.js' %}"></script>
 	    <script src="{% static 'chat/js/aesprng.js' %}"></script>
@@ -33,14 +34,11 @@
                 <table>
                 <tr>
                     <td>
-                        <hr>
-                    </td>
-                    <td>
-                        <a href="#">About</a>
+                        <a href="{% url "home" %}">Home</a>
                         •
-                        <a href="#">Credits</a>
+                        <a href="{% url "about" %}">About</a>
                         •
-                        <a href="#">Support</a>
+                        <a href="#">Help</a>
                     </td>
                 </tr>
                 </table>
