@@ -16,8 +16,7 @@ var checkComptoirForm = function(form) {
         $("#id_title").parent().removeClass("has-error");
     }
 
-
-    if ($("#id_public").is(":checked")) {
+    if ($("#public-btn").val() == 1) {
         $("#comptoir-key-hash").val(CryptoJS.SHA3("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
     } else if ($("#comptoir-key-hash", form).val() === "") {
         $("#comptoir-key-hash").parent().addClass("has-error");
@@ -28,10 +27,6 @@ var checkComptoirForm = function(form) {
 
     return valid;
 }
-
-$("#id_public").change(function() {
-    $("#id_key_hash-container").toggle("hidden");
-});
 
 $("#comptoir-form").submit(function() {
     if (!checkComptoirForm($( this ))) {
