@@ -1,7 +1,5 @@
 *** PRIORITY 0 ***
-> chiffrement        
-    > création de la clef
-    > /!\ arrivée sur un nouveau comptoir (sans la clef)
+> Info messages for user (login succeeded, etc.)
 
 
 *** PRIORITY 1 ***
@@ -21,3 +19,7 @@
 *** DONE ***
 > comptoir names
         Display comptoir names on the list of comptoirs "I have joined"
+> chiffrement        
+    > création de la clef
+    > /!\ arrivée sur un nouveau comptoir (sans la clef)
+
