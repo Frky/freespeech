@@ -13,7 +13,7 @@
     <tr class="form-group field" id="public-btn-container">
         <td class="lbl"></td>
         <td class="fld">
-            <input id="public-btn" name="public-btn" type="checkbox" unchecked data-off-text="Public" data-on-text="Private">
+            <input id="public-btn" value=1 name="{{ el.name }}" type="checkbox" unchecked data-off-text="Public" data-on-text="Private" bootstrap-switch-disabled>
         </td>
         <td class="hlp"></td>
     </tr>
@@ -94,8 +94,9 @@
         $("#key-field-container").toggleClass("invisible");
         $("#generate-key").toggleClass("invisible");
     });*/
-    $("[name='public-btn']").bootstrapSwitch();
+    $("[name='public']").bootstrapSwitch();
     $('#public-btn').on('switchChange', function () {
+        $("#public-btn").val(1 - $("#public-btn").val());
         $("#id_key_hash-container").toggleClass("invisible");
         $("#key-field-container").toggleClass("invisible");
         $("#generate-key-container").toggleClass("invisible");
