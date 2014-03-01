@@ -84,9 +84,9 @@ var keyFound = function(id, isTmp) {
 }
 
 var createKey = function() {
-    $("#comptoir-key").text(Generate_key());
+    $("#comptoir-key").val(Generate_key());
     var key_storage = generateTmpKeyId();
-    updateKey(key_storage, false);
+    updateKey(key_storage, true);
     $("#key-field-container").removeClass("invisible");
 }   
  

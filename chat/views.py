@@ -250,3 +250,9 @@ def join_comptoir(request, cid):
         context["senti"] = 0
 
     return render(request, template_name, context)
+
+
+def about(request):
+    template_name = "chat/about.html"
+
+    return render(request, template_name, context)

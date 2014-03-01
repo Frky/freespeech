@@ -1,4 +1,5 @@
 *** PRIORITY 0 ***
+> Info messages for user (login succeeded, etc.)
 
 
 *** PRIORITY 1 ***
@@ -24,3 +25,4 @@
         Display comptoir names on the list of comptoirs "I have joined"
 > création de la clef
 > /!\ arrivée sur un nouveau comptoir (sans la clef)
+

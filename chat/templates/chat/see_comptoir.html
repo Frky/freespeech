@@ -50,11 +50,23 @@
     </form>
     {% endif %}
 
-    <div id="comptoir-key-container"> 
-        <label class="control-label" for="comptoir-key">Key</label>
-        <input id="comptoir-key" class="form-control" value="">
-        <label class="control-label" for="comptoir-key-hash">Hash</label>
-        <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
+    <table id="comptoir-key-container"> 
+        <tr id="key-tr">
+            <td class="lbl">
+                <label class="control-label" for="comptoir-key">Key</label>
+            </td>
+            <td class="fld">
+                <input id="comptoir-key" class="form-control" value="">
+            </td>
+        </tr>
+        <tr id="hash-tr">
+            <td class="lbl">
+                <label class="control-label" for="comptoir-key-hash">Hash</label>
+            </td>
+            <td class="fld">
+                <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
+            </td>
+        </tr>
     </div>
 
     {% load staticfiles %}
