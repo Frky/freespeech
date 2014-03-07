@@ -21,3 +21,9 @@ class Comptoir(RandomPrimaryIdModel):
 
 class Message(IndependantMessage):
     comptoir = models.ForeignKey(Comptoir, null=False)
+
+
+class BetaKey(models.Model):
+    key = models.CharField(max_length="256", blank=False)
+    used = models.BooleanField(default=False)
+

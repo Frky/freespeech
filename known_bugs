@@ -9,13 +9,16 @@
 > design qui saute
 > High nb of comptoirs => make chatbox move
 > Error on fields
-
+> alertes clef (non hexa, empty, ...)
 
 *** PRIORITY 2 ***
 > retours à la ligne sur des mots looooongs
 + time line bug with multi-line messages
 > error homepage (js)
-
+> alertes en série si mauvaise clef (non hexa par ex.) => pas d'alert ?
+> key undefined (creation)
+> premier message qui merde
+> scroll down en arrivée de comptoir
 
 *** FIXED ***
 > Clear form on successful creation

@@ -43,6 +43,31 @@
                 </tr>
                 </table>
             </div>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error" %}
+                        <div class="alert alert-danger alert-dismissable">
+                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>Error!</strong> {{ message }}
+                        </div>
+                    {% elif message.tags == "warning" %}
+                        <div class="alert alert-warning alert-dismissable">
+                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>Warning!</strong> {{ message }}
+                        </div>
+                    {% elif message.tags == "info" %}
+                        <div class="alert alert-info alert-dismissable">
+                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>Info!</strong> {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success alert-dismissable">
+                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>Info!</strong> {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 		    <div id="main-title">
                 <a href="{% url "home" %}">FreeSpeech</a>
             </div>
@@ -70,6 +95,9 @@
                             {{ field }}
                     </div>
                 {% endfor %}
+                    <div class="fieldContainer">
+                        <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
+                    </div>
                 <div id="submitButton">
                     <input class="btn btn-default" type="submit" value="> Register">
                 </div>
