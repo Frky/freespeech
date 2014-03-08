@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
         self.stdout.write(key)
 
-        new_key = BetaKey(key)
+        new_key = BetaKey(key=key)
         new_key.save()
 
         return
