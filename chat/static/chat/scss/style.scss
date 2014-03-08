@@ -361,3 +361,12 @@ table#comptoir-key-container {
     width: 600px;
     margin: 10px;
 }
+
+
+.formContainer#reportForm {
+    textarea {
+        resize: none;
+    }
+    margin: auto;
+    width: 400px;
+}

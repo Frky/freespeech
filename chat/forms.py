@@ -3,7 +3,7 @@ from django import forms
 from django.db import models
 from django.core.validators import MinLengthValidator
 
-from chat.models import Comptoir
+from chat.models import Comptoir, BugReport
 
 
 class ComptoirForm(forms.ModelForm):
@@ -34,3 +34,18 @@ class RegisterForm(UserCreationForm):
         self.base_fields['password2'].widget = forms.TextInput(attrs={'type': 'password', 'placeholder': "Password (again)", 'class': "form-control"})
 
         super(RegisterForm, self).__init__(*args, **kwargs)
+
+
+class BugReportForm(forms.ModelForm):
+
+        def __init__(self, *args, **kwargs):
+            self.base_fields['url'].label = "Page(s) concerned by the bug/suggestion"
+            self.base_fields['url'].widget = forms.TextInput(attrs={'class': "input form-control"})
+            self.base_fields['description'].label = "Description of the bug/suggestion"
+            self.base_fields['description'].widget = forms.Textarea(attrs={'placeholder': "Field requested", 'class': "input form-control", 'rows': "5", 'cols': "100", 'maxlength': "500"})
+            
+            super(BugReportForm, self).__init__(*args, **kwargs)
+
+        class Meta:
+            model = BugReport
+            fields = ['url', 'description']

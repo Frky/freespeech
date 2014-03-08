@@ -24,6 +24,15 @@ class Message(IndependantMessage):
 
 
 class BetaKey(models.Model):
-    key = models.CharField(max_length="256", blank=False)
+    key = models.CharField(max_length=100, blank=False)
     used = models.BooleanField(default=False)
 
+
+class BugReport(models.Model):
+    url = models.CharField(max_length=50, blank=True)
+    date_submission = models.DateTimeField(auto_now_add=True)
+    date_fix = models.DateTimeField(auto_now_add=False, null=True)
+    priority = models.IntegerField(default=5)
+    treated = models.BooleanField(default=False)
+    reporter = models.ForeignKey(User, null=True)
+    description = models.CharField(max_length=500, blank=False)

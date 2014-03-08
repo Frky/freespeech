@@ -286,6 +286,25 @@ def join_comptoir(request, cid):
     return render(request, template_name, context)
 
 
+def report(request):
+    template_name = "chat/report.html"
+
+    if request.method == "POST":
+        if "description" not in request.POST.keys() or request.POST['description'] == "":
+            messages.error(request, "Sumbission failed: you must enter a description.")
+        else:
+            report = BugReport(description=request.POST['description'])
+            if 'url' in request.POST.keys():
+                report.url = request.POST['url']
+            report.reporter = None if request.user.is_authenticated or request.user.username == "AnonymousUser" else request.user
+            report.save()
+            messages.info(request, "Your report has been sent. Thank you.")
+            return redirect("home")
+
+    context['reportForm'] = BugReportForm()
+
+    return render(request, template_name, context)
+
 def about(request):
     template_name = "chat/about.html"
 
