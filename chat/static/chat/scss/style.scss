@@ -356,8 +356,13 @@ table#comptoir-key-container {
     visibility: hidden;
 }
 
-.alert {
+#alertBox {
     display: inline-block;
+}
+
+
+.alert {
+    display: block;
     width: 600px;
     margin: 10px;
 }

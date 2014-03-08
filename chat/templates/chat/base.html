@@ -15,6 +15,7 @@
         <script src="{% static 'chat/js/jquery.min.js' %}"></script>
 		<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
+        <script src="{% static 'chat/js/alerts.js' %}"></script>
 	    <script src="{% static 'chat/js/aes.js' %}"></script>
 	    <script src="{% static 'chat/js/jscrypt.js' %}"></script>
 	    <script src="{% static 'chat/js/aesprng.js' %}"></script>
@@ -41,6 +42,7 @@
                 </tr>
                 </table>
             </div>
+            <div id="alertBox">
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == "error" %}
@@ -61,11 +63,12 @@
                     {% else %}
                         <div class="alert alert-success alert-dismissable">
                               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Info!</strong> {{ message }}
+                                <strong>Success!</strong> {{ message }}
                         </div>
                     {% endif %}
                 {% endfor %}
             {% endif %}
+            </div>
 		    <div id="main-title">
                 <a href="{% url "home" %}">FreeSpeech</a>
             </div>

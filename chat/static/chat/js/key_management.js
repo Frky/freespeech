@@ -169,6 +169,7 @@ var checkHashCallback = function(data) {
 }
 
 var Decrypt_all = function() {
+    if (!Test_Key(localStorage.getItem(key_id))) return;
     $(".message").each(function() {
         ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {

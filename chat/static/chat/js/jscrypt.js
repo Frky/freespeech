@@ -23,11 +23,12 @@ function setKey(keystr) {
         }
     }
     if (bogus) {
-        alert("Error: Non-Hexadecimal character(s) found in Hexadecimal key.");
+        pop_alert("danger", "Non-Hexadecimal character(s) found in Hexadecimal key. Deciphering aborted.");
+        return false;
     }
     if (hs.length > (keySizeInBits / 4)) {
-        alert("Warning: hexadecimal key exceeds " +
-        (keySizeInBits / 4) + " digit maximum; truncated.");
+        pop_alert("warning", "Hexadecimal key exceeds " +
+        (keySizeInBits / 4) + " digits; truncated.");
         hs = hs.slice(0, 64);
     } else {
         //  If key is fewer than 64 hex digits, fill it with zeroes
@@ -36,6 +37,7 @@ function setKey(keystr) {
         }
     }
     key =  hexToByteArray(hs);
+    return true;
 }
 
 /*	Generate a key from the pseudorandom number generator
@@ -91,16 +93,23 @@ function Encrypt_Text(plaintext, keystr) {
     return out_str;
 }
 
+// Test a key
+function Test_Key(keystr) {
+    if (keystr.length == 0) {
+        pop_alert("info", "Please provide the comptoir key.");
+        return false;
+    }
+
+    return setKey(keystr);
+}
+
 //takes a hex string ciphertext and hex key and returns string plaintext
 function Decrypt_Text(ciphertext, keystr) {
-    if (keystr.length == 0) {
-        alert("Please specify a key with which to decrypt the message.");
-        return "";
-    }
+
     if (ciphertext.length == 0) {
-        alert("Nothing to decrypt!");
         return "";
     }
+    
     setKey(keystr);
     
     var array = hexToByteArray(ciphertext);

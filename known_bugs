@@ -9,7 +9,7 @@
 > design qui saute
 > High nb of comptoirs => make chatbox move
 > Error on fields
-> alertes clef (non hexa, empty, ...)
+
 
 *** PRIORITY 2 ***
 > retours à la ligne sur des mots looooongs
@@ -19,6 +19,7 @@
 > key undefined (creation)
 > premier message qui merde
 > scroll down en arrivée de comptoir
+
 
 *** FIXED ***
 > Clear form on successful creation
@@ -32,3 +33,4 @@
 
 > new line on form
         When a message is sent using "Entry" key, a new line is introduced in the form 
+> alertes clef (non hexa, empty, ...)
