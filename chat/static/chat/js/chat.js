@@ -144,7 +144,7 @@ $("#send-form").submit(function(event) {
 /* Submission with "Enter" key */
 $('#new-msg').keypress(function(e){
     if(e.which == 13){
-        event.preventDefault();
+        e.preventDefault();
         submit_msg();
     }
 });
