@@ -281,9 +281,9 @@ def join_comptoir(request, cid):
     context['public'] = comptoir.public
     context["request"] = request
 
-    context["messages"] = Message.objects.all().filter(comptoir=cid).order_by('date')
-    if len(context["messages"]) > 0:
-        context["senti"] = context["messages"][len(context["messages"]) - 1].id
+    context["msgs"] = Message.objects.all().filter(comptoir=cid).order_by('date')
+    if len(context["msgs"]) > 0:
+        context["senti"] = context["msgs"][len(context["msgs"])-1].id
     else:
         context["senti"] = 0
 

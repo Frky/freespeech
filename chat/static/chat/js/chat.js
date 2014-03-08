@@ -2,6 +2,18 @@
     This file manage the connection between the client and the server through web sockets.
 */
 
+var msg_alert = $("#msgAlert")[0];
+var sound_alert = $("#sound-alert-btn");
+var sound_notification = function(type) {
+    if (sound_alert.val() == 0 || document.hasFocus()) {
+        return;
+    }
+
+    if (type == "msg") {
+        msg_alert.play();
+    }
+}
+
 /* Creation of a socket instance */
 var socket = new io.Socket();
 
@@ -20,7 +32,6 @@ var addMessage = function(user, cipher, clear, msgdate) {
 
     /* Getting the last user to post a message */
     var last_date = $("#chatbox table tbody td.point:last a").attr("data-original-title");
-    console.log(last_date);
 
     var last_user = $("#chatbox table tbody td span.user:last").text()
 
@@ -70,6 +81,12 @@ var addMessage = function(user, cipher, clear, msgdate) {
     $("#chatbox table tbody").append(new_message);
 
     $('.fsp-tooltip').tooltip('destroy').tooltip();
+
+    /* Notification to the sound alert manager */
+    if (user != $("#user-name").html()) {
+        sound_notification("msg");
+    }
+
 }
 
 /* Connect the socket to the server with the comptoir id, 

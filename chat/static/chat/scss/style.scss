@@ -325,7 +325,7 @@ table#comptoir-key-container {
     width: 400px;
     float: right;
     margin-right: 30px;
-
+    margin-bottom: 20px;
     tr {
         height: 50px;
     }
@@ -362,6 +362,11 @@ table#comptoir-key-container {
     margin: 10px;
 }
 
+#msg-alert-tr {
+    .fld {
+        text-align: right;
+    }
+}
 
 .formContainer#reportForm {
     textarea {
