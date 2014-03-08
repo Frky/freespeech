@@ -5,6 +5,11 @@
 <div id="plus"><a>+</a></div>
 <form action="{% url "create_comptoir" %}" method="post" id="comptoir-form" class="hidden">
 <h3>Create a comptoir</h3>
+
+    {% if not user.is_authenticated %}
+        You must be logged in to create a comptoir.
+    {% else %}
+
 	{% csrf_token %}
     <table id="form-tab">
 
@@ -81,6 +86,7 @@
     </tr>
     </table>
 </form>
+    {% endif %}
 </div>
 
 {% load staticfiles %}

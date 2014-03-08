@@ -175,6 +175,7 @@ def register(request):
             av_key.used = True
             av_key.save()
         else:
+            messages.info(request, "This key has already been used. You can ask for a new one at fdg@udtq.fr.")
             context['form'] = form
             return redirect("home")
 
@@ -183,6 +184,7 @@ def register(request):
         new_user = form.save()
         user = authenticate(username=request.POST['username'], password=request.POST['password1'])
         login(request, user)
+        messages.success(request, "Your registration is done. Welcome. Please do not hesitate to report any bug or suggestion through 'Report a bug'.")
         # return redirect(request.session['history'][-1])
     # request.session['redirect'])
     else:
@@ -229,6 +231,8 @@ def create_comptoir(request):
                               key_hash=data['key_hash'])
 
         new_comptoir.save()
+
+        messages.success(request, "The comptoir has been created successfully. You can access it by clicking on your nickname.")
 
         # Global variable set to True to distinguish between form with error
         # (that will be filled by index) and form treated that as to be cleaned up
