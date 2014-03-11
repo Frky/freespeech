@@ -34,21 +34,23 @@
     <input type="hidden" id="last-msg" value="{{ senti }}">
     </div>
     
-    {% if user.is_authenticated %} 
     <form action="{% url "send" %}" method="post" id="send-form">
     
     	{% csrf_token %}
 
-        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
 
         <input type="hidden" id="cid" name="cid" value="{{ id }}">
         
-    	<textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
+    {% if user.is_authenticated %} 
+
+        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
+    
+        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
     
     	<input type="submit" value="Say!" class="btn btn-default submit-button">
+    {% endif %}
     
     </form>
-    {% endif %}
 
     <table id="comptoir-key-container"> 
         <tr id="msg-alert-tr">
@@ -64,7 +66,7 @@
                 <label class="control-label" for="comptoir-key">Key</label>
             </td>
             <td class="fld">
-                <input id="comptoir-key" class="form-control" value="">
+                <input id="comptoir-key" class="control-label form-control" value="">
             </td>
         </tr>
         <tr id="hash-tr" class="hidden">

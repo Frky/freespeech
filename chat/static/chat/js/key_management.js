@@ -146,10 +146,14 @@ var checkHashUICallback = function(data) {
 
     // If the server returns False, it means that the username is already used
     if (data === "False") {
+        key_field.parent().removeClass("has-success");
+        key_field.parent().addClass("has-error");
         hash_field.parent().removeClass("has-success");
         hash_field.parent().addClass("has-error");
         //$("#" + field + "> div.help-block").html("* Ce pseudo est déjà utilisé.");
     } else {
+        key_field.parent().removeClass("has-error");
+        key_field.parent().addClass("has-success");
         hash_field.parent().removeClass("has-error");
         hash_field.parent().addClass("has-success");
         //$("#" + field + "> div.help-block").html("Ce pseudo est disponible.");
@@ -237,4 +241,6 @@ var init = function() {
     Decrypt_all();
 }
 
-init();
+if ($("#chatbox").length != 0) {
+    init();
+}
