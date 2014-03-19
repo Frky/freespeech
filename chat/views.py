@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 
-from chat.models import Message, BetaKey
+from chat.models import Message, BetaKey, BugReport
 from chat.forms import *
 
 from django_socketio.events import on_message
@@ -309,7 +309,22 @@ def report(request):
 
     return render(request, template_name, context)
 
+
 def about(request):
     template_name = "chat/about.html"
 
     return render(request, template_name, context)
+
+
+def reporting_box(request):
+
+    template_name = "chat/reporting_box.html"
+    
+    user = request.user
+    if not user.is_authenticated or user.username != "_Frky":
+        return redirect("home")
+
+    context['bugs'] = BugReport.objects.all() 
+
+    return render(request, template_name, context)
+

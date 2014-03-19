@@ -1,0 +1,14 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+
+<div id="page-content">
+<h2>Reporting</h2>
+
+{% for bug in bugs %}
+
+    <p>{{ bug.url }} - {{ bug.description }}</p>
+
+{% endfor %}
+
+{% endblock %}
