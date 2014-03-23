@@ -21,6 +21,9 @@ var socket = new io.Socket();
  * Called at each reception of a message through the socket */
 var addMessage = function(user, cipher, clear, msgdate) {
     
+    /* Escaping html code in new messages to avoid XSS */
+    clear = $('<div />').text(clear).html();
+
     /* Tooltip for the date of the msg. For the client, 
        displayed in left ; for others in right */
     var tooltip_placement = function(user) {
