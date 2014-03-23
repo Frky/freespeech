@@ -93,6 +93,8 @@ var addMessage = function(user, cipher, clear, msgdate) {
    to be alerted on new messages posted on this comptoir */
 var connected = function() {
     socket.subscribe($("#cid").val());
+    data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
+    socket.send(data);
     return;
 }
 
@@ -127,7 +129,7 @@ var submit_msg = function() {
             - the hash of the secret key, to allow the server to check that we indeed are allowed to 
             post on this comptoir
     */
-    data = {cid: $("#cid").val(), content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
+    data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
 
     socket.send(data);
 
@@ -158,13 +160,25 @@ var messaged = function(data) {
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         alert(data.error_msg);
+    } else if (data.type == "users") {
+        online = "";
+        for (var i = 0; i < data.users_list.length; i++) {
+            username = data.users_list[i];
+            if (username == $("#user-name").html()) continue;
+            if (i > 0) {
+                online += " • ";
+            }
+            online += data.users_list[i];
+        }
+        $("#users-connected").text(online);
     }
-}
 
-/* Connect the socket to the server */
-socket.connect();
+}
 
 /* Mapping the two handlers */
 socket.on('connect', connected);
 socket.on('message', messaged);
+
+/* Connect the socket to the server */
+socket.connect();
 

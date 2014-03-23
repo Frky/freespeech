@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -10,7 +11,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 
-from chat.models import Message, BetaKey, BugReport
+from chat.models import Message, BetaKey, BugReport, ChatUser
 from chat.forms import *
 
 from django_socketio.events import on_message
@@ -29,9 +30,41 @@ context = dict()
 context['registerForm'] = RegisterForm()
 comptoir_created = False
 
-@on_message
-def my_message_handler(request, socket, context, message):
-    print message
+
+def comptoir_list(request):
+    
+    user = request.user
+    if not user.is_authenticated or user.username == "AnonymousUser":
+        user_id = 0
+    else:
+        user_id = user.id
+
+    my_comptoirs = list()
+   
+    comptoirs = Comptoir.objects.all()
+
+    for cmpt in comptoirs:
+        msg = Message.objects.all().filter(comptoir=cmpt.id, owner=user_id)
+        if len(msg) > 0 or cmpt.owner == user:
+            new_msgs = 0
+            msg = Message.objects.all().filter(comptoir=cmpt.id)
+            try:
+                lv = user.chatuser.last_visits.all().get(comptoir=cmpt)
+                print "Last visit:"
+                print lv.date
+                print lv.date.tzinfo
+                print
+                for m in [ ms for ms in msg if ms.owner != user.id]:
+                    if lv.date < m.date:
+                        new_msgs += 1
+                    print m.date
+            except ObjectDoesNotExist:
+                print "Exception"
+                new_msgs = 0
+            my_comptoirs.append((cmpt, new_msgs))
+            
+    context["comptoirs"] = my_comptoirs
+
 
 def index(request):
     """
@@ -39,27 +72,11 @@ def index(request):
 
     """
 
+    comptoir_list(request)
+
     global comptoir_created
 
     template_name = "chat/index.html"
-   
-    comptoirs = Comptoir.objects.all()
-
-    my_comptoirs = list()
-
-    user = request.user
-    if not user.is_authenticated or user.username == "AnonymousUser":
-        user_id = 0
-    else:
-        user_id = user.id
-    
-
-    for cmpt in comptoirs:
-        msg = Message.objects.all().filter(comptoir=cmpt.id, owner=user_id)
-        if len(msg) > 0 or cmpt.owner == user:
-            my_comptoirs.append(cmpt)
-
-    context["comptoirs"] = my_comptoirs
 
     context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm()
 
@@ -183,6 +200,7 @@ def register(request):
 
         new_user = form.save()
         user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+        ChatUser(user=new_user).save()
         login(request, user)
         messages.success(request, "Your registration is done. Welcome. Please do not hesitate to report any bug or suggestion through 'Report a bug'.")
         # return redirect(request.session['history'][-1])
@@ -256,6 +274,9 @@ def check_hash(request):
 
 def join_comptoir(request, cid):
 
+    if "comtpoirs" not in context.keys():
+        comptoir_list(request)
+
     template_name = "chat/see_comptoir.html"
 
     comptoir = Comptoir.objects.get(id=cid)
@@ -286,7 +307,7 @@ def join_comptoir(request, cid):
         context["senti"] = context["msgs"][len(context["msgs"])-1].id
     else:
         context["senti"] = 0
-
+    
     return render(request, template_name, context)
 
 

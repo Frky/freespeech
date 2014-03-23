@@ -35,7 +35,9 @@
     </div>
     
     <form action="{% url "send" %}" method="post" id="send-form">
-    
+        <div id="users-connected-content">
+            Online: <span id="users-connected"></span>
+        </div>
     	{% csrf_token %}
 
 

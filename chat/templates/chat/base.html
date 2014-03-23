@@ -116,7 +116,7 @@
 
             <div class="hidden" id="my-comptoirs">
                 <p>Comptoirs I have joined</p>
-                {% for c in comptoirs %}
+                {% for c,n in comptoirs %}
                 <p>
                     {{ c.title }} 
                     <a href="{% url "join_comptoir" c.id %}" 
@@ -126,6 +126,9 @@
                         >
                         {{ c.id }}
                     </a>
+                    {% if n != 0 %}
+                        <span class="badge active">{{ n }}</span>
+                    {% endif %}
                 </p>
                 {% endfor %}
             </div>

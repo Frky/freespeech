@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from chat.random_primary import RandomPrimaryIdModel
 
+
 class IndependantMessage(models.Model):
     owner = models.ForeignKey(User, null=False)
     content = models.CharField(max_length=2048)
@@ -23,6 +24,11 @@ class Message(IndependantMessage):
     comptoir = models.ForeignKey(Comptoir, null=False)
 
 
+class LastVisit(models.Model):
+    comptoir = models.ForeignKey(Comptoir, null=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+
 class BetaKey(models.Model):
     key = models.CharField(max_length=100, blank=False)
     used = models.BooleanField(default=False)
@@ -36,3 +42,9 @@ class BugReport(models.Model):
     treated = models.BooleanField(default=False)
     reporter = models.ForeignKey(User, null=True)
     description = models.CharField(max_length=500, blank=False)
+
+
+class ChatUser(models.Model):
+    user = models.OneToOneField(User)
+    last_visits = models.ManyToManyField(LastVisit)
+
