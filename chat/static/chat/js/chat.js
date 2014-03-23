@@ -129,6 +129,7 @@ var submit_msg = function() {
             - the hash of the secret key, to allow the server to check that we indeed are allowed to 
             post on this comptoir
     */
+    $("#new-msg").val().replace("\n", "<br />");
     data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
 
     socket.send(data);
@@ -162,8 +163,6 @@ $('#new-msg').keydown(function(e){
         if (!ctrl_pressed) {
             e.preventDefault();
             submit_msg();
-        } else {
-            $('#new-msg').append("\n");
         }
     }
 });
@@ -199,3 +198,6 @@ socket.on('message', messaged);
 /* Connect the socket to the server */
 socket.connect();
 
+$("body").ready(function() {
+        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+});
