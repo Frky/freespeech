@@ -143,11 +143,28 @@ $("#send-form").submit(function(event) {
     submit_msg();
 });
 
-/* Submission with "Enter" key */
-$('#new-msg').keypress(function(e){
-    if(e.which == 13){
-        e.preventDefault();
-        submit_msg();
+/* Remember ctrl pressed to distinguish 
+   Enter for submission and Enter for a line feed */
+var ctrl_pressed = false;
+
+/* Update on ctrl press */
+$('#new-msg').keyup(function(e){
+    if(e.which == 17){
+        ctrl_pressed = false;
+    }
+});
+
+/* Submission with "Enter" key ; line feed if CTRL */
+$('#new-msg').keydown(function(e){
+    if (e.which == 17) {
+        ctrl_pressed = true;
+    } else if (e.which == 13){
+        if (!ctrl_pressed) {
+            e.preventDefault();
+            submit_msg();
+        } else {
+            $('#new-msg').append("\n");
+        }
     }
 });
 
