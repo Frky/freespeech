@@ -1,5 +1,4 @@
 *** PRIORITY 0 ***
-> Info messages for user (login succeeded, etc.)
 
 
 *** PRIORITY 1 ***
@@ -7,9 +6,6 @@
 > page About/Infos
 > page Credits
 > page Help/Support
-> new messages
-        Display the comptoirs that contain new messages on the "I have joined" list
-> notifications
 
 
 *** PRIORITY 2 ***
@@ -19,6 +15,8 @@
 > Chargement des messages du plus récent au plus ancien
 > Date asynchrone && bg sur le point si date égale en asynchrone
 > *** is writing something ...
+> Improve messages for user (login succeeded, etc.)
+
 
 *** DONE ***
 > Date asynchrone && bg sur le point si date égale en asynchrone
@@ -26,4 +24,8 @@
         Display comptoir names on the list of comptoirs "I have joined"
 > création de la clef
 > /!\ arrivée sur un nouveau comptoir (sans la clef)
-
+> Info messages for user (login succeeded, etc.)
+> notifications
+> users connected
+> new messages
+        Display the comptoirs that contain new messages on the "I have joined" list

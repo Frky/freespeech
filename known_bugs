@@ -2,7 +2,6 @@
 > injection de code html/js
         Il est possible d'insérer du code
         => à corriger absolument !!
-> compatibility with FF
 
 
 *** PRIORITY 1 ***
@@ -14,9 +13,6 @@
 *** PRIORITY 2 ***
 > retours à la ligne sur des mots looooongs
 + time line bug with multi-line messages
-> error homepage (js)
-> alertes en série si mauvaise clef (non hexa par ex.) => pas d'alert ?
-> key undefined (creation)
 > premier message qui merde
 > scroll down en arrivée de comptoir
 
@@ -34,3 +30,7 @@
 > new line on form
         When a message is sent using "Entry" key, a new line is introduced in the form 
 > alertes clef (non hexa, empty, ...)
+> compatibility with FF
+> alertes en série si mauvaise clef (non hexa par ex.) => pas d'alert ?
+> error homepage (js)
+> key undefined (creation)

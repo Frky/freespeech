@@ -65,11 +65,9 @@ function Generate_key() {
 //takes plaintext and a hex key, returns a hex string ciphertext
 function Encrypt_Text(plaintext, keystr) {
     if (keystr.length == 0) {
-        alert("Please specify a key.");
         return "";
     }
     if (plaintext.length == 0) {
-        alert("Nothing to encrypt!");
         return "";
     }
     setKey(keystr);
@@ -96,7 +94,6 @@ function Encrypt_Text(plaintext, keystr) {
 // Test a key
 function Test_Key(keystr) {
     if (keystr.length == 0) {
-        pop_alert("info", "Please provide the comptoir key.");
         return false;
     }
 
@@ -110,6 +107,10 @@ function Decrypt_Text(ciphertext, keystr) {
         return "";
     }
     
+    if (keystr.length == 0) {
+        pop_alert("info", "Please provide the comptoir key.");
+    }
+
     setKey(keystr);
     
     var array = hexToByteArray(ciphertext);

@@ -159,7 +159,7 @@ var messaged = function(data) {
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
-        alert(data.error_msg);
+        pop_alert("danger", data.error_msg);
     } else if (data.type == "users") {
         online = "";
         for (var i = 0; i < data.users_list.length; i++) {
