@@ -86,6 +86,10 @@ var keyFound = function(id, isTmp) {
     }
     $("#comptoir-key").val(private_key);
     updateKey(key_id, true);
+    
+    if (private_key != "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff") {
+        $("#key-tr").removeClass("hidden");
+    }
 }
 
 var createKey = function() {
