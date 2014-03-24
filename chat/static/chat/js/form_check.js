@@ -11,6 +11,7 @@ var checkComptoirForm = function(form) {
     /* Checking Comptoir title */
     if ($("#id_title", form).val() === "") {
         $("#id_title").parent().addClass("has-error");
+        pop_alert("danger", "A comptoir name is required.");
         valid = false;
     } else {
         $("#id_title").parent().removeClass("has-error");
@@ -20,6 +21,7 @@ var checkComptoirForm = function(form) {
         $("#comptoir-key-hash").val(CryptoJS.SHA3("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
     } else if ($("#comptoir-key-hash", form).val() === "") {
         $("#comptoir-key-hash").parent().addClass("has-error");
+        pop_alert("danger", "To create a private comptoir, the hash of a key is required.");
         valid = false;
     } else {
         $("#comptoir-key-hash").parent().removeClass("has-error");

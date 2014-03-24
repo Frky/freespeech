@@ -21,6 +21,7 @@ var key_field = $("#comptoir-key");
 /* Field of the hash */
 var hash_field = $("#comptoir-key-hash");
 
+var global_key_storage = "";
 
 /***
         Generation of a new key
@@ -46,6 +47,7 @@ var updateKey = function(key_storage, isInput) {
         local_key = key_field.text();
     }
         
+    localStorage.removeItem(key_storage);
     localStorage.setItem(key_storage, local_key);
     
     if (local_key != "" && local_key != " ") {
@@ -69,6 +71,9 @@ var generateTmpKeyId = function() {
             return key_id_tmp + i.toString(); 
         }
     }
+
+    /* If the hundred temporary places are used, overwrite a random one */
+    return key_id_tmp + Math.floor((Math.random()*100)+1).toString();
 }
 
 /* isTmp is a param that indicates if we have to save the key 
@@ -85,15 +90,19 @@ var keyFound = function(id, isTmp) {
 
 var createKey = function() {
     $("#comptoir-key").val(Generate_key());
-    var key_storage = generateTmpKeyId();
-    updateKey(key_storage, true);
-    $("#key-field-container").removeClass("invisible");
+
+    /* If no key storage was previously defined, 
+       get a new one */
+    if (global_key_storage === "") {
+        global_key_storage = generateTmpKeyId();
+    }
+
+    updateKey(global_key_storage, true);
 }   
  
 $("#generate-key").click(function() {
     createKey();
 });
-
 
 /* CHECKING HASH IN AJAX */
 

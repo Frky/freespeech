@@ -22,6 +22,47 @@
         </td>
         <td class="hlp"></td>
     </tr>
+    <tr>
+        <td colspan="3" id="note" class="invisible">
+            <b>Info. </b> Your comptoir will be protected by a key. You must provide this key to anyone you want to share the comptoir with.
+            The key will be accessible in the comptoir page.
+        </td>
+    </tr>
+    <tr class="field form-group invisible" id="manage-key-container">
+        <td class="lbl label control-label">
+        </td>
+        <td class="fld">
+            <input type="button" class="btn btn-info input" id="manage-key" value="Manage the key myself" />
+        </td>
+        <td class="hlp">
+        </td>
+    </tr>
+    <tr class="field form-group invisible" id="generate-key-container">
+        <td class="lbl label control-label">
+        </td>
+        <td class="fld">
+            <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key" />
+        </td>
+        <td class="hlp">
+        </td>
+    </tr>
+    <tr class="field form-group invisible" id="key-field-container">
+        <td class="lbl control-label">
+            Comptoir secret key
+        </td>
+        <td class="fld">
+            <input class="input form-control" id="comptoir-key">
+        </td>
+        <td class="hlp">
+            <a href="#" class="fsp-popover btn btn-info" id="key_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
+                This is the secret key that ensures privacy of your data. All messages will be ciphered with this key before being sent to the server database.<br />
+                You must share this key with people you want to communicate with. <br /><br />
+
+                <b>Important.</b> This key is never sent to freespeech server. Thus, this field is not required. Nevertheless, you must provide the SHA3 hash of your key, 
+                because this will be used by the server to ensure a person can post on your comptoir (more info in <a href='#'>About</a> page).
+            ">?</a>
+        </td>
+    </tr>
     {% else %}
     <tr id="{{ el.auto_id }}-container" class="field form-group {% if el.errors %}has-error{% endif %} {% if el.label == 'SHA3 of the key' %}invisible{% endif %}">
             <td class="lbl control-label">
@@ -41,40 +82,9 @@
                 ">?</a>
             {% endif %}
             </td>
-            <div class="help-block error">{{ el.errors }}</div>
     </tr>
     {% endif %}
     {% endfor %}
-    <tr class="field form-group invisible" id="key-field-container">
-        <td class="lbl control-label">
-            Comptoir secret key
-        </td>
-        <td class="fld">
-            <input class="input form-control" id="comptoir-key">
-        </td>
-        <td class="hlp">
-            <a href="#" class="fsp-popover btn btn-info" id="key_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
-                This is the secret key that ensures privacy of your data. All messages will be ciphered with this key before being sent to the server database.<br />
-                You must share this key with people you want to communicate with. <br /><br />
-
-                <b>Important.</b> This key is never sent to freespeech server. Thus, this field is not required. Nevertheless, you must provide the SHA3 hash of your key, 
-                because this will be used by the server to ensure a person can post on your comptoir (more info in <a href='#'>About</a> page).
-            ">?</a>
-        </td>
-    </tr>
-    <tr class="field form-group invisible" id="generate-key-container">
-        <td class="lbl label control-label">
-        </td>
-        <td class="fld">
-            <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key" />
-        </td>
-        <td class="hlp">
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3" id="note" class="invisible">
-            <b>Note. </b> If you don't care about technical stuff and just want privacy, just click "Generate a key" and submit.
-        </td>
     <tr class="field form-group">
         <td class="lbl label control-label">
         </td>
@@ -103,10 +113,17 @@
     $("[name='public']").bootstrapSwitch();
     $('#public-btn').on('switchChange', function () {
         $("#public-btn").val(1 - $("#public-btn").val());
+        $("#manage-key-container").toggleClass("invisible");
+        $("#note").toggleClass("invisible");
+        createKey();
+        $("#id_key_hash-container").addClass("invisible");
+        $("#key-field-container").addClass("invisible");
+        $("#generate-key-container").addClass("invisible");
+    });
+    $("#manage-key").click(function() {
         $("#id_key_hash-container").toggleClass("invisible");
         $("#key-field-container").toggleClass("invisible");
         $("#generate-key-container").toggleClass("invisible");
-        $("#note").toggleClass("invisible");
     });
 </script>
 {% endblock %}
