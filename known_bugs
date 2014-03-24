@@ -1,7 +1,4 @@
 *** PRIORITY 0 ***
-> injection de code html/js
-        Il est possible d'insérer du code
-        => à corriger absolument !!
 
 
 *** PRIORITY 1 ***
@@ -14,15 +11,12 @@
 > retours à la ligne sur des mots looooongs
 + time line bug with multi-line messages
 > premier message qui merde
-> scroll down en arrivée de comptoir
 
 
 *** FIXED ***
 > Clear form on successful creation
 > Username on async. messages
 > first message
-> Hash verification async. fail first time
-> date sur les messages socket (Heure - 1 ...)
 > accentuation 
         L'envoi d'un message comportant
         un caractère accentué ne fonctionne pas.
@@ -34,3 +28,9 @@
 > alertes en série si mauvaise clef (non hexa par ex.) => pas d'alert ?
 > error homepage (js)
 > key undefined (creation)
+> injection de code html/js
+        Il est possible d'insérer du code
+        => à corriger absolument !!
+> scroll down en arrivée de comptoir
+> Hash verification async. fail first time
+> date sur les messages socket (Heure - 1 ...)
