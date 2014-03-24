@@ -1,4 +1,5 @@
 *** PRIORITY 0 ***
+Invert all public value in current DB during migration
 
 
 *** PRIORITY 1 ***
