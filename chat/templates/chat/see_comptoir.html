@@ -33,28 +33,20 @@
     </table>
     <input type="hidden" id="last-msg" value="{{ senti }}">
     </div>
-    
-    <form action="{% url "send" %}" method="post" id="send-form">
-        <div id="users-connected-content">
-            Online: <span id="users-connected"></span>
-        </div>
-    	{% csrf_token %}
 
+    <div id="left-panel">
+    <table id="options-container"> 
+        <tr id="cpy-url-btn-tr">
+            <td class="lbl">
+                {% if not public %}
+                    <button class="btn btn-default" id="copy-key-button">Copy comptoir key</button>
+                {% endif %}
+            </td>
+            <td class="fld">
+                <button class="btn btn-default" id="copy-url-button">Copy comptoir address</button>
+            </td>
+        </tr>
 
-        <input type="hidden" id="cid" name="cid" value="{{ id }}">
-        
-    {% if user.is_authenticated %} 
-
-        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
-    
-        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
-    
-    	<input type="submit" value="Say!" class="btn btn-default submit-button">
-    {% endif %}
-    
-    </form>
-
-    <table id="comptoir-key-container"> 
         <tr id="msg-alert-tr">
             <td class="lbl">
                 <label>Sound alert ?</label>
@@ -81,11 +73,34 @@
         </tr>
     </table>
 
+    <form action="{% url "send" %}" method="post" id="send-form">
+        <div id="users-connected-content">
+            Online: <span id="users-connected"></span>
+        </div>
+    	{% csrf_token %}
+
+
+        <input type="hidden" id="cid" name="cid" value="{{ id }}">
+        
+    {% if user.is_authenticated %} 
+
+        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
+    
+        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
+    
+    	<input type="submit" value="Say!" class="btn btn-default submit-button">
+    {% endif %}
+    
+    </form>
+    </div>
+
     {% load staticfiles %}
     
     <audio id="msgAlert">
         <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
     </audio>
+
+	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
 
     <script>
         $("[name='sound-alert']").bootstrapSwitch();
@@ -93,6 +108,35 @@
             $("#sound-alert-btn").val(1 - $("#sound-alert-btn").val());
         });
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+
+        var urlcpy = new ZeroClipboard( document.getElementById("copy-url-button"), {
+            moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
+        } );
+
+        urlcpy.on( 'dataRequested', function (client, args) {
+            client.setText(window.location.href);
+        });
+
+        urlcpy.on( "load", function(client) {
+            client.on( "complete", function(client, args) {
+                pop_alert("info", "Comptoir address copied to clipboard. Share it!");
+            } );
+        } );
+
+        var keycpy = new ZeroClipboard( document.getElementById("copy-key-button"), {
+            moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
+        } );
+
+        keycpy.on( 'dataRequested', function (client, args) {
+            client.setText($("#comptoir-key").val());
+        });
+
+        keycpy.on( "load", function(client) {
+            client.on( "complete", function(client, args) {
+                pop_alert("info", "Comptoir key copied to clipboard. Share it!");
+            } );
+        } );
+
     </script>
 
     {% if user.is_authenticated %} 

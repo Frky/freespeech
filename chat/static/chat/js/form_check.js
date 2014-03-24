@@ -27,10 +27,13 @@ var checkComptoirForm = function(form) {
         $("#comptoir-key-hash").parent().removeClass("has-error");
     }
 
+    
+
     return valid;
 }
 
 $("#comptoir-form").submit(function() {
+    console.log($("#public-btn").val());
     if (!checkComptoirForm($( this ))) {
         event.preventDefault();
     }

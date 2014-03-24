@@ -293,49 +293,58 @@ header {
     }
 }
 
-#send-form {
+#left-panel {
 
-    position: absolute;
-    bottom: 0;
-    right: 0;
-
-    #new-msg {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    
+    #send-form {
+    
+        #new-msg {
+            width: 400px;
+            height: 100px;
+            padding: 5px;
+            resize: none;
+    
+            display: block;
+    
+            margin-bottom: 30px;
+            margin-top: 30px;
+        }
+    
+        .submit-button {
+            display: block;
+            margin: 0px;
+            float: right;
+        }
+    
+    }
+    
+    table#options-container {
         width: 400px;
-        height: 100px;
-        padding: 5px;
-        resize: none;
-
-        display: block;
-
-        margin: 30px;
-    }
-
-    .submit-button {
-        display: block;
-        margin: 0px;
-        margin-right: 30px;
+        margin-top: 0px;
         float: right;
-    }
+        tr {
+            height: 50px;
+        }
+    
+        td {
+            width: 50%;
+        }
 
-    float: right;
-
-}
-
-table#comptoir-key-container {
-    width: 400px;
-    float: right;
-    margin-right: 30px;
-    margin-bottom: 20px;
-    tr {
-        height: 50px;
-    }
-
-    td.lbl {
-        line-height: 50px;
-        vertical-align: middle;
+        td.lbl {
+            line-height: 50px;
+            vertical-align: middle;
+    
+        }
+        td button {
+            width: 100%;
+        }
     }
 }
 
+    
 #my-comptoirs {
     font-size: 0.8em;
     float: right;

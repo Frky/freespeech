@@ -50,16 +50,11 @@ def comptoir_list(request):
             msg = Message.objects.all().filter(comptoir=cmpt.id)
             try:
                 lv = user.chatuser.last_visits.all().get(comptoir=cmpt)
-                print "Last visit:"
-                print lv.date
-                print lv.date.tzinfo
-                print
                 for m in [ ms for ms in msg if ms.owner != user.id]:
                     if lv.date < m.date:
                         new_msgs += 1
                     print m.date
             except ObjectDoesNotExist:
-                print "Exception"
                 new_msgs = 0
             my_comptoirs.append((cmpt, new_msgs))
             
@@ -245,7 +240,7 @@ def create_comptoir(request):
         new_comptoir = Comptoir(owner=user,
                               title=data['title'],
                               description=data['description'],
-                              public=data['public'],
+                              public= not data['public'],
                               key_hash=data['key_hash'])
 
         new_comptoir.save()
@@ -300,6 +295,7 @@ def join_comptoir(request, cid):
     context["description"] = comptoir.description
     context["id"] = comptoir.id
     context['public'] = comptoir.public
+    print comptoir.public
     context["request"] = request
 
     context["msgs"] = Message.objects.all().filter(comptoir=cid).order_by('date')
