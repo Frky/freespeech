@@ -13,7 +13,7 @@ from freespeech.settings import TIME_ZONE
 from django.utils.timezone import utc
 from django.core.exceptions import ObjectDoesNotExist
 
-from chat.models import LastVisit
+from chat.models import ChatUser, LastVisit
 
 import datetime
 
@@ -22,6 +22,10 @@ timezone_local = pytz.timezone(TIME_ZONE)
 
 @events.on_finish(channel="^")
 def leaving(request, socket, context):
+
+    if request.user.username == "AnonymousUser" or not request.user.isAuthenticated():
+        return
+
     try:
         user = context["username"]
         cid = context["cid"]
@@ -29,6 +33,9 @@ def leaving(request, socket, context):
         return
 
     comptoir = Comptoir.objects.get(id=cid)
+
+    if not hasattr(request.user, 'chatuser'):
+        ChatUser(user=request.user).save()
     try:
         lv = request.user.chatuser.last_visits.all().get(comptoir=comptoir)
     except ObjectDoesNotExist:
