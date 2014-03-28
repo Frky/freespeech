@@ -165,6 +165,11 @@ def register(request):
 
     if form.is_valid():
 
+        if len(request.POST['username']) > 20:
+            messages.warning(request, "Username must be of 20 chars max.")
+            context['form'] = form
+            return redirect("home")
+
         ### TO REMOVE AFTER BETA ###
         if "beta_key" not in request.POST.keys():
             context['form'] = form
@@ -201,8 +206,12 @@ def register(request):
         # return redirect(request.session['history'][-1])
     # request.session['redirect'])
     else:
-        messages.warning(request, "Registration failed.")
-        context['form'] = form
+        if request.POST['password1'] != request.POST['password2']:
+            messages.warning(request, "The two passwords mismatch.")
+            context['form'] = form
+        else:
+            messages.warning(request, "Registration failed for unknown reason.")
+            context['form'] = form
     
     return redirect("home")
 
