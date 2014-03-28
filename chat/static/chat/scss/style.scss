@@ -1,123 +1,112 @@
 @import "colors.scss";
 @import "fonts.scss";
 
-body {
-    height: 700px;
-    max-height: 700px;
-    position: relative;
+/* CSS for main boxes
+ - - - - - - - - - - - - - - -
+*/
 
-    color: $wetasphalt; 
+html, body {
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
 
-    a {
-        text-decoration: none;
+    color: $wetasphalt;
+}
+
+section {
+    position: absolute;
+    left: 0px;
+    right: 500px;
+    height: 100%;
+}
+
+header {
+    position: absolute;
+    right: 0px;
+    width: 500px;
+    height: 60%;
+
+    h1 {
+        display: inline-block;
+        float: right;
+
+        margin: 0 15px 0 0;
+
+        font-family: Santor;
+        font-size: 4em;
+        line-height: 100px;
+    }
+
+    blockquote {
+        display: block;
+        float:left;
+    }
+
+    nav {
+        display: inline-block;
+
+        width: 100%;
+        height: 100px;
+
+        font-size: 1em;
+
+        & > span {
+            display: inline-block;
+            line-height: 100px;
+        }
+    }
+
+    #register-form, #login-form {
+        display: block;
+        width: 100%;
+
+        .help-block {
+
+        }
+
+        .form-control {
+            float: left;
+            clear: left;
+            margin: 0 0 10px 0;
+            width: 50%;
+        }
+
+        .btn {
+            text-align: center;
+            float: right;
+            margin-right: 50px;
+            width: 30%;
+        }
+    }
+
+    #my-comptoirs {
+        font-size: 0.8em;
+    }
+}
+
+aside {
+    position: absolute;
+    right: 0px;
+    top: 60%;
+    width: 500px;
+    height: 40%;
+
+    footer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
 }
 
 a:hover {
     color: $orange;
     text-decoration: none;
-
-}
-
-}
-
-header {
-
-    position: relative;
-    z-index: 99;
-
-    #main-block {
-        width: 100%;
-        height: 100px;
-        display: block;
-    }
-
-    #left-menu {
-        display: inline-block;
-        float:left;
-        margin-top: 20px;
-        margin-left: 20px;
-
-        hr {
-            width: 150px;
-            height: 1px;
-            background-color: black;
-            margin-right: 20px;
-        }
-    }
-    
-    #main-title {
-        display: inline-block;
-        float: right;
-
-        height: 100px;
-        line-height: 100px;
-        margin-right: 30px;
-    
-        font-family: Santor;
-        font-size: 5em;
-    }
-    
-    #top-menu {
-        display: inline-block;
-        float: right; 
-    
-        height: 100px;
-        line-height: 100px;
-        margin-right: 30px;
-    
-        font-size: 1em;
-    }
-    
-    #user-content {
-        display: block;
-        float: right;
-        margin-right: 30px;
-    
-    }
-
-    #login-button:hover, #register-button:hover {
-        cursor: pointer;
-    }
-
-    #main-quote {
-        margin-right: 30px;
-        float:right;
-    }
-
-    /*
-    #login-form {
-        float: right;
-        text-align: right;
-        margin-right: 30px;
-    }
-    */
-        
-    #register-form, #login-form {
-        display: block;
-        clear: right;
-        float: right;
-        margin-right: 30px;
-
-        .help-block {
-            display: inline-block;
-            float: right;
-        }
-
-        .form-control {
-            width: 150px;
-            margin: 10px;
-            float: right;
-        }
-        
-        .btn {
-            text-align: right;
-            width: 100px;
-            margin: 10px;
-            float: right;
-        }
-    }
-
-    margin-bottom: -400px;
 
 }
 
@@ -344,14 +333,6 @@ header {
     }
 }
 
-    
-#my-comptoirs {
-    font-size: 0.8em;
-    float: right;
-    text-align: right;
-    margin-right: 30px;
-}
-
 #user-name:hover {
     cursor: pointer;
 }
@@ -366,7 +347,8 @@ header {
 }
 
 #alertBox {
-    display: inline-block;
+    position: absolute;
+    z-index: 9999;
 }
 
 
