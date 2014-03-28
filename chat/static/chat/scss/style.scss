@@ -1,6 +1,20 @@
 @import "colors.scss";
 @import "fonts.scss";
 
+@mixin transition($variable) {
+    -webkit-transition: $variable;
+       -moz-transition: $variable;
+        -ms-transition: $variable;
+            transition: $variable;
+}
+
+@mixin transform($variable) {
+    -webkit-transform: $variable;
+       -moz-transform: $variable;
+        -ms-transform: $variable;
+            transform: $variable;
+}
+
 /* CSS for main boxes
  - - - - - - - - - - - - - - -
 */
@@ -110,95 +124,89 @@ a:hover {
 
 }
 
-#home-content {
-    
-    z-index: 1;
+#plus {
+    font-size: 30em;
+    text-align: center;
+    @include transform(rotate(0deg));
 
-    position: absolute;
-    top: 10px;
-    width: 100%;
+    @include transition(0.5s font-size ease-in-out);
+    @include transition(0.5s transform ease-in-out);
 
-    #plus {
-        font-size: 30em;
-        width: 40%;
-        text-align: right;
-    
-        a {
-            color: $midnightblue;
-        }
-    
-        a:hover {
-            color: $orange;
-            cursor: pointer;
-        }
-    
-        display: inline-block;
+    a {
+        color: $midnightblue;
     }
-    
-    #comptoir-form {
 
-        text-align: center;
+    a:hover {
+        color: $orange;
+    }
 
-        margin-top: -500px;
-    
-        h3 {
-            margin-bottom: 50px;
+    &.toggle {
+        font-size: 5em;
+        @include transform(rotate(360deg));
+    }
+}
+
+#comptoir-form {
+
+    text-align: center;
+
+    h3 {
+        margin-bottom: 50px;
+    }
+
+    table#form-tab {
+
+        margin: auto;
+
+        width: 500px;
+
+        tr {
+            height: 50px;
+            padding-top: 10px;
         }
 
-        table#form-tab {
-        
-            margin: auto;
+        td.lbl {
 
-            width: 500px;
+            width: 45%;
 
-            tr {
-                height: 50px;
-                padding-top: 10px;
-            }
-        
-            td.lbl {
-                
-                width: 45%;
+            font-size: 1em;
 
-                font-size: 1em;
-    
-                text-align: right;
-                padding-right: 20px;
-                margin-left: 20px;
-                font-weight: bold;
-                
-                color: $midnightblue;
-        
-            }
-        
-            td.fld {
-                width: 45%;
-                text-align: left;
-        
-                overflow: scroll;
-                -o-text-overflow: ellipsis;
-                text-overflow: ellipsis;
-                    
-            }
-    
-            td.hlp {
-                width: 10%;
-            }
+            text-align: right;
+            padding-right: 20px;
+            margin-left: 20px;
+            font-weight: bold;
 
-            #generate-key, #manage-key {
-                width: 100%;
-                text-align: center;
-            }
-   
-            td#note {
-                padding-left: 100px;
-                text-align: justify;
-            }
+            color: $midnightblue;
 
-            #submit-comptoir-container {
-                padding-top: 50px;
-                text-align: right; 
-            }
+        }
+
+        td.fld {
+            width: 45%;
+            text-align: left;
+
+            overflow: scroll;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+
+        }
+
+        td.hlp {
+            width: 10%;
+        }
+
+        #generate-key, #manage-key {
+            width: 100%;
+            text-align: center;
+        }
+
+        td#note {
+            padding-left: 100px;
+            text-align: justify;
+        }
+
+        #submit-comptoir-container {
+            padding-top: 50px;
+            text-align: right;
         }
     }
 }

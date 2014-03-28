@@ -1,7 +1,6 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
-<div id="home-content">
     <div id="plus"><a>+</a></div>
     <form action="{% url "create_comptoir" %}" method="post" id="comptoir-form" class="hidden">
     <h3>Create a comptoir</h3>
@@ -89,7 +88,7 @@
             <td class="lbl label control-label">
             </td>
             <td class="fld" id="submit-comptoir-container">
-                <input class="btn btn-default submit-button" type="submit" id="submit-comptoir">
+                <input class="btn btn-default submit-button" type="submit" id="submit-comptoir" value="I create my first comptoir">
             </td>
             <td class="hlp">
             </td>
@@ -97,13 +96,13 @@
         </table>
         {% endif %}
     </form>
-</div>
 
 {% load staticfiles %}
 <script type="text/javascript">
     $(".fsp-popover").popover();
     $("#plus a").click(function() {
         $("#comptoir-form").toggleClass("hidden");
+        $('#plus').toggleClass("toggle");
     });
 /*    $("#id_public").click(function () {
         $("#id_key_hash-container").toggleClass("invisible");
