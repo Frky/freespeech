@@ -353,6 +353,12 @@ table#options-container {
     display: block;
     width: 600px;
     margin: 10px;
+    cursor: pointer;
+    @include transition(0.3s opacity ease);
+
+    &:hover {
+        opacity: 0.3;
+    }
 }
 
 #msg-alert-tr {
