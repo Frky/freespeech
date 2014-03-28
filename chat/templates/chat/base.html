@@ -127,10 +127,15 @@
                 </div>
             {% endif %}
 
+            {% block header_option %}
+            {% endblock %}
+
             {% endblock %}
 	    </header>
 
         <aside>
+            {% block footer_option %}
+            {% endblock %}
             <footer>
                 {% block footer %}
 		        {% endblock %}
