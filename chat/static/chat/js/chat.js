@@ -17,13 +17,6 @@ var sound_notification = function(type) {
 /* Creation of a socket instance */
 var socket = new io.Socket();
 
-function linkify(text) {  
-    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;  
-    return text.replace(urlRegex, function(url) {  
-        return '<a href="' + url + '">' + url + '</a>';  
-    })  
-}
-
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
 var addMessage = function(user, cipher, clear, msgdate) {

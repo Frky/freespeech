@@ -23,7 +23,7 @@ timezone_local = pytz.timezone(TIME_ZONE)
 @events.on_finish(channel="^")
 def leaving(request, socket, context):
 
-    if request.user.username == "AnonymousUser" or not request.user.isAuthenticated():
+    if request.user.username == "AnonymousUser" or not request.user.is_authenticated():
         return
 
     try:

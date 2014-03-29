@@ -50,6 +50,9 @@ var updateKey = function(key_storage, isInput) {
     localStorage.removeItem(key_storage);
     localStorage.setItem(key_storage, local_key);
     
+    console.log(key_storage)
+    console.log(local_key)
+
     if (local_key != "" && local_key != " ") {
         var comptoir_key_hash = CryptoJS.SHA3(local_key);
         hash_field.val(comptoir_key_hash);

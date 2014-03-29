@@ -95,7 +95,13 @@
     </div>
 
     {% load staticfiles %}
-    
+
+    {% if user.is_authenticated %}
+        {% load socketio_tags %}
+        {% socketio %}
+	    <script src="{% static 'chat/js/chat.js' %}"></script>
+    {% endif %}
+
     <audio id="msgAlert">
         <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
     </audio>
@@ -139,11 +145,4 @@
 
     </script>
 
-    {% if user.is_authenticated %} 
-        {% load socketio_tags %}
-        {% socketio %}
-	    <script src="{% static 'chat/js/chat.js' %}"></script>
-    {% endif %}
-
 {% endblock %}
-
