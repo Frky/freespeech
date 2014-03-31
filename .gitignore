@@ -4,3 +4,4 @@
 *generated/
 freespeech/settings.py
 freespeech_db.sqlite
+*.DS_Store
