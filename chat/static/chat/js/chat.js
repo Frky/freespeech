@@ -2,8 +2,8 @@
     This file manage the connection between the client and the server through web sockets.
 */
 
-var msg_alert = $("#msgAlert")[0];
-var sound_alert = $("#sound-alert-btn");
+var msg_alert;
+var sound_alert;
 var sound_notification = function(type) {
     if (sound_alert.val() == 0 || document.hasFocus()) {
         return;
@@ -204,5 +204,7 @@ socket.on('message', messaged);
 socket.connect();
 
 $("body").ready(function() {
+        msg_alert = $("#msgAlert")[0];
+        sound_alert = $("#sound-alert-btn");
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
 });
