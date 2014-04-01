@@ -7,7 +7,7 @@
 
 {% for bug in bugs %}
 
-    <p>{{ bug.url }} - {{ bug.description }}</p>
+    <p>{{ bug.reporter }}: {{ bug.url }} - {{ bug.description }}</p>
 
 {% endfor %}
 
