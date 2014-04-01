@@ -21,13 +21,18 @@ from urllib import unquote
 
 from django.forms.util import ErrorList
 
+from freespeech.settings import CONTACT_EMAIL 
+
+VERSION = "0.82"
 
 @register.filter
 def unquote_new(value):
     return unquote(value)
 
+
 context = dict()
 context['registerForm'] = RegisterForm()
+context['version'] = VERSION
 comptoir_created = False
 
 
@@ -177,14 +182,14 @@ def register(request):
 
         key = request.POST['beta_key']
         if key == "":
-            messages.warning(request, "No key specified.")
+            messages.warning(request, "No key specified. You can ask for a beta key at " + CONTACT_EMAIL + ".")
             context['form'] = form
             return redirect("home")
 
         try:
             av_key = BetaKey.objects.get(key=key)
         except Exception:
-            messages.error(request, "This key does not exists. You can ask a beta key at fdg@udtq.fr.")
+            messages.error(request, "This key does not exists. You can ask a beta key at " + CONTACT_EMAIL + ".")
             context['form'] = form
             return redirect("home")
 
@@ -192,7 +197,7 @@ def register(request):
             av_key.used = True
             av_key.save()
         else:
-            messages.info(request, "This key has already been used. You can ask for a new one at fdg@udtq.fr.")
+            messages.info(request, "This key has already been used. You can ask for a new one at " + CONTACT_EMAIL + ".")
             context['form'] = form
             return redirect("home")
 
