@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 
-from chat.models import Message, BetaKey, BugReport, ChatUser
+from chat.models import Message, BetaKey, BugReport, ChatUser, LastVisit
 from chat.forms import *
 
 from django_socketio.events import on_message
@@ -36,34 +36,6 @@ context['version'] = VERSION
 comptoir_created = False
 
 
-def comptoir_list(request):
-    
-    user = request.user
-    if not user.is_authenticated or user.username == "AnonymousUser":
-        user_id = 0
-    else:
-        user_id = user.id
-
-    my_comptoirs = list()
-   
-    comptoirs = Comptoir.objects.all()
-
-    for cmpt in comptoirs:
-        msg = Message.objects.all().filter(comptoir=cmpt.id, owner=user_id)
-        if len(msg) > 0 or cmpt.owner == user:
-            new_msgs = 0
-            msg = Message.objects.all().filter(comptoir=cmpt.id)
-            try:
-                lv = user.chatuser.last_visits.all().get(comptoir=cmpt)
-                for m in [ ms for ms in msg if ms.owner != user.id]:
-                    if lv.date < m.date:
-                        new_msgs += 1
-                    print m.date
-            except ObjectDoesNotExist:
-                new_msgs = 0
-            my_comptoirs.append((cmpt, new_msgs))
-            
-    context["comptoirs"] = my_comptoirs
 
 
 def index(request):
@@ -71,8 +43,6 @@ def index(request):
 	Home view
 
     """
-
-    comptoir_list(request)
 
     global comptoir_created
 
@@ -283,9 +253,6 @@ def check_hash(request):
 
 def join_comptoir(request, cid):
 
-    if "comtpoirs" not in context.keys():
-        comptoir_list(request)
-
     template_name = "chat/see_comptoir.html"
 
     comptoir = Comptoir.objects.get(id=cid)
@@ -299,17 +266,10 @@ def join_comptoir(request, cid):
     if comptoir.public:
         request.session[cid] = True
     
-    if request.method == "POST":
-        if request.POST['type'] == "password":
-            if request.POST['password'] == comptoir.password:
-                request.session[cid] = True
-                return redirect("join_comptoir", cid)
-
     context["title"] = comptoir.title
     context["description"] = comptoir.description
     context["id"] = comptoir.id
     context['public'] = comptoir.public
-    print comptoir.public
     context["request"] = request
 
     context["msgs"] = Message.objects.all().filter(comptoir=cid).order_by('date')
@@ -318,6 +278,18 @@ def join_comptoir(request, cid):
     else:
         context["senti"] = 0
     
+    user = request.user
+    if user.is_authenticated:
+        try:
+            lv = user.chatuser.last_visits.all().get(comptoir=cid).date
+            print "You're back! Last visit: " + str(lv.date)
+        except Exception:
+            lv = LastVisit()
+            lv.comptoir = comptoir
+            lv.save()
+            user.chatuser.last_visits.add(lv)
+            print "Hello, stranger."
+            
     return render(request, template_name, context)
 
 

@@ -63,7 +63,7 @@ def message(request, socket, context, message):
     action = message["action"]
 
     if action == "join": # and comptoir.key_hash == message["hash"]:
-        if user.username == "AnonymousUser":
+        if not user.is_authenticated or user.username == "AnonymousUser":
             return
         context["username"] = user.username
         context["cid"] = message["cid"]
@@ -76,8 +76,6 @@ def message(request, socket, context, message):
 
     elif action == "post":
         if (comptoir.key_hash != message["hash"]):
-            print comptoir.key_hash
-            print message["hash"]
             socket.send({"type": "error", "error_msg": "Your message was rejected because your key is not valid."})
     
         else:

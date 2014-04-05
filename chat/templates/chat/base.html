@@ -119,7 +119,7 @@
 
             <div class="hidden" id="my-comptoirs">
                 <p>Comptoirs I have joined</p>
-                {% for c,n in comptoirs %}
+                {% for c,n in user.comptoirs %}
                 <p>
                     {{ c.title }} 
                     <a href="{% url "join_comptoir" c.id %}" 
