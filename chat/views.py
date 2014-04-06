@@ -23,7 +23,7 @@ from django.forms.util import ErrorList
 
 from freespeech.settings import CONTACT_EMAIL 
 
-VERSION = "0.82"
+VERSION = "0.82.1"
 
 @register.filter
 def unquote_new(value):
