@@ -9,8 +9,8 @@ class ComptoirListRequest(object):
     def _comptoir_list(self, request):
         
         user = request.user
-        if not user.is_authenticated or user.username == "AnonymousUser":
-            user_id = 0
+        if not user.is_authenticated() or user.is_anonymous():
+            return list()
         else:
             user_id = user.id
     
