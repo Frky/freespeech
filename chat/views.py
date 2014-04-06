@@ -229,6 +229,11 @@ def create_comptoir(request):
 
         new_comptoir.save()
 
+        lv = LastVisit(comptoir=new_comptoir)
+        lv.save()
+        request.user.chatuser.last_visits.add(lv)
+        request.user.comptoirs.append((new_comptoir, 0))
+
         messages.success(request, "The comptoir has been created successfully. You can access it by clicking on your nickname.")
 
         # Global variable set to True to distinguish between form with error
