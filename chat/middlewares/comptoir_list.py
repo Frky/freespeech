@@ -22,10 +22,8 @@ class ComptoirListRequest(object):
             cmpt = lv.comptoir
             date = lv.date
             new_msgs = 0
-            msg = Message.objects.all().filter(comptoir=cmpt.id)
-            for m in [ ms for ms in msg if ms.owner != user.id]:
-                if lv.date < m.date:
-                    new_msgs += 1
+            msg = Message.objects.exclude(date__lt=lv.date).filter(comptoir=cmpt.id)
+            new_msgs = len([m for m in msg if m.owner != user.id])
             my_comptoirs.append((cmpt, new_msgs))
     
         return my_comptoirs
