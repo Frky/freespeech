@@ -44,12 +44,14 @@ def leaving(request, socket, context):
             lv = LastVisit(comptoir=comptoir)
             lv.save()
             request.user.chatuser.last_visits.add(lv)
+            request.user.chatuser.last_visits.save()
         else:
             lv = lv[0]
     except ObjectDoesNotExist:
         lv = LastVisit(comptoir=comptoir)
         lv.save()
         request.user.chatuser.last_visits.add(lv)
+        request.user.chatuser.last_visits.save()
 
     lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
     lv.save()

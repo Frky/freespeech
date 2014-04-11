@@ -297,7 +297,7 @@ def join_comptoir(request, cid):
             lv.comptoir = comptoir
             lv.save()
             user.chatuser.last_visits.add(lv)
-            print "Hello, stranger."
+            messages.info(request, "Hello, stranger.")
             
     return render(request, template_name, context)
 
