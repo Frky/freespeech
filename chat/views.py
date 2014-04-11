@@ -290,9 +290,9 @@ def join_comptoir(request, cid):
     user = request.user
     if user.is_authenticated:
         try:
-            lv = user.chatuser.last_visits.all().get(comptoir=cid).date
-            messages.info(request, "You're back! Last visit: " + str(lv.date))
-        except Exception:
+            lv = user.chatuser.last_visits.get(comptoir=comptoir).date
+            messages.info(request, "You're back! Last visit: " + str(lv.strftime("%b. %e, %Y, %l:%M")))
+        except ObjectDoesNotExist:
             lv = LastVisit()
             lv.comptoir = comptoir
             lv.save()

@@ -37,7 +37,15 @@ def leaving(request, socket, context):
     if not hasattr(request.user, 'chatuser'):
         ChatUser(user=request.user).save()
     try:
-        lv = request.user.chatuser.last_visits.all().get(comptoir=comptoir)
+        lv = request.user.chatuser.last_visits.filter(comptoir=comptoir)
+        if len(lv) > 1:
+            for extra_lv in request.user.chatuser.last_visits.get(comptoir=comptoir):
+                extra_lv.delete()
+            lv = LastVisit(comptoir=comptoir)
+            lv.save()
+            request.user.chatuser.last_visits.add(lv)
+        else:
+            lv = lv[0]
     except ObjectDoesNotExist:
         lv = LastVisit(comptoir=comptoir)
         lv.save()
