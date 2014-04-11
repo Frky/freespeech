@@ -23,7 +23,7 @@ from django.forms.util import ErrorList
 
 from freespeech.settings import CONTACT_EMAIL 
 
-VERSION = "0.82.1"
+VERSION = "0.83"
 
 @register.filter
 def unquote_new(value):
@@ -291,7 +291,6 @@ def join_comptoir(request, cid):
     if user.is_authenticated:
         try:
             lv = user.chatuser.last_visits.get(comptoir=comptoir).date
-            messages.info(request, "You're back! Last visit: " + str(lv.strftime("%b. %e, %Y, %l:%M")))
         except ObjectDoesNotExist:
             lv = LastVisit()
             lv.comptoir = comptoir
