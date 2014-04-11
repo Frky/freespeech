@@ -277,8 +277,10 @@ def join_comptoir(request, cid):
     context['public'] = comptoir.public
     context["request"] = request
 
-    msgs = Message.objects.all().filter(comptoir=cid).order_by('date')
-    context["msgs"] = msgs[max(0, len(msgs)-250):] 
+#    last_msg = Message.objects.filter(comptoir=cid).latest('date')
+    count = Message.objects.filter(comptoir=comptoir).count()
+    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
+    context["msgs"] = msgs 
 
     if len(context["msgs"]) > 0:
         context["senti"] = context["msgs"][len(context["msgs"])-1].id
@@ -289,7 +291,7 @@ def join_comptoir(request, cid):
     if user.is_authenticated:
         try:
             lv = user.chatuser.last_visits.all().get(comptoir=cid).date
-            print "You're back! Last visit: " + str(lv.date)
+            messages.info(request, "You're back! Last visit: " + str(lv.date))
         except Exception:
             lv = LastVisit()
             lv.comptoir = comptoir

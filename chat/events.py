@@ -20,7 +20,7 @@ import datetime
 connected_users = dict()
 timezone_local = pytz.timezone(TIME_ZONE)
 
-@events.on_finish(channel="^")
+@events.on_disconnect(channel="^")
 def leaving(request, socket, context):
 
     if request.user.username == "AnonymousUser" or not request.user.is_authenticated():
