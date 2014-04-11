@@ -23,35 +23,32 @@ timezone_local = pytz.timezone(TIME_ZONE)
 @events.on_disconnect(channel="^")
 def leaving(request, socket, context):
 
-    if request.user.username == "AnonymousUser" or not request.user.is_authenticated():
-        return
-
     try:
-        user = context["username"]
+        user = User.objects.get(context["username"])
         cid = context["cid"]
     except KeyError:
         return
 
     comptoir = Comptoir.objects.get(id=cid)
 
-    if not hasattr(request.user, 'chatuser'):
-        ChatUser(user=request.user).save()
+    if not hasattr(user, 'chatuser'):
+        ChatUser(user=user).save()
     try:
-        lv = request.user.chatuser.last_visits.filter(comptoir=comptoir)
+        lv = user.chatuser.last_visits.filter(comptoir=comptoir)
         if len(lv) > 1:
-            for extra_lv in request.user.chatuser.last_visits.get(comptoir=comptoir):
+            for extra_lv in user.chatuser.last_visits.get(comptoir=comptoir):
                 extra_lv.delete()
             lv = LastVisit(comptoir=comptoir)
             lv.save()
-            request.user.chatuser.last_visits.add(lv)
-            request.user.chatuser.last_visits.save()
+            user.chatuser.last_visits.add(lv)
+            user.chatuser.last_visits.save()
         else:
             lv = lv[0]
     except ObjectDoesNotExist:
         lv = LastVisit(comptoir=comptoir)
         lv.save()
-        request.user.chatuser.last_visits.add(lv)
-        request.user.chatuser.last_visits.save()
+        user.chatuser.last_visits.add(lv)
+        user.chatuser.last_visits.save()
 
     lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
     lv.save()
