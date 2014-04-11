@@ -24,7 +24,7 @@ timezone_local = pytz.timezone(TIME_ZONE)
 def leaving(request, socket, context):
 
     try:
-        user = User.objects.get(context["username"])
+        user = User.objects.get(username=context["username"])
         cid = context["cid"]
     except KeyError:
         return
