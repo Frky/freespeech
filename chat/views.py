@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -260,7 +260,7 @@ def join_comptoir(request, cid):
 
     template_name = "chat/see_comptoir.html"
 
-    comptoir = Comptoir.objects.get(id=cid)
+    comptoir = get_object_or_404(Comptoir, id=cid)
         
     if comptoir is None:
         return redirect("home")
@@ -288,7 +288,7 @@ def join_comptoir(request, cid):
         context["senti"] = 0
     
     user = request.user
-    if user.is_authenticated:
+    if not user.is_anonymous() and user.is_authenticated():
         try:
             lv = user.chatuser.last_visits.get(comptoir=comptoir).date
         except ObjectDoesNotExist:
