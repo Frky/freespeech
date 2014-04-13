@@ -61,7 +61,7 @@ def leaving(request, socket, context):
     lv.save()
     
     try:
-        connected_users[cid].remove(user)
+        connected_users[cid] = filter(lambda a: a[0] != user.username, connected_users[cid])
     except ValueError:
         return
     socket.send_and_broadcast_channel({"type": "users", "users_list": [c[0] for c in connected_users[cid]]}, channel=cid)
@@ -84,7 +84,7 @@ def message(request, socket, context, message):
         cid = context["cid"]
         if cid not in connected_users:
             connected_users[cid] = list()
-        if user.username not in connected_users[cid]:
+        if user.username not in [u[0] for u in connected_users[cid]]:
             connected_users[cid].append((user.username, socket))
         # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
         socket.send_and_broadcast_channel({"type": "users", "users_list": [u[0] for u in connected_users[cid]]}, channel=message["cid"])
