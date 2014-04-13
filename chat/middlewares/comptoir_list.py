@@ -6,10 +6,10 @@ from chat.models import Comptoir, ChatUser, Message, LastVisit
 
 class ComptoirListRequest(object):
     
-    def _comptoir_list(self, request):
+    @classmethod
+    def _comptoir_list(cls, user):
         
-        user = request.user
-        if not user.is_authenticated() or user.is_anonymous():
+        if (not user.is_authenticated() or user.is_anonymous()):
             return list()
         else:
             user_id = user.id
@@ -30,7 +30,7 @@ class ComptoirListRequest(object):
 
 
     def process_request(self, request):
-        request.user.comptoirs = self._comptoir_list(request)
+        request.user.comptoirs = ComptoirListRequest._comptoir_list(request.user)
         return None
 
 

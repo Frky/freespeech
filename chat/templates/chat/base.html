@@ -120,7 +120,7 @@
             <div class="hidden" id="my-comptoirs">
                 <p>Comptoirs I have joined</p>
                 {% for c,n in user.comptoirs %}
-                <p>
+                <p id="my-{{ c.id }}">
                     {{ c.title }} 
                     <a href="{% url "join_comptoir" c.id %}" 
                         {% if c.last_message.owner != None %} 

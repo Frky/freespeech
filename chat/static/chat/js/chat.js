@@ -172,6 +172,17 @@ $('#new-msg').keydown(function(e){
     }
 });
 
+
+var update_badge = function(cid, user, date) {
+    if ($(".badge", "#my-" + cid).length == 0) {
+        $("#my-" + cid).append("<span class=\"badge active\">1</span>");
+    } else {
+        var val = parseInt($(".badge", "#my-" + cid).text());
+        $(".badge", "#my-" + cid).text(val + 1);
+    }
+    $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
+}
+
 /* Handler for new data received through the socket */
 var messaged = function(data) {
     /* If the data is a new message, we add it to the chatbox */
@@ -181,6 +192,8 @@ var messaged = function(data) {
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
+    } else if (data.type == "joined") {
+        pop_alert("info", "New connection: " + data.user + " cmptrs: " + data.cmptrs);
     } else if (data.type == "users") {
         online = "";
         for (var i = 0; i < data.users_list.length; i++) {
@@ -192,13 +205,19 @@ var messaged = function(data) {
             online += data.users_list[i];
         }
         $("#users-connected").text(online);
+    } else if (data.type == "update-badge") {
+        update_badge(data.cid, data.user, data.msgdate);
     }
+}
 
+var closed = function() {
+    pop_alert("danger", "Connection closed !");
 }
 
 /* Mapping the two handlers */
 socket.on('connect', connected);
 socket.on('message', messaged);
+socket.on('disconnect', closed);
 
 /* Connect the socket to the server */
 socket.connect();

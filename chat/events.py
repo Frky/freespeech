@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django_socketio import events
 
 from chat.models import Message, Comptoir
+from chat.middlewares.comptoir_list import ComptoirListRequest
 
 import pytz
 
@@ -19,6 +20,12 @@ import datetime
 
 connected_users = dict()
 timezone_local = pytz.timezone(TIME_ZONE)
+
+def get_all_users():
+    all_users = list()
+    for cuser in connected_users.values():
+        all_users += cuser
+    return list(set(all_users))
 
 @events.on_disconnect(channel="^")
 def leaving(request, socket, context):
@@ -57,7 +64,7 @@ def leaving(request, socket, context):
         connected_users[cid].remove(user)
     except ValueError:
         return
-    socket.send_and_broadcast_channel({"type": "users", "users_list": connected_users[cid]}, channel=cid)
+    socket.send_and_broadcast_channel({"type": "users", "users_list": [c[0] for c in connected_users[cid]]}, channel=cid)
 
 
 @events.on_message(channel="^")
@@ -78,8 +85,12 @@ def message(request, socket, context, message):
         if cid not in connected_users:
             connected_users[cid] = list()
         if user.username not in connected_users[cid]:
-            connected_users[cid].append(user.username)
-        socket.send_and_broadcast_channel({"type": "users", "users_list": connected_users[cid]}, channel=cid)
+            connected_users[cid].append((user.username, socket))
+        # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
+        socket.send_and_broadcast_channel({"type": "users", "users_list": [u[0] for u in connected_users[cid]]}, channel=message["cid"])
+
+        user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
+
 
     elif action == "post":
         if (comptoir.key_hash != message["hash"]):
@@ -95,4 +106,9 @@ def message(request, socket, context, message):
             msg_local_date = msg.date.astimezone(timezone_local)
     
             socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg_local_date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg_local_date.strftime("%p") == "PM" else "a.m.")}, channel=message["cid"])
+
+            for other_user in get_all_users():
+                other_user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(User.objects.get(username=other_user[0]))]
+                if comptoir in other_user_cmptrs and other_user[0] != user.username:
+                    other_user[1].send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": msg_local_date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg_local_date.strftime("%p") == "PM" else "a.m.")})
 

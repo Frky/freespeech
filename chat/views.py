@@ -23,7 +23,11 @@ from django.forms.util import ErrorList
 
 from freespeech.settings import CONTACT_EMAIL 
 
-VERSION = "0.83"
+import datetime
+from freespeech.settings import TIME_ZONE
+from django.utils.timezone import utc
+
+VERSION = "0.85"
 
 @register.filter
 def unquote_new(value):
@@ -34,7 +38,6 @@ context = dict()
 context['registerForm'] = RegisterForm()
 context['version'] = VERSION
 comptoir_created = False
-
 
 
 
@@ -290,7 +293,9 @@ def join_comptoir(request, cid):
     user = request.user
     if not user.is_anonymous() and user.is_authenticated():
         try:
-            lv = user.chatuser.last_visits.get(comptoir=comptoir).date
+            lv = user.chatuser.last_visits.get(comptoir=comptoir)
+            lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
+            lv.save()
         except ObjectDoesNotExist:
             lv = LastVisit()
             lv.comptoir = comptoir
@@ -298,6 +303,13 @@ def join_comptoir(request, cid):
             user.chatuser.last_visits.add(lv)
             messages.info(request, "Hello, stranger.")
             
+    for c in request.user.comptoirs:
+        if c[0] == comptoir:
+            new_c = (c[0], 0)
+            request.user.comptoirs.remove(c)
+            request.user.comptoirs.append(new_c)
+            break
+
     return render(request, template_name, context)
 
 
