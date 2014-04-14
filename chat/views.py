@@ -27,7 +27,7 @@ import datetime
 from freespeech.settings import TIME_ZONE
 from django.utils.timezone import utc
 
-VERSION = "0.85"
+VERSION = "0.85.1"
 
 @register.filter
 def unquote_new(value):
