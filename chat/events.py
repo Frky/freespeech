@@ -60,11 +60,10 @@ def leaving(request, socket, context):
     lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
     lv.save()
     
-    try:
-        connected_users[cid] = filter(lambda a: a[0] != user.username, connected_users[cid])
-    except ValueError:
-        return
-    socket.send_and_broadcast_channel({"type": "users", "users_list": [c[0] for c in connected_users[cid]]}, channel=cid)
+    connected_users[cid] = filter(lambda a: a[1] != socket, connected_users[cid])
+
+    socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([c[0] for c in connected_users[cid]]))}, channel=cid)
+
 
 
 @events.on_message(channel="^")
@@ -84,10 +83,10 @@ def message(request, socket, context, message):
         cid = context["cid"]
         if cid not in connected_users:
             connected_users[cid] = list()
-        if user.username not in [u[0] for u in connected_users[cid]]:
-            connected_users[cid].append((user.username, socket))
+            
+        connected_users[cid].append((user.username, socket))
         # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
-        socket.send_and_broadcast_channel({"type": "users", "users_list": [u[0] for u in connected_users[cid]]}, channel=message["cid"])
+        socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([u[0] for u in connected_users[cid]]))}, channel=message["cid"])
 
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
 
@@ -109,6 +108,6 @@ def message(request, socket, context, message):
 
             for other_user in get_all_users():
                 other_user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(User.objects.get(username=other_user[0]))]
-                if comptoir in other_user_cmptrs and other_user[0] != user.username:
+                if comptoir in other_user_cmptrs and other_user[0] != user.username and other_user not in connected_users[message["cid"]]:
                     other_user[1].send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": msg_local_date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg_local_date.strftime("%p") == "PM" else "a.m.")})
 
