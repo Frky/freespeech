@@ -237,6 +237,14 @@ header {
 
     overflow: scroll;
 
+    text-align: center;
+
+    #loader {
+        width: 12px; 
+        margin: auto;
+        margin-bottom: 10px;
+    }
+
     table {
         width: 100%;
         tr {

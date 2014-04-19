@@ -2,12 +2,16 @@
 
 {% block content %}
 
+    {% load staticfiles %}
+
 <!--
     <h1>{{ title }}</h1>
     <h3>{{ description }}</h3>
     -->
     <div id="chatbox">
     
+    <input type="hidden" id="top_senti" value={{ msgs.first.id }}>
+    <img src="{% static 'chat/images/loader_ball.gif' %}" alt="Loading ..." class="hidden" id="loader" />
     <table>
         <tbody>
         {% for msg in msgs %}
@@ -94,12 +98,11 @@
     </form>
     </div>
 
-    {% load staticfiles %}
-
     {% if user.is_authenticated %}
         {% load socketio_tags %}
         {% socketio %}
 	    <script src="{% static 'chat/js/chat.js' %}"></script>
+	    <script src="{% static 'chat/js/scroll.js' %}"></script>
     {% endif %}
 
     <audio id="msgAlert">
