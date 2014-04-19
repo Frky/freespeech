@@ -50,9 +50,6 @@ var updateKey = function(key_storage, isInput) {
     localStorage.removeItem(key_storage);
     localStorage.setItem(key_storage, local_key);
     
-    console.log(key_storage)
-    console.log(local_key)
-
     if (local_key != "" && local_key != " ") {
         var comptoir_key_hash = CryptoJS.SHA3(local_key);
         hash_field.val(comptoir_key_hash);
@@ -112,29 +109,6 @@ $("#generate-key").click(function() {
 });
 
 /* CHECKING HASH IN AJAX */
-
-// Constructor of an XMLHttpRequest object
-var getXMLHttpRequest = function() {
-    var xhr = null;
-     
-    if (window.XMLHttpRequest || window.ActiveXObject) {
-        if (window.ActiveXObject) {
-            try {
-                xhr = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch(e) {
-                xhr = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-        } else {
-            xhr = new XMLHttpRequest(); 
-        }
-    } else {
-        // XMLHttpRequest not supported by the browser
-        return null;
-    }
-     
-    return xhr;
-}
-
 
 var checkHash = function(callback, hash, cid) {
 
