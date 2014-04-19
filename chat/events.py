@@ -15,6 +15,7 @@ from django.utils.timezone import utc
 from django.core.exceptions import ObjectDoesNotExist
 
 from chat.models import ChatUser, LastVisit
+from chat.utils import date_to_tooltip
 
 import datetime
 
@@ -104,10 +105,10 @@ def message(request, socket, context, message):
             # At this point the date of the message is in utc format, so we need to correct it 
             msg_local_date = msg.date.astimezone(timezone_local)
     
-            socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": msg_local_date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg_local_date.strftime("%p") == "PM" else "a.m.")}, channel=message["cid"])
+            socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)}, channel=message["cid"])
 
             for other_user in get_all_users():
                 other_user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(User.objects.get(username=other_user[0]))]
                 if comptoir in other_user_cmptrs and other_user[0] != user.username and other_user not in connected_users[message["cid"]]:
-                    other_user[1].send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": msg_local_date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if msg_local_date.strftime("%p") == "PM" else "a.m.")})
+                    other_user[1].send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
 
