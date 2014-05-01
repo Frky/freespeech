@@ -188,7 +188,7 @@ var messaged = function(data) {
     /* If the data is a new message, we add it to the chatbox */
     if (data.type == "new-message") {
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate);
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#chatbox").parent('section').scrollTop($("#chatbox")[0].scrollHeight);
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
