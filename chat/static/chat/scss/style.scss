@@ -41,7 +41,7 @@ header {
     position: absolute;
     right: 0px;
     width: 500px;
-    height: 50%;
+    height: 45%;
 
     h1 {
         display: inline-block;
@@ -98,25 +98,21 @@ header {
 
     #my-comptoirs {
         font-size: 0.8em;
-        height: 53%;
-        padding: 5% 0;
+        height: 180px;
 
-        & > .list {
+        & .list {
             overflow-y: scroll;
             height: 100%;
 
             p {
                 display: inline-block;
-                width: 29%;
-                margin-right: 2%;
-                margin-left: 2%;
+                width: 31%;
+                right: 2%;
                 word-break: break-word;
-                vertical-align: middle;
             }
         }
 
         & > p:first-child {
-            border-bottom: 1px solid #000000;
             margin-right: 10px;
         }
     }
@@ -125,9 +121,9 @@ header {
 aside {
     position: absolute;
     right: 0px;
-    top: 50%;
+    top: 45%;
     width: 500px;
-    height: 50%;
+    height: 55%;
 
     footer {
         text-align: right;

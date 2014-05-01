@@ -23,7 +23,8 @@
 	    <script src="{% static 'chat/js/entropy.js' %}"></script>
 	    <script src="{% static 'chat/js/md5.js' %}"></script>
 	    <script src="{% static 'chat/js/linkify.js' %}"></script>
-		
+	    <script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
+
 	{% endblock %}
 	</head>
 
@@ -165,6 +166,18 @@
             });
             $("#user-name").click(function() {
                 $("#my-comptoirs").toggleClass("hidden");
+            });
+
+            $('#my-comptoirs .list').slimScroll({
+                width: 'auto',
+                height: '160px',
+                position: 'right',
+                size: '4px',
+                color: '#428bca',
+                railColor: '#222',
+                railOpacity: 0.1,
+                wheelStep: 8,
+                railVisible: true
             });
         </script>
         {% block additionnal_script %}
