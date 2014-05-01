@@ -225,5 +225,5 @@ socket.connect();
 $("body").ready(function() {
         msg_alert = $("#msgAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#chatbox").parent('section').scrollTop($("#chatbox")[0].scrollHeight);
 });
