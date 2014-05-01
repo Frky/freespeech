@@ -1,41 +1,10 @@
 {% extends "chat/base.html" %}
 
-{% block content %}
+{% block header_option %}
+{% endblock %}
 
-<!--
-    <h1>{{ title }}</h1>
-    <h3>{{ description }}</h3>
-    -->
-    <div id="chatbox">
-    
-    <table>
-        <tbody>
-        {% for msg in msgs %}
-            {% ifchanged %}
-                <tr class="author">
-                    <td>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
-                    <td class="nopoint"></td>
-                    <td>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
-                </tr>
-            {% endifchanged %}
-            <tr>
-                {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
-                <td {% if msg.owner != user %}class="message"{% endif %}><span class="clear"></span><span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span></td>
-                {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
-                <td class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
-                {% else %}
-                <td class="nopoint"></td>
-                {% endifchanged %}
-                <td {% if msg.owner == user %}class="message"{% endif %}><span class="clear"></span><span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span></td>        
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <input type="hidden" id="last-msg" value="{{ senti }}">
-    </div>
-
-    <div id="left-panel">
-    <table id="options-container"> 
+{% block footer_option %}
+    <table id="options-container">
         <tr id="cpy-url-btn-tr">
             <td class="lbl">
                 {% if not public %}
@@ -74,26 +43,64 @@
     </table>
 
     <form action="{% url "send" %}" method="post" id="send-form">
-        <div id="users-connected-content">
+    <div id="users-connected-content">
             Online: <span id="users-connected"></span>
         </div>
-    	{% csrf_token %}
+        {% csrf_token %}
 
 
         <input type="hidden" id="cid" name="cid" value="{{ id }}">
-        
-    {% if user.is_authenticated %} 
+
+    {% if user.is_authenticated %}
 
         <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
-    
+
         <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
-    
-    	<input type="submit" value="Say!" class="btn btn-default submit-button">
+
+        <div class="validation">
+            <input type="submit" value="Say!" class="btn btn-default submit-button">
+        </div>
     {% endif %}
-    
+
     </form>
+{% endblock %}
+
+{% block content %}
+
+<!--
+    <h1>{{ title }}</h1>
+    <h3>{{ description }}</h3>
+    -->
+    <div id="chatbox">
+        <table>
+            <tbody>
+            {% for msg in msgs %}
+                {% ifchanged %}
+                    <tr class="author">
+                        <td>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
+                        <td class="nopoint"></td>
+                        <td>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
+                    </tr>
+                {% endifchanged %}
+                <tr>
+                    {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
+                    <td {% if msg.owner != user %}class="message"{% endif %}><span class="clear"></span><span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span></td>
+                    {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
+                    <td class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
+                    {% else %}
+                    <td class="nopoint"></td>
+                    {% endifchanged %}
+                    <td {% if msg.owner == user %}class="message"{% endif %}><span class="clear"></span><span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="hidden" id="last-msg" value="{{ senti }}">
     </div>
 
+{% endblock %}
+
+{% block additionnal_script %}
     {% load staticfiles %}
 
     {% if user.is_authenticated %}
@@ -143,6 +150,18 @@
             } );
         } );
 
+
+        $('#chatbox').slimScroll({
+            height: 'auto',
+            position: 'right',
+            size: '1px',
+            distance: '20px',
+            color: '#428bca',
+            railColor: '#222',
+            railOpacity: 0.1,
+            wheelStep: 8,
+            railVisible: true,
+        });
     </script>
 
 {% endblock %}

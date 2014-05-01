@@ -1,18 +1,19 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
-<section id="page-content">
-<h2>Report a bug or a suggestion</h2>
-<form class="formContainer" id="reportForm" method="post" action="{% url "report" %}">
-    {% csrf_token %}
-    {% for field in reportForm %}
-    {{ field.label }} {{ field }}
-                <div class="help-block">
-                    {{ field.errors.as_text }}
-                </div>
-    {% endfor %}
-    <div id="submitButton">
-        <input type="submit" class="btn btn-default" value="Send">
-    </div>
-</form>
+<div id="page-content">
+    <h2>Report a bug or a suggestion</h2>
+    <form class="formContainer" id="reportForm" method="post" action="{% url "report" %}">
+        {% csrf_token %}
+        {% for field in reportForm %}
+        {{ field.label }} {{ field }}
+                    <div class="help-block">
+                        {{ field.errors.as_text }}
+                    </div>
+        {% endfor %}
+        <div id="submitButton">
+            <input type="submit" class="btn btn-default" value="Send">
+        </div>
+    </form>
+</div>
 {% endblock %}
