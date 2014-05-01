@@ -1,6 +1,9 @@
 {% extends "chat/base.html" %}
 
 {% block header_option %}
+{% endblock %}
+
+{% block footer_option %}
     <table id="options-container">
         <tr id="cpy-url-btn-tr">
             <td class="lbl">
@@ -38,9 +41,7 @@
             </td>
         </tr>
     </table>
-{% endblock %}
 
-{% block footer_option %}
     <form action="{% url "send" %}" method="post" id="send-form">
     <div id="users-connected-content">
             Online: <span id="users-connected"></span>
@@ -56,7 +57,9 @@
 
         <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
 
-        <input type="submit" value="Say!" class="btn btn-default submit-button">
+        <div class="validation">
+            <input type="submit" value="Say!" class="btn btn-default submit-button">
+        </div>
     {% endif %}
 
     </form>

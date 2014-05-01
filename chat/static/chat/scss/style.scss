@@ -41,8 +41,7 @@ header {
     position: absolute;
     right: 0px;
     width: 500px;
-    height: 60%;
-    min-height: 460px;
+    height: 50%;
 
     h1 {
         display: inline-block;
@@ -105,14 +104,16 @@ header {
 aside {
     position: absolute;
     right: 0px;
-    top: 60%;
+    top: 50%;
     width: 500px;
-    height: 40%;
+    height: 50%;
 
     footer {
+        text-align: right;
+        width: 94%;
+        margin: auto 3%;
         position: absolute;
-        bottom: 0;
-        right: 0;
+        bottom: 0px;
     }
 }
 
@@ -229,7 +230,8 @@ a:hover {
 #chatbox {
 
     table {
-        width: 100%;
+        width: 94%;
+        margin: auto 3%;
         tr {
             &.author {
                 font-weight: bold;
@@ -287,30 +289,30 @@ a:hover {
 #send-form {
     width: 100%;
 
+    div {
+        margin: auto 3%;
+        width: 94%;
+    }
+
     #new-msg {
-        width: 70%;
+        width: 94%;
         height: 150px;
         padding: 5px;
         resize: none;
 
         display: block;
 
-        margin: 30px 15%;
+        margin: 30px 3%;
     }
 
-    .submit-button {
-        display: block;
-        margin: 0px 15% 0 0;
-        float: right;
+    .validation {
+        text-align: right;
     }
-
 }
 
 table#options-container {
-    position: absolute;
-    width: 70%;
-    bottom: 0;
-    left: 15%;
+    width: 94%%;
+    margin: auto 3%;
 
     tr {
         height: 50px;

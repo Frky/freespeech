@@ -140,17 +140,11 @@
                 {% block footer %}
 		        {% endblock %}
                 <div id="left-menu">
-                    <table>
-                    <tr>
-                        <td>
-                            <a href="{% url "about" %}">About</a>
-                            •
-                            <a href="{% url "report" %}">Report a bug</a>
-                            •
-                            Version beta {{ version }}
-                        </td>
-                    </tr>
-                    </table>
+                    <a href="{% url "about" %}">About</a>
+                    •
+                    <a href="{% url "report" %}">Report a bug</a>
+                    •
+                    Version beta {{ version }}
                 </div>
             </footer>
         </aside>
