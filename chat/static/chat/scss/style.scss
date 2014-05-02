@@ -114,6 +114,7 @@ header {
 
         & > p:first-child {
             margin-right: 10px;
+            font-weight: bold;
         }
     }
 }
@@ -142,7 +143,6 @@ a {
 a:hover {
     color: $orange;
     text-decoration: none;
-
 }
 
 #plus {
@@ -364,6 +364,10 @@ table#options-container {
     td button {
         width: 100%;
     }
+}
+
+#user-name {
+    color: #428bca;
 }
 
 #user-name:hover {
