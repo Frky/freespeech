@@ -1,15 +1,142 @@
 @import "colors.scss";
 @import "fonts.scss";
 
-body {
-    height: 700px;
-    max-height: 700px;
-    position: relative;
+@mixin transition($variable) {
+    -webkit-transition: $variable;
+       -moz-transition: $variable;
+        -ms-transition: $variable;
+            transition: $variable;
+}
 
-    color: $wetasphalt; 
+@mixin transform($variable) {
+    -webkit-transform: $variable;
+       -moz-transform: $variable;
+        -ms-transform: $variable;
+            transform: $variable;
+}
 
-    a {
-        text-decoration: none;
+/* CSS for main boxes
+ - - - - - - - - - - - - - - -
+*/
+
+html, body {
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+
+    color: $wetasphalt;
+}
+
+section {
+    position: absolute;
+    left: 0px;
+    right: 500px;
+    height: 100%;
+
+    overflow-y: scroll;
+}
+
+header {
+    position: absolute;
+    right: 0px;
+    width: 500px;
+    height: 45%;
+
+    h1 {
+        display: inline-block;
+        float: right;
+
+        margin: 0 15px 0 0;
+
+        font-family: Santor;
+        font-size: 4em;
+        line-height: 100px;
+    }
+
+    blockquote {
+        display: block;
+        height: 17%;
+    }
+
+    nav {
+        display: inline-block;
+
+        width: 100%;
+        height: 20%;
+
+        font-size: 1em;
+
+        & > span {
+            display: inline-block;
+            line-height: 100px;
+        }
+    }
+
+    #register-form, #login-form {
+        display: block;
+        width: 100%;
+
+        .help-block {
+
+        }
+
+        .form-control {
+            float: left;
+            clear: left;
+            margin: 0 0 10px 0;
+            width: 50%;
+        }
+
+        .btn {
+            text-align: center;
+            float: right;
+            margin-right: 50px;
+            width: 30%;
+        }
+    }
+
+    #my-comptoirs {
+        font-size: 0.8em;
+        height: 180px;
+
+        & .list {
+            overflow-y: scroll;
+            height: 100%;
+
+            p {
+                display: inline-block;
+                width: 31%;
+                right: 2%;
+                word-break: break-word;
+            }
+        }
+
+        & > p:first-child {
+            margin-right: 10px;
+        }
+    }
+}
+
+aside {
+    position: absolute;
+    right: 0px;
+    top: 45%;
+    width: 500px;
+    height: 55%;
+
+    footer {
+        text-align: right;
+        width: 94%;
+        margin: auto 3%;
+        position: absolute;
+        bottom: 0px;
+    }
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
 }
 
 a:hover {
@@ -18,198 +145,89 @@ a:hover {
 
 }
 
-}
+#plus {
+    font-size: 30em;
+    text-align: center;
+    @include transform(rotate(0deg));
 
-header {
+    @include transition(0.5s font-size ease-in-out);
+    @include transition(0.5s transform ease-in-out);
 
-    position: relative;
-    z-index: 99;
-
-    #main-block {
-        width: 100%;
-        height: 100px;
-        display: block;
+    a {
+        color: $midnightblue;
     }
 
-    #left-menu {
-        display: inline-block;
-        float:left;
-        margin-top: 20px;
-        margin-left: 20px;
-
-        hr {
-            width: 150px;
-            height: 1px;
-            background-color: black;
-            margin-right: 20px;
-        }
+    a:hover {
+        color: $orange;
     }
-    
-    #main-title {
-        display: inline-block;
-        float: right;
 
-        height: 100px;
-        line-height: 100px;
-        margin-right: 30px;
-    
-        font-family: Santor;
+    &.toggle {
         font-size: 5em;
+        @include transform(rotate(360deg));
     }
-    
-    #top-menu {
-        display: inline-block;
-        float: right; 
-    
-        height: 100px;
-        line-height: 100px;
-        margin-right: 30px;
-    
-        font-size: 1em;
-    }
-    
-    #user-content {
-        display: block;
-        float: right;
-        margin-right: 30px;
-    
-    }
-
-    #login-button:hover, #register-button:hover {
-        cursor: pointer;
-    }
-
-    #main-quote {
-        margin-right: 30px;
-        float:right;
-    }
-
-    /*
-    #login-form {
-        float: right;
-        text-align: right;
-        margin-right: 30px;
-    }
-    */
-        
-    #register-form, #login-form {
-        display: block;
-        clear: right;
-        float: right;
-        margin-right: 30px;
-
-        .help-block {
-            display: inline-block;
-            float: right;
-        }
-
-        .form-control {
-            width: 150px;
-            margin: 10px;
-            float: right;
-        }
-        
-        .btn {
-            text-align: right;
-            width: 100px;
-            margin: 10px;
-            float: right;
-        }
-    }
-
-    margin-bottom: -400px;
-
 }
 
-#home-content {
-    
-    z-index: 1;
+#comptoir-form {
 
-    position: absolute;
-    top: 10px;
-    width: 100%;
+    text-align: center;
 
-    #plus {
-        font-size: 30em;
-        width: 40%;
-        text-align: right;
-    
-        a {
-            color: $midnightblue;
-        }
-    
-        a:hover {
-            color: $orange;
-            cursor: pointer;
-        }
-    
-        display: inline-block;
+    h3 {
+        margin-bottom: 50px;
     }
-    
-    #comptoir-form {
 
-        text-align: center;
+    table#form-tab {
 
-        margin-top: -500px;
-    
-        h3 {
-            margin-bottom: 50px;
+        margin: auto;
+
+        width: 500px;
+
+        tr {
+            height: 50px;
+            padding-top: 10px;
         }
 
-        table#form-tab {
-        
-            margin: auto;
+        td.lbl {
 
-            width: 500px;
+            width: 45%;
 
-            tr {
-                height: 50px;
-                padding-top: 10px;
-            }
-        
-            td.lbl {
-                
-                width: 45%;
+            font-size: 1em;
 
-                font-size: 1em;
-    
-                text-align: right;
-                padding-right: 20px;
-                margin-left: 20px;
-                font-weight: bold;
-                
-                color: $midnightblue;
-        
-            }
-        
-            td.fld {
-                width: 45%;
-                text-align: left;
-        
-                overflow: scroll;
-                -o-text-overflow: ellipsis;
-                text-overflow: ellipsis;
-                    
-            }
-    
-            td.hlp {
-                width: 10%;
-            }
+            text-align: right;
+            padding-right: 20px;
+            margin-left: 20px;
+            font-weight: bold;
 
-            #generate-key, #manage-key {
-                width: 100%;
-                text-align: center;
-            }
-   
-            td#note {
-                padding-left: 100px;
-                text-align: justify;
-            }
+            color: $midnightblue;
 
-            #submit-comptoir-container {
-                padding-top: 50px;
-                text-align: right; 
-            }
+        }
+
+        td.fld {
+            width: 45%;
+            text-align: left;
+
+            overflow: scroll;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+
+        }
+
+        td.hlp {
+            width: 10%;
+        }
+
+        #generate-key, #manage-key {
+            width: 100%;
+            text-align: center;
+        }
+
+        td#note {
+            padding-left: 100px;
+            text-align: justify;
+        }
+
+        #submit-comptoir-container {
+            padding-top: 50px;
+            text-align: right;
         }
     }
 }
@@ -223,19 +241,16 @@ header {
 
     width: 800px;
     margin: auto;
-    margin-top: 500px;
 
 }
 
 #chatbox {
 
-    width: 70%;
-    min-height: 90%;
-    max-height: 90%;
-
-    margin-top: 500px;
-
-    overflow: scroll;
+    #loader {
+        width: 12px; 
+        margin: auto;
+        margin-bottom: 10px;
+    }
 
     text-align: center;
 
@@ -246,7 +261,8 @@ header {
     }
 
     table {
-        width: 100%;
+        width: 94%;
+        margin: auto 3%;
         tr {
             &.author {
                 font-weight: bold;
@@ -301,63 +317,50 @@ header {
     }
 }
 
-#left-panel {
+#send-form {
+    width: 100%;
 
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    
-    #send-form {
-    
-        #new-msg {
-            width: 400px;
-            height: 100px;
-            padding: 5px;
-            resize: none;
-    
-            display: block;
-    
-            margin-bottom: 30px;
-            margin-top: 30px;
-        }
-    
-        .submit-button {
-            display: block;
-            margin: 0px;
-            float: right;
-        }
-    
+    div {
+        margin: auto 3%;
+        width: 94%;
     }
-    
-    table#options-container {
-        width: 400px;
-        margin-top: 0px;
-        float: right;
-        tr {
-            height: 50px;
-        }
-    
-        td {
-            width: 50%;
-        }
 
-        td.lbl {
-            line-height: 50px;
-            vertical-align: middle;
-    
-        }
-        td button {
-            width: 100%;
-        }
+    #new-msg {
+        width: 94%;
+        height: 150px;
+        padding: 5px;
+        resize: none;
+
+        display: block;
+
+        margin: 30px 3%;
+    }
+
+    .validation {
+        text-align: right;
     }
 }
 
-    
-#my-comptoirs {
-    font-size: 0.8em;
-    float: right;
-    text-align: right;
-    margin-right: 30px;
+table#options-container {
+    width: 94%%;
+    margin: auto 3%;
+
+    tr {
+        height: 50px;
+    }
+
+    td {
+        width: 50%;
+    }
+
+    td.lbl {
+        line-height: 50px;
+        vertical-align: middle;
+
+    }
+    td button {
+        width: 100%;
+    }
 }
 
 #user-name:hover {
@@ -374,7 +377,8 @@ header {
 }
 
 #alertBox {
-    display: inline-block;
+    position: absolute;
+    z-index: 9999;
 }
 
 
@@ -382,6 +386,12 @@ header {
     display: block;
     width: 600px;
     margin: 10px;
+    cursor: pointer;
+    @include transition(0.3s opacity ease);
+
+    &:hover {
+        opacity: 0.3;
+    }
 }
 
 #msg-alert-tr {

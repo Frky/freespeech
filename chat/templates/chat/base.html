@@ -24,131 +24,134 @@
 	    <script src="{% static 'chat/js/md5.js' %}"></script>
         <script src="{% static 'chat/js/sha3.js' %}"></script>
 	    <script src="{% static 'chat/js/linkify.js' %}"></script>
-		
+	    <script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
+
 	{% endblock %}
 	</head>
 
 	<body>
-	
-		<header>
-		{% block header %}
-        <div id="main-block">
-            <div id="left-menu">
-                <table>
-                <tr>
-                    <td>
-                        <a href="{% url "about" %}">About</a>
-                        •
-                        <a href="{% url "report" %}">Report a bug</a>
-                        •
-                        Version beta {{ version }}
-                    </td>
-                </tr>
-                </table>
-            </div>
-            <div id="alertBox">
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == "error" %}
-                        <div class="alert alert-danger alert-dismissable">
-                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Error!</strong> {{ message }}
-                        </div>
-                    {% elif message.tags == "warning" %}
-                        <div class="alert alert-warning alert-dismissable">
-                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Warning!</strong> {{ message }}
-                        </div>
-                    {% elif message.tags == "info" %}
-                        <div class="alert alert-info alert-dismissable">
-                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Info!</strong> {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-success alert-dismissable">
-                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Success!</strong> {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-            </div>
-		    <div id="main-title">
-                <a href="{% url "home" %}">FreeSpeech</a>
-            </div>
-        {% if not user.is_authenticated %}
-            <div id="top-menu">
-                <a id="login-button">Log in</a> | <a id="register-button">Register</a></div>
-            </div>
-            
-            <blockquote id="main-quote">
-                <p>Whereof one cannot speak, thereof one must be silent.<p>
-                <small>L.Wittgenstein in <cite title="Source Title">Tractatus</cite></small>
-            </blockquote>
-            
-            <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
-            	{% csrf_token %}
-                <p><input maxlength="20" name="username" type="login" class="form-control" placeholder="Username"></p>
-            	<p><input name="password" type="password" class="form-control" placeholder="Password"></p>
-            	<p><input type="submit" class="btn btn-default" value="> Log in"></p>
-            </form>
-
-            <form class="formContainer hidden" method="post" action="{% url "register" %}" id="register-form">
-                {% csrf_token %}
-                {% for field in registerForm %}
-                    <div class="fieldContainer">
-                            {{ field }}
+        <div id="alertBox">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger alert-dismissable">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Error!</strong> {{ message }}
                     </div>
-                {% endfor %}
-                    <div class="fieldContainer">
-                        <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
+                {% elif message.tags == "warning" %}
+                    <div class="alert alert-warning alert-dismissable">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Warning!</strong> {{ message }}
                     </div>
-                <div id="submitButton">
-                    <input class="btn btn-default" type="submit" value="> Register">
-                </div>
-            </form>
-
-        {% else %}
-            <div id="top-menu">
-                <span id="user-name">{{ user }}</span> | <a href="{% url "logout" %}">Log out</a></div>
-            </div>
-            
-            <blockquote id="main-quote">
-                <p>Whereof one cannot speak, thereof one must be silent.<p>
-                <small>L.Wittgenstein in <cite title="Source Title">Tractatus</cite></small>
-            </blockquote>
-
-            <div class="hidden" id="my-comptoirs">
-                <p>Comptoirs I have joined</p>
-                {% for c,n in user.comptoirs %}
-                <p id="my-{{ c.id }}">
-                    {{ c.title }} 
-                    <a href="{% url "join_comptoir" c.id %}" 
-                        {% if c.last_message.owner != None %} 
-                            class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="right"
-                        {% endif %}
-                        >
-                        {{ c.id }}
-                    </a>
-                    {% if n != 0 %}
-                        <span class="badge active">{{ n }}</span>
-                    {% endif %}
-                </p>
-                {% endfor %}
-            </div>
+                {% elif message.tags == "info" %}
+                    <div class="alert alert-info alert-dismissable">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Info!</strong> {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-success alert-dismissable">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Success!</strong> {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
         {% endif %}
         </div>
 
-		{% endblock %}
-		</header>
+        <section>
+            {% block content %}
+            {% endblock %}
+        </section>
 
-		{% block content %}
-		{% endblock %}
+        <header>
+            {% block header %}
 
-		<footer>
-		{% block footer %}
-		{% endblock %}
-		</footer>
+            {% if not user.is_authenticated %}
+                <nav>
+                    <span><a id="login-button">Log in</a> | <a id="register-button">Register</a></span>
+                    <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
+                </nav>
+            {% else %}
+                <nav>
+                    <span><span id="user-name">{{ user|truncatechars:20 }}</span> | <a href="{% url "logout" %}">Log out</a></span>
+                    <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
+                </nav>
+            {% endif %}
+
+            <blockquote>
+                <p>« Whereof one cannot speak, thereof one must be silent. »<p>
+                <small>L.Wittgenstein in <cite title="Source Title">Tractatus</cite></small>
+            </blockquote>
+
+
+            {% if not user.is_authenticated %}
+                <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
+                    {% csrf_token %}
+                    <p><input name="username" type="login" class="form-control" placeholder="Username"></p>
+                    <p><input name="password" type="password" class="form-control" placeholder="Password"></p>
+                    <p><input type="submit" class="btn btn-default" value="> Log in"></p>
+                </form>
+
+                <form class="formContainer hidden" method="post" action="{% url "register" %}" id="register-form">
+                    {% csrf_token %}
+                    {% for field in registerForm %}
+                        <div class="fieldContainer">
+                                {{ field }}
+                        </div>
+                    {% endfor %}
+                        <div class="fieldContainer">
+                            <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
+                        </div>
+                    <div id="submitButton">
+                        <input class="btn btn-default" type="submit" value="> Register">
+                    </div>
+                </form>
+
+            {% else %}
+
+                <div class="hidden" id="my-comptoirs">
+                    <p>Comptoirs I have joined</p>
+                    <div class="list">
+                        {% for c,n in user.comptoirs reversed %}
+                        <p id="my-{{ c.id }}">
+                            {{ c.title }}
+                            <a href="{% url "join_comptoir" c.id %}"
+                                {% if c.last_message.owner != None %}
+                                    class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
+                                {% endif %}
+                                >
+                                {{ c.id }}
+                            </a>
+                            {% if n != 0 %}
+                                <span class="badge active">{{ n }}</span>
+                            {% endif %}
+                        <!--</p> Hack to remove whitespace between p elements (note HTML5 compliancy)-->
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% block header_option %}
+            {% endblock %}
+
+            {% endblock %}
+	    </header>
+
+        <aside>
+            {% block footer_option %}
+            {% endblock %}
+            <footer>
+                {% block footer %}
+		        {% endblock %}
+                <div id="left-menu">
+                    <a href="{% url "about" %}">About</a>
+                    •
+                    <a href="{% url "report" %}">Report a bug</a>
+                    •
+                    Version beta {{ version }}
+                </div>
+            </footer>
+        </aside>
 
 	    <script src="{% static 'chat/js/key_management.js' %}"></script>
 	    <script src="{% static 'chat/js/form_check.js' %}"></script>
@@ -165,7 +168,21 @@
             $("#user-name").click(function() {
                 $("#my-comptoirs").toggleClass("hidden");
             });
+
+            $('#my-comptoirs .list').slimScroll({
+                width: 'auto',
+                height: '160px',
+                position: 'right',
+                size: '4px',
+                color: '#428bca',
+                railColor: '#222',
+                railOpacity: 0.1,
+                wheelStep: 8,
+                railVisible: true
+            });
         </script>
+        {% block additionnal_script %}
+        {% endblock %}
 
 	</body>
 

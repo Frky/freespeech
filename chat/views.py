@@ -30,7 +30,7 @@ from django.utils.timezone import utc
 
 from chat.utils import date_to_tooltip
 
-VERSION = "0.86"
+VERSION = "0.9"
 timezone_local = pytz.timezone(TIME_ZONE)
 
 @register.filter
