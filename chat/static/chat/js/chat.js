@@ -191,10 +191,13 @@ var update_badge = function(cid, user, date) {
 
 /* Handler for new data received through the socket */
 var messaged = function(data) {
+
+    if (data == null) return;
+
     /* If the data is a new message, we add it to the chatbox */
     if (data.type == "new-message") {
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
@@ -231,5 +234,5 @@ socket.connect();
 $("body").ready(function() {
         msg_alert = $("#msgAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 });

@@ -1,28 +1,16 @@
 
 var getPreviousMessages = function(callback, cid, senti) {
-  /* 
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url:"previous_msg?cid=" + cid + "&senti=" + senti,
-        success: previousMsgCallback(data)
-    });
 
-    return;
-*/
     var xhr = getXMLHttpRequest();
    
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
             // Callback for results
             callback(xhr.responseText);
-        } else if (xhr.readyState < 4) {
-            //document.getElementById("loader").style.display = "inline";
         }
     };
 
     xhr.open("GET", "previous_msg?cid=" + cid + "&senti=" + senti, true);
-    // Sending request
     xhr.send();
 
 }
@@ -33,8 +21,7 @@ var previousMsgCallback = function(data) {
     
         msgs = data["previous_msgs"];
         senti = data["senti"];
-        var current_height = $("#chatbox")[0].scrollHeight;
-//        var offset = anchor.offset().top - $("#chatbox").scrollTop();
+        var current_height = $("#chatbox").prop("scrollHeight");
 
         var key = $("#comptoir-key").val();
 
@@ -48,23 +35,27 @@ var previousMsgCallback = function(data) {
             messages_html += addMessage(user, cipher, clear, date, false);
         }
 
+        $("#loader", "#chatbox").toggleClass("hidden");
+
         $("#chatbox table tbody").prepend(messages_html);
         $('.fsp-tooltip').tooltip('destroy').tooltip();
-        var new_height = $("#chatbox")[0].scrollHeight;
+        var new_height = $("#chatbox").prop("scrollHeight");
         var real_height = $("#chatbox").height();
-        $("#chatbox").scrollTop(new_height - current_height);
-        $("#chatbox").animate({"scrollTop": new_height - current_height - real_height/2});
+        var ink = String(new_height - current_height - real_height/2) + "px"
+
+        $("#chatbox").slimScroll({scrollTo: String(new_height - current_height) + "px"});
+        $("#chatbox").slimScroll({ scrollTo: ink, animate: true });
 
         $("#top_senti").val(senti);
         
         loading = false;
-        $("#loader", "#chatbox").toggleClass("hidden");
 
 }
 
 
 /* Listener on the scroll top ; to load previous messages */
 $("#chatbox").scroll(function () {
+
     if ($("#chatbox").scrollTop() == 0 && !loading) {
         loading = true;
         $("#loader", "#chatbox").toggleClass("hidden");
