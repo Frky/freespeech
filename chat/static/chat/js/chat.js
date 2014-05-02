@@ -4,13 +4,19 @@
 
 var msg_alert;
 var sound_alert;
+
 var sound_notification = function(type) {
-    if (sound_alert.val() == 0 || document.hasFocus()) {
+    if (sound_alert.val() == 0) {
         return;
     }
 
-    if (type == "msg") {
+    if (type == "msg" && !document.hasFocus()) {
         msg_alert.play();
+        return;
+    }
+
+    if (type == "wizz") {
+        wizz_alert.play();
     }
 }
 
@@ -223,6 +229,14 @@ var closed = function() {
     pop_alert("danger", "Connection closed !");
 }
 
+$("#wizz-btn").click( function() {
+    /* Notification to the sound alert manager */
+    sound_notification("wizz");
+    /* Shaking the chatbox */
+    $("#chatbox").effect("shake", {times: 6}, 500);
+});
+
+
 /* Mapping the two handlers */
 socket.on('connect', connected);
 socket.on('message', messaged);
@@ -233,6 +247,7 @@ socket.connect();
 
 $("body").ready(function() {
         msg_alert = $("#msgAlert")[0];
+        wizz_alert = $("#wizzAlert")[0];
         sound_alert = $("#sound-alert-btn");
         $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 });
