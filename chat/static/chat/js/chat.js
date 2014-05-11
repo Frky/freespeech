@@ -19,7 +19,7 @@ var socket = new io.Socket();
 
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
-var addMessage = function(user, cipher, clear, msgdate) {
+var addMessage = function(user, cipher, clear, msgdate, insert) {
     
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
@@ -81,16 +81,22 @@ var addMessage = function(user, cipher, clear, msgdate) {
     }
 
     new_message += '</tr>';
+    
+    if (insert) {
+        /* Append the new message to the chatbox */
+        $("#chatbox table tbody").append(new_message);
 
-    /* Append the new message to the chatbox */
-    $("#chatbox table tbody").append(new_message);
+        $('.fsp-tooltip').tooltip('destroy').tooltip();
 
-    $('.fsp-tooltip').tooltip('destroy').tooltip();
+        /* Notification to the sound alert manager */
+        if (user != $("#user-name").html()) {
+            sound_notification("msg");
+        }
 
-    /* Notification to the sound alert manager */
-    if (user != $("#user-name").html()) {
-        sound_notification("msg");
+    } else {
+        return new_message;
     }
+
 
 }
 
@@ -185,10 +191,13 @@ var update_badge = function(cid, user, date) {
 
 /* Handler for new data received through the socket */
 var messaged = function(data) {
+
+    if (data == null) return;
+
     /* If the data is a new message, we add it to the chatbox */
     if (data.type == "new-message") {
-        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate);
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
@@ -225,5 +234,5 @@ socket.connect();
 $("body").ready(function() {
         msg_alert = $("#msgAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 });

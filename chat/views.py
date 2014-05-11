@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.core import serializers
+from django.utils import simplejson
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.decorators.csrf import csrf_exempt
@@ -11,7 +12,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 
-from chat.models import Message, BetaKey, BugReport, ChatUser, LastVisit
+from chat.models import IndependantMessage, Message, BetaKey, BugReport, ChatUser, LastVisit
 from chat.forms import *
 
 from django_socketio.events import on_message
@@ -23,11 +24,14 @@ from django.forms.util import ErrorList
 
 from freespeech.settings import CONTACT_EMAIL 
 
-import datetime
+import datetime, pytz
 from freespeech.settings import TIME_ZONE
 from django.utils.timezone import utc
 
-VERSION = "0.85.1"
+from chat.utils import date_to_tooltip
+
+VERSION = "0.9"
+timezone_local = pytz.timezone(TIME_ZONE)
 
 @register.filter
 def unquote_new(value):
@@ -344,12 +348,44 @@ def reporting_box(request):
     template_name = "chat/reporting_box.html"
     
     user = request.user
-    if not user.is_authenticated or user.username != "_Frky":
+    if not user.is_authenticated() or user.username != "_Frky":
         return redirect("home")
 
     context['bugs'] = BugReport.objects.all() 
 
     return render(request, template_name, context)
+
+
+def load_previous_messages(request):
+    
+    if "cid" not in request.GET.keys() or "senti" not in request.GET.keys():
+        return HttpResponse()
+
+    cid = request.GET["cid"]
+    senti = request.GET["senti"]
+
+    count = Message.objects.filter(comptoir=cid, id__lt=senti).count()
+    msgs = Message.objects.filter(comptoir=cid, id__lt=senti).order_by('date')[max(0, count - 150):]
+
+    json_data = "{\"senti\": " + str(max(0, count - 50)) + ", \"previous_msgs\": ["
+    for i,msg in enumerate(msgs): #Message.objects.all().filter(comptoir=cid, id__lt=17)):
+        if i != 0:
+            json_data += ","
+        json_data += "{\"fields\":{"
+        json_data += "\"owner\": \"" + msg.owner.username + "\", "
+        json_data += "\"content\": \"" + msg.content.replace("\n", "") + "\", "
+        json_data += "\"date\": \"" + date_to_tooltip(msg.date.astimezone(timezone_local)) + "\""
+        json_data += "}}"
+    json_data += "]}"
+
+    return HttpResponse(json_data, mimetype='application/json')
+    # m = IndependantMessage.objects.all().filter(id__lt=7).select_related('Message')
+#    m = Message.objects.all().filter(id__lt=7).select_related('IndependantMessage')
+    mid = [msg.id for msg in Message.objects.all().filter(comptoir=cid)[:7]]
+    m = [IndependantMessage.objects.get(id=m_id) for m_id in mid] 
+    m_json = serializers.serialize("json", m)
+    m_list = simplejson.loads(m_json)
+    json_data = simplejson.dumps({'previous_msgs': m_list})
 
 
 

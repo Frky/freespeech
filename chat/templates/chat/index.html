@@ -1,109 +1,108 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
-<div id="home-content">
-<div id="plus"><a>+</a></div>
-<form action="{% url "create_comptoir" %}" method="post" id="comptoir-form" class="hidden">
-<h3>Create a comptoir</h3>
+    <div id="plus"><a>+</a></div>
+    <form action="{% url "create_comptoir" %}" method="post" id="comptoir-form" class="hidden">
+    <h3>Create a comptoir</h3>
 
-    {% if not user.is_authenticated %}
-        You must be logged in to create a comptoir.
-    {% else %}
+        {% if not user.is_authenticated %}
+            You must be logged in to create a comptoir.
+        {% else %}
 
-	{% csrf_token %}
-    <table id="form-tab">
+        {% csrf_token %}
+        <table id="form-tab">
 
-    {% for el in comptoir_form %}
-    {% if el.label == "Public ?" %}
-    <tr class="form-group field" id="public-btn-container">
-        <td class="lbl"></td>
-        <td class="fld">
-            <input id="public-btn" name="{{ el.name }}" type="checkbox" unchecked data-off-text="Public" data-on-text="Private" bootstrap-switch-disabled value=1>
-        </td>
-        <td class="hlp"></td>
-    </tr>
-    <tr>
-        <td colspan="3" id="note" class="invisible">
-            <b>Info. </b> Your comptoir will be protected by a key. You must provide this key to anyone you want to share the comptoir with.
-            The key will be accessible in the comptoir page.
-        </td>
-    </tr>
-    <tr class="field form-group invisible" id="manage-key-container">
-        <td class="lbl label control-label">
-        </td>
-        <td class="fld">
-            <input type="button" class="btn btn-info input" id="manage-key" value="Manage the key myself" />
-        </td>
-        <td class="hlp">
-        </td>
-    </tr>
-    <tr class="field form-group invisible" id="generate-key-container">
-        <td class="lbl label control-label">
-        </td>
-        <td class="fld">
-            <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key" />
-        </td>
-        <td class="hlp">
-        </td>
-    </tr>
-    <tr class="field form-group invisible" id="key-field-container">
-        <td class="lbl control-label">
-            Comptoir secret key
-        </td>
-        <td class="fld">
-            <input class="input form-control" id="comptoir-key">
-        </td>
-        <td class="hlp">
-            <a href="#" class="fsp-popover btn btn-info" id="key_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
-                This is the secret key that ensures privacy of your data. All messages will be ciphered with this key before being sent to the server database.<br />
-                You must share this key with people you want to communicate with. <br /><br />
-
-                <b>Important.</b> This key is never sent to freespeech server. Thus, this field is not required. Nevertheless, you must provide the SHA3 hash of your key, 
-                because this will be used by the server to ensure a person can post on your comptoir (more info in <a href='#'>About</a> page).
-            ">?</a>
-        </td>
-    </tr>
-    {% else %}
-    <tr id="{{ el.auto_id }}-container" class="field form-group {% if el.errors %}has-error{% endif %} {% if el.label == 'SHA3 of the key' %}invisible{% endif %}">
-            <td class="lbl control-label">
-                {{ el.label }}
+        {% for el in comptoir_form %}
+        {% if el.label == "Public ?" %}
+        <tr class="form-group field" id="public-btn-container">
+            <td class="lbl"></td>
+            <td class="fld">
+                <input id="public-btn" name="{{ el.name }}" type="checkbox" unchecked data-off-text="Public" data-on-text="Private" bootstrap-switch-disabled value=1>
+            </td>
+            <td class="hlp"></td>
+        </tr>
+        <tr>
+            <td colspan="3" id="note" class="invisible">
+                <b>Info. </b> Your comptoir will be protected by a key. You must provide this key to anyone you want to share the comptoir with.
+                The key will be accessible in the comptoir page.
+            </td>
+        </tr>
+        <tr class="field form-group invisible" id="manage-key-container">
+            <td class="lbl label control-label">
             </td>
             <td class="fld">
-                {{ el }}
+                <input type="button" class="btn btn-info input" id="manage-key" value="Manage the key myself" />
             </td>
             <td class="hlp">
-            {% if el.label == "SHA3 of the key" %}
-                <a href="#" class="fsp-popover btn btn-info" id="hash_help" rel="popover" data-trigger="hover" data-original-title="What is it ?" data-html="true" data-content="
-                    This is the fingerprint of the secret key used to decipher the messages that will be posted on the 
-                    comptoir. The key will be needed to access the comptoir clear texts, and you need to share
-                    it with people you want to speak with.<br />
-                    More info in <a href='#'>About</a> page.<br /><br />
-                    <b>Note.</b> You don't need to remember it, it will be displayed on the comptoir once created.
-                ">?</a>
-            {% endif %}
             </td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-    <tr class="field form-group">
-        <td class="lbl label control-label">
-        </td>
-        <td class="fld" id="submit-comptoir-container">
-            <input class="btn btn-default submit-button" type="submit" id="submit-comptoir">
-        </td>
-        <td class="hlp">
-        </td>
-    </tr>
-    </table>
-</form>
-    {% endif %}
-</div>
+        </tr>
+        <tr class="field form-group invisible" id="generate-key-container">
+            <td class="lbl label control-label">
+            </td>
+            <td class="fld">
+                <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key" />
+            </td>
+            <td class="hlp">
+            </td>
+        </tr>
+        <tr class="field form-group invisible" id="key-field-container">
+            <td class="lbl control-label">
+                Comptoir secret key
+            </td>
+            <td class="fld">
+                <input class="input form-control" id="comptoir-key">
+            </td>
+            <td class="hlp">
+                <a href="#" class="fsp-popover btn btn-info" id="key_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
+                    This is the secret key that ensures privacy of your data. All messages will be ciphered with this key before being sent to the server database.<br />
+                    You must share this key with people you want to communicate with. <br /><br />
+
+                    <b>Important.</b> This key is never sent to freespeech server. Thus, this field is not required. Nevertheless, you must provide the SHA3 hash of your key,
+                    because this will be used by the server to ensure a person can post on your comptoir (more info in <a href='#'>About</a> page).
+                ">?</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr id="{{ el.auto_id }}-container" class="field form-group {% if el.errors %}has-error{% endif %} {% if el.label == 'SHA3 of the key' %}invisible{% endif %}">
+                <td class="lbl control-label">
+                    {{ el.label }}
+                </td>
+                <td class="fld">
+                    {{ el }}
+                </td>
+                <td class="hlp">
+                {% if el.label == "SHA3 of the key" %}
+                    <a href="#" class="fsp-popover btn btn-info" id="hash_help" rel="popover" data-trigger="hover" data-original-title="What is it ?" data-html="true" data-content="
+                        This is the fingerprint of the secret key used to decipher the messages that will be posted on the
+                        comptoir. The key will be needed to access the comptoir clear texts, and you need to share
+                        it with people you want to speak with.<br />
+                        More info in <a href='#'>About</a> page.<br /><br />
+                        <b>Note.</b> You don't need to remember it, it will be displayed on the comptoir once created.
+                    ">?</a>
+                {% endif %}
+                </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        <tr class="field form-group">
+            <td class="lbl label control-label">
+            </td>
+            <td class="fld" id="submit-comptoir-container">
+                <input class="btn btn-default submit-button" type="submit" id="submit-comptoir" value="Let's talk !">
+            </td>
+            <td class="hlp">
+            </td>
+        </tr>
+        </table>
+        {% endif %}
+    </form>
 
 {% load staticfiles %}
 <script type="text/javascript">
     $(".fsp-popover").popover();
     $("#plus a").click(function() {
         $("#comptoir-form").toggleClass("hidden");
+        $('#plus').toggleClass("toggle");
     });
 /*    $("#id_public").click(function () {
         $("#id_key_hash-container").toggleClass("invisible");
