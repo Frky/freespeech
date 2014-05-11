@@ -414,3 +414,10 @@ table#options-container {
     margin: auto;
     width: 400px;
 }
+
+
+/* HACK bootstrap tooltip */
+
+.tooltip {
+    position: fixed;
+}
