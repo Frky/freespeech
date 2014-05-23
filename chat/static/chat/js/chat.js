@@ -234,5 +234,5 @@ socket.connect();
 $("body").ready(function() {
         msg_alert = $("#msgAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+//        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 });

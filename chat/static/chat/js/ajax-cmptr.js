@@ -1,4 +1,8 @@
 
+var currentIsComptoir = (window.location == "");
+console.log(window.location.href);
+console.log(window.location);
+
 var getComptoirContent = function(callback, cid) {
 
     // Creation of an object
@@ -16,7 +20,7 @@ var getComptoirContent = function(callback, cid) {
     };
 
     // Initialisation
-    xhr.open("GET", cid, true);
+    xhr.open("GET", "ajax-" + cid, true);
     // Sending request
     xhr.send();
 }
