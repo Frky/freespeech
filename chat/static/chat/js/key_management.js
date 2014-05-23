@@ -20,6 +20,7 @@ var tmp_id = -1;
 var key_field = $("#comptoir-key");
 /* Field of the hash */
 var hash_field = $("#comptoir-key-hash");
+var copy_key_btn = $("#copy-key-button");
 
 var global_key_storage = "";
 
@@ -88,7 +89,8 @@ var keyFound = function(id, isTmp) {
     updateKey(key_id, true);
     
     if (private_key != "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff") {
-        $("#key-tr").removeClass("hidden");
+        key_field.parent().parent().removeClass("hidden");
+        copy_key_btn.removeClass("hidden");
     }
 }
 
@@ -181,6 +183,8 @@ var tryNextTmpKey = function() {
     } while (localStorage.getItem(key_id_tmp + tmp_id.toString()) == null && tmp_id < 100);
 
     if (tmp_id == 100) {
+        key_field.parent().parent().removeClass("hidden");
+        copy_key_btn.removeClass("hidden");
         return;
     }
 
@@ -222,13 +226,20 @@ var init = function() {
        the key register associated to this comptoir, or in some
        temporary register in case this is the first connection since the
        creation of the comptoir */
+
     key_id = "comptoir_key_" + $("#cid").val();
     /* Field of the key */
     key_field = $("#comptoir-key");
     /* Field of the hash */
     hash_field = $("#comptoir-key-hash");
 
+    key_field.parent().parent().addClass("hidden");
+    copy_key_btn.addClass("hidden");
+    key_field.parent().removeClass("has-success");
+    key_field.parent().removeClass("has-error");
+
     findKey();
+
     setTimeout(function() {
         checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
     }, 500);

@@ -115,7 +115,7 @@
                         {% for c,n in user.comptoirs reversed %}
                         <p id="my-{{ c.id }}">
                             {{ c.title }}
-                            <a href="#" class="cmptr-link" value="{{ c.id }}"
+                            <a class="cmptr-link" value="{{ c.id }}"
                                 {# url "join_comptoir" c.id #}
                                 {% if c.last_message.owner != None %}
                                     class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
@@ -138,7 +138,7 @@
 
         <aside>
             {% block footer_option %}
-    <table id="options-container">
+    <table id="options-container" class="hidden">
         <tr id="cpy-url-btn-tr">
             <td class="lbl">
                 {# if not public #}
@@ -176,7 +176,7 @@
         </tr>
     </table>
 
-    <form action="{% url "send" %}" method="post" id="send-form">
+    <form action="{% url "send" %}" method="post" id="send-form" class="hidden">
     <div id="users-connected-content">
             Online: <span id="users-connected"></span>
         </div>
@@ -302,6 +302,11 @@
             wheelStep: 8,
             railVisible: true,
         });
+
+        if (window.location.pathname != "/") {
+            $("#options-container").removeClass("hidden");
+            $("#send-form").removeClass("hidden");
+        }
     </script>
 
         {% endblock %}

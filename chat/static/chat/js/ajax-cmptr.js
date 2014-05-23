@@ -1,7 +1,4 @@
 
-var currentIsComptoir = (window.location == "");
-console.log(window.location.href);
-console.log(window.location);
 
 var getComptoirContent = function(callback, cid) {
 
@@ -12,7 +9,7 @@ var getComptoirContent = function(callback, cid) {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
             // Callback for results
-            callback(xhr.responseText);
+            callback(xhr.responseText, cid);
         } else if (xhr.readyState < 4) {
             // The request is in treatment, displaying loader image
             //document.getElementById("loader").style.display = "inline";
@@ -26,16 +23,20 @@ var getComptoirContent = function(callback, cid) {
 }
 
 
-var getComptoirContentCallback = function(data) {
+var getComptoirContentCallback = function(data, cid) {
+    window.history.replaceState({}, cid, cid);
+    $("#cid").val(cid);
     $("#content").html(data);
     if ($("#chatbox").length != 0) {
         init();
     }
+
+    $("#options-container").removeClass("hidden");
+    $("#send-form").removeClass("hidden");
 }
 
 
 $(".cmptr-link").click(function () {
         var cid =  $(this).text();
-        $("#cid").val(cid);
         getComptoirContent(getComptoirContentCallback, cid);
 });
