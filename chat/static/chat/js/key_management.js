@@ -84,7 +84,7 @@ var keyFound = function(id, isTmp) {
         localStorage.setItem(key_id, private_key);
         localStorage.removeItem(id);
     }
-    $("#comptoir-key").val(private_key);
+    key_field.val(private_key);
     updateKey(key_id, true);
     
     if (private_key != "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff") {
@@ -189,7 +189,7 @@ var tryNextTmpKey = function() {
 }
 
 var findKey = function() {
-    if (localStorage.getItem(key_id) != null) {
+    if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") {
         keyFound(key_id, false);
     } else {
         localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -222,6 +222,12 @@ var init = function() {
        the key register associated to this comptoir, or in some
        temporary register in case this is the first connection since the
        creation of the comptoir */
+    key_id = "comptoir_key_" + $("#cid").val();
+    /* Field of the key */
+    key_field = $("#comptoir-key");
+    /* Field of the hash */
+    hash_field = $("#comptoir-key-hash");
+
     findKey();
     setTimeout(function() {
         checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
