@@ -284,7 +284,6 @@ def join_comptoir(request, cid):
     context['public'] = comptoir.public
     context["request"] = request
 
-#    last_msg = Message.objects.filter(comptoir=cid).latest('date')
     count = Message.objects.filter(comptoir=comptoir).count()
     msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
     context["msgs"] = msgs 
@@ -387,6 +386,57 @@ def load_previous_messages(request):
     m_list = simplejson.loads(m_json)
     json_data = simplejson.dumps({'previous_msgs': m_list})
 
+
+def ajax_comptoir(request, cid):
+    template_name = "chat/ajax_cmptr.html"
+
+    comptoir = get_object_or_404(Comptoir, id=cid)
+        
+    if comptoir is None:
+        return redirect("home")
+
+    if cid not in request.session.keys():
+        request.session[cid] = False
+    
+    if comptoir.public:
+        request.session[cid] = True
+    
+    context["title"] = comptoir.title
+    context["description"] = comptoir.description
+    context["id"] = comptoir.id
+    context['public'] = comptoir.public
+    context["request"] = request
+
+    count = Message.objects.filter(comptoir=comptoir).count()
+    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
+    context["msgs"] = msgs 
+
+    if len(context["msgs"]) > 0:
+        context["senti"] = context["msgs"][len(context["msgs"])-1].id
+    else:
+        context["senti"] = 0
+    
+    user = request.user
+    if not user.is_anonymous() and user.is_authenticated():
+        try:
+            lv = user.chatuser.last_visits.get(comptoir=comptoir)
+            lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
+            lv.save()
+        except ObjectDoesNotExist:
+            lv = LastVisit()
+            lv.comptoir = comptoir
+            lv.save()
+            user.chatuser.last_visits.add(lv)
+            messages.info(request, "Hello, stranger.")
+            
+    for c in request.user.comptoirs:
+        if c[0] == comptoir:
+            new_c = (c[0], 0)
+            request.user.comptoirs.remove(c)
+            request.user.comptoirs.append(new_c)
+            break
+
+    return render(request, template_name, context)
 
 
 def under_work(request):

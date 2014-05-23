@@ -58,7 +58,7 @@
         {% endif %}
         </div>
 
-        <section>
+        <section id="content">
             {% block content %}
             {% endblock %}
         </section>
@@ -115,13 +115,12 @@
                         {% for c,n in user.comptoirs reversed %}
                         <p id="my-{{ c.id }}">
                             {{ c.title }}
-                            <a href="{% url "join_comptoir" c.id %}"
+                            <a href="#" class="cmptr-link" value="{{ c.id }}"
+                                {# url "join_comptoir" c.id #}
                                 {% if c.last_message.owner != None %}
                                     class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
                                 {% endif %}
-                                >
-                                {{ c.id }}
-                            </a>
+                                >{{ c.id }}</a>
                             {% if n != 0 %}
                                 <span class="badge active">{{ n }}</span>
                             {% endif %}
@@ -139,6 +138,65 @@
 
         <aside>
             {% block footer_option %}
+    <table id="options-container">
+        <tr id="cpy-url-btn-tr">
+            <td class="lbl">
+                {# if not public #}
+                    <button class="btn btn-default" id="copy-key-button">Copy comptoir key</button>
+                {# endif #}
+            </td>
+            <td class="fld">
+                <button class="btn btn-default" id="copy-url-button">Copy comptoir address</button>
+            </td>
+        </tr>
+
+        <tr id="msg-alert-tr">
+            <td class="lbl">
+                <label>Sound alert ?</label>
+            </td>
+            <td class="fld">
+                <input id="sound-alert-btn" value=1 name="sound-alert" type="checkbox" unchecked data-off-text="O" data-on-text="I" checked bootstrap-switch-disabled>
+            </td>
+        </tr>
+        <tr id="key-tr"> <!-- class="hidden"> -->
+            <td class="lbl">
+                <label class="control-label" for="comptoir-key">Key</label>
+            </td>
+            <td class="fld">
+                <input id="comptoir-key" class="control-label form-control" value="">
+            </td>
+        </tr>
+        <tr id="hash-tr" class="hidden">
+            <td class="lbl">
+                <label class="control-label" for="comptoir-key-hash">Hash</label>
+            </td>
+            <td class="fld">
+                <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
+            </td>
+        </tr>
+    </table>
+
+    <form action="{% url "send" %}" method="post" id="send-form">
+    <div id="users-connected-content">
+            Online: <span id="users-connected"></span>
+        </div>
+        {% csrf_token %}
+
+
+        <input type="hidden" id="cid" name="cid" value="{{ id }}">
+
+    {% if user.is_authenticated %}
+
+        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
+
+        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
+
+        <div class="validation">
+            <input type="submit" value="Say!" class="btn btn-default submit-button">
+        </div>
+    {% endif %}
+
+    </form>
             {% endblock %}
             <footer>
                 {% block footer %}
@@ -182,6 +240,70 @@
             });
         </script>
         {% block additionnal_script %}
+    {% if user.is_authenticated %}
+        {% load socketio_tags %}
+        {% socketio %}
+	    <script src="{% static 'chat/js/chat.js' %}"></script>
+	    <script src="{% static 'chat/js/scroll.js' %}"></script>
+        <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
+    {% endif %}
+
+    <audio id="msgAlert">
+        <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
+    </audio>
+
+	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
+
+    <script>
+        $("[name='sound-alert']").bootstrapSwitch();
+        $("#sound-alert-btn").on('switchChange', function() {
+            $("#sound-alert-btn").val(1 - $("#sound-alert-btn").val());
+        });
+//        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+
+        var urlcpy = new ZeroClipboard( document.getElementById("copy-url-button"), {
+            moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
+        } );
+
+        urlcpy.on( 'dataRequested', function (client, args) {
+            client.setText(window.location.href);
+        });
+
+        urlcpy.on( "load", function(client) {
+            client.on( "complete", function(client, args) {
+                pop_alert("info", "Comptoir address copied to clipboard. Share it!");
+            } );
+        } );
+
+        var keycpy = new ZeroClipboard( document.getElementById("copy-key-button"), {
+            moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
+        } );
+
+        keycpy.on( 'dataRequested', function (client, args) {
+            client.setText($("#comptoir-key").val());
+        });
+
+        keycpy.on( "load", function(client) {
+            client.on( "complete", function(client, args) {
+                pop_alert("info", "Comptoir key copied to clipboard. Share it!");
+            } );
+        } );
+
+
+        $('#chatbox').slimScroll({
+            height: 'auto',
+            position: 'right',
+            size: '2px',
+            railSize: '1px',
+            distance: '20px',
+            color: '#428bca',
+            railColor: '#222',
+            railOpacity: 0.1,
+            wheelStep: 8,
+            railVisible: true,
+        });
+    </script>
+
         {% endblock %}
 
 	</body>
