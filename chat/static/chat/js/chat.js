@@ -222,7 +222,7 @@ var messaged = function(data) {
     /* If the data is a new message, we add it to the chatbox */
     if (data.type == "new-message") {
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
-//        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
@@ -274,5 +274,5 @@ socket.connect();
 $("body").ready(function() {
         msg_alert = $("#msgAlert")[0];
         sound_alert = $("#sound-alert-btn");
-//        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 });
