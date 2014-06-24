@@ -241,16 +241,19 @@ def create_comptoir(request):
         request.user.chatuser.last_visits.add(lv)
         request.user.comptoirs.append((new_comptoir, 0))
 
-        messages.success(request, "The comptoir has been created successfully. You can access it by clicking on your nickname.")
+        messages.success(request, "The comptoir has been created successfully. You can access your comptoirs by clicking on your nickname.")
 
         # Global variable set to True to distinguish between form with error
         # (that will be filled by index) and form treated that as to be cleaned up
         comptoir_created = True
+        
+        return redirect("join_comptoir", new_comptoir.id);
 
     else:
         messages.warning(request, "Comptoir not created: some errors in the form.")
     
-    return index(request);
+        return index(request);
+
 
 def check_hash(request):
 

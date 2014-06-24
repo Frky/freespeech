@@ -28,8 +28,11 @@ var getComptoirContentCallback = function(data, cid) {
     $("#cid").val(cid);
     $("#content").html(data);
     if ($("#chatbox").length != 0) {
-        init();
+        key_init();
+        // chat_init();
     }
+
+    join_comptoir();
 
     $("#options-container").removeClass("hidden");
     $("#send-form").removeClass("hidden");
