@@ -281,7 +281,7 @@ var closed = function() {
 
 $("#wizz-btn").click( function() {
 
-    data = {cid: $("#cid").val(), action: "wizz", hash: $("#comptoir-key-hash").val()};
+    data = {cid: $("#cid").val(), action: "wizz", hash: $("#comptoir-key-hash").val(), session_key: $('#session_key').val()};
     socket.send(data);
 
 });

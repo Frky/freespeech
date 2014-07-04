@@ -19,7 +19,7 @@ from chat.utils import date_to_tooltip
 
 import datetime
 
-connected_users = list()
+connected_users = dict()
 timezone_local = pytz.timezone(TIME_ZONE)
 
 def get_all_users():
@@ -62,41 +62,49 @@ def leaving(request, socket, context):
     #    lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
     #    lv.save()
     #    
-    user_infos = filter(lambda x: x[0] == socket, connected_users)[0]
+    try:
+        user_entry = filter(lambda x: x[1][0] == socket, connected_users.items())[0]
+    except IndexError:
+        return
+        
+    session, user_infos = user_entry[0], user_entry[1]
 
-    for cu in connected_users:
+    for cu in connected_users.values():
         if cu == user_infos:
             continue
         set_of_cmpt = set(user_infos[2])
         if len(set_of_cmpt.intersection(cu[2])) > 0:
             cu[0].send({"type": "left", "user": user_infos[1].username})
 
-    connected_users.remove(user_infos)
+    connected_users.pop(session)
 
 
-def identify(socket, session):
+def identify(socket, session_key):
 
+    session = Session.objects.get(session_key=session_key)
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
 
     if not user.is_authenticated or user.username == "AnonymousUser":
         return
 
-    # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
-    # socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([u[0] for u in connected_users[cid]]))}, channel=message["cid"])
-
     user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
-    connected_users.append((socket, user, user_cmptrs, None))
+    connected_users[session_key] = ((socket, user, user_cmptrs, None))
 
 
 @events.on_message(channel="^")
 def message(request, socket, context, message):
    
-    action = message["action"]
+    try:
+        action = message["action"]
+        session_key = message["session_key"]
+    except KeyError:
+        print "Session key error."
+        return
 
     if action == "join": # and comptoir.key_hash == message["hash"]:
         try:
-            user_entry = filter(lambda x: x[0] == socket, connected_users)[0]
+            user_entry = connected_users[session_key]
         except KeyError:
             print "Key Error."
             return
@@ -105,7 +113,8 @@ def message(request, socket, context, message):
             print "User error."
             return
 
-        connected_users[connected_users.index(user_entry)] = (user_entry[0], user_entry[1], user_entry[2], message["cid"])
+        connected_users[session_key] = (user_entry[0], user_entry[1], user_entry[2], message["cid"])
+
         return
 
         cid = context["cid"]
@@ -119,11 +128,11 @@ def message(request, socket, context, message):
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
 
     elif action == "identification":
-        identify(socket, Session.objects.get(session_key=message["session_key"]))
+        identify(socket, session_key)
 
-        user_infos = filter(lambda x: x[0] == socket, connected_users)[0]
+        user_infos = connected_users[session_key]
 
-        for cu in connected_users:
+        for cu in connected_users.values():
             if cu == user_infos:
                 continue
             set_of_cmpt = set(user_infos[2])
@@ -132,7 +141,7 @@ def message(request, socket, context, message):
 
     elif action == "post":
     
-        user = filter(lambda x: x[0] == socket, connected_users)[0][1]
+        user = connected_users[session_key][1]
         cid = message["cid"]
         comptoir = Comptoir.objects.get(id=cid)
         context["cid"] = cid
@@ -150,7 +159,7 @@ def message(request, socket, context, message):
             msg_local_date = msg.date.astimezone(timezone_local)
     
 
-            for other_user in connected_users: #get_all_users():
+            for other_user in connected_users.values(): #get_all_users():
                 osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
                 if comptoir in ocmptrs:
                     if ocid != cid and ouser != user:
@@ -159,7 +168,7 @@ def message(request, socket, context, message):
                         osock.send({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
 
     elif action == "wizz":
-        user = filter(lambda x: x[0] == socket, connected_users)[0][1]
+        user = connected_users[session_key][1]
         cid = message["cid"]
         comptoir = Comptoir.objects.get(id=cid)
         context["cid"] = cid
@@ -168,7 +177,7 @@ def message(request, socket, context, message):
         if (comptoir.key_hash != message["hash"]):
             socket.send({"type": "error", "error_msg": "Your wizz was rejected because your key is not valid."})
         else:
-            for other_user in connected_users: #get_all_users():
+            for other_user in connected_users.values(): #get_all_users():
                 osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
                 if comptoir in ocmptrs:
                     if ocid == cid:
