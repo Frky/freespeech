@@ -153,7 +153,7 @@ def message(request, socket, context, message):
             for other_user in connected_users: #get_all_users():
                 osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
                 if comptoir in ocmptrs:
-                    if ocid != cid:
+                    if ocid != cid and ouser != user:
                         osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
                     else:
                         osock.send({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
