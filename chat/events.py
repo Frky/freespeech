@@ -19,7 +19,7 @@ from chat.utils import date_to_tooltip
 
 import datetime
 
-connected_users = dict()
+connected_users = list()
 timezone_local = pytz.timezone(TIME_ZONE)
 
 def get_all_users():
@@ -28,74 +28,118 @@ def get_all_users():
         all_users += cuser
     return list(set(all_users))
 
+
 @events.on_disconnect(channel="^")
 def leaving(request, socket, context):
 
-    try:
-        user = User.objects.get(username=context["username"])
-        cid = context["cid"]
-    except KeyError:
+    #    try:
+    #        user = User.objects.get(username=context["username"])
+    #        cid = context["cid"]
+    #    except KeyError:
+    #        return
+    #
+    #    comptoir = Comptoir.objects.get(id=cid)
+    #
+    #    if not hasattr(user, 'chatuser'):
+    #        ChatUser(user=user).save()
+    #    try:
+    #        lv = user.chatuser.last_visits.filter(comptoir=comptoir)
+    #        if len(lv) > 1:
+    #            for extra_lv in user.chatuser.last_visits.get(comptoir=comptoir):
+    #                extra_lv.delete()
+    #            lv = LastVisit(comptoir=comptoir)
+    #            lv.save()
+    #            user.chatuser.last_visits.add(lv)
+    #            user.chatuser.last_visits.save()
+    #        else:
+    #            lv = lv[0]
+    #    except ObjectDoesNotExist:
+    #        lv = LastVisit(comptoir=comptoir)
+    #        lv.save()
+    #        user.chatuser.last_visits.add(lv)
+    #        user.chatuser.last_visits.save()
+    #
+    #    lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
+    #    lv.save()
+    #    
+    user_infos = filter(lambda x: x[0] == socket, connected_users)[0]
+
+    for cu in connected_users:
+        if cu == user_infos:
+            continue
+        set_of_cmpt = set(user_infos[2])
+        if len(set_of_cmpt.intersection(cu[2])) > 0:
+            cu[0].send({"type": "left", "user": user_infos[1].username})
+
+    connected_users.remove(user_infos)
+
+
+def identify(socket, session):
+
+    uid = session.get_decoded().get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+
+    if not user.is_authenticated or user.username == "AnonymousUser":
         return
 
-    comptoir = Comptoir.objects.get(id=cid)
+    # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
+    # socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([u[0] for u in connected_users[cid]]))}, channel=message["cid"])
 
-    if not hasattr(user, 'chatuser'):
-        ChatUser(user=user).save()
-    try:
-        lv = user.chatuser.last_visits.filter(comptoir=comptoir)
-        if len(lv) > 1:
-            for extra_lv in user.chatuser.last_visits.get(comptoir=comptoir):
-                extra_lv.delete()
-            lv = LastVisit(comptoir=comptoir)
-            lv.save()
-            user.chatuser.last_visits.add(lv)
-            user.chatuser.last_visits.save()
-        else:
-            lv = lv[0]
-    except ObjectDoesNotExist:
-        lv = LastVisit(comptoir=comptoir)
-        lv.save()
-        user.chatuser.last_visits.add(lv)
-        user.chatuser.last_visits.save()
-
-    lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
-    lv.save()
-    
-    connected_users[cid] = filter(lambda a: a[1] != socket, connected_users[cid])
-
-    socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([c[0] for c in connected_users[cid]]))}, channel=cid)
-
+    user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
+    connected_users.append((socket, user, user_cmptrs, None))
 
 
 @events.on_message(channel="^")
 def message(request, socket, context, message):
-    comptoir = Comptoir.objects.get(id=message["cid"])
-    session = Session.objects.get(session_key=message['session_key'])
-    uid = session.get_decoded().get('_auth_user_id')
-    user = User.objects.get(pk=uid)
    
     action = message["action"]
 
     if action == "join": # and comptoir.key_hash == message["hash"]:
-        if not user.is_authenticated or user.username == "AnonymousUser":
+        try:
+            user_entry = filter(lambda x: x[0] == socket, connected_users)[0]
+        except KeyError:
+            print "Key Error."
             return
-        context["username"] = user.username
-        context["cid"] = message["cid"]
+
+        if not user_entry[1].is_authenticated() or user_entry[1].is_anonymous():
+            print "User error."
+            return
+
+        connected_users[connected_users.index(user_entry)] = (user_entry[0], user_entry[1], user_entry[2], message["cid"])
+        return
+
         cid = context["cid"]
         if cid not in connected_users:
             connected_users[cid] = list()
             
         connected_users[cid].append((user.username, socket))
         # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
-        socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([u[0] for u in connected_users[cid]]))}, channel=message["cid"])
+        # socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([u[0] for u in connected_users[cid]]))}, channel=message["cid"])
 
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
 
+    elif action == "identification":
+        identify(socket, Session.objects.get(session_key=message["session_key"]))
+
+        user_infos = filter(lambda x: x[0] == socket, connected_users)[0]
+
+        for cu in connected_users:
+            if cu == user_infos:
+                continue
+            set_of_cmpt = set(user_infos[2])
+            if len(set_of_cmpt.intersection(cu[2])) > 0:
+                cu[0].send({"type": "joined", "user": user_infos[1].username})
 
     elif action == "post":
+    
+        user = filter(lambda x: x[0] == socket, connected_users)[0][1]
+        cid = message["cid"]
+        comptoir = Comptoir.objects.get(id=cid)
+        context["cid"] = cid
+        context["username"] = user.username
+
         if (comptoir.key_hash != message["hash"]):
             socket.send({"type": "error", "error_msg": "Your message was rejected because your key is not valid."})
-    
         else:
             msg = Message(owner=user, comptoir=comptoir, content=message["content"])
             msg.save()
@@ -105,10 +149,12 @@ def message(request, socket, context, message):
             # At this point the date of the message is in utc format, so we need to correct it 
             msg_local_date = msg.date.astimezone(timezone_local)
     
-            socket.send_and_broadcast_channel({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)}, channel=message["cid"])
 
-            for other_user in get_all_users():
-                other_user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(User.objects.get(username=other_user[0]))]
-                if comptoir in other_user_cmptrs and other_user[0] != user.username and other_user not in connected_users[message["cid"]]:
-                    other_user[1].send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
+            for other_user in connected_users: #get_all_users():
+                osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+                if comptoir in ocmptrs:
+                    if ocid != cid and ouser != user:
+                        osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
+                    else:
+                        osock.send({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
 

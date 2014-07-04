@@ -20,8 +20,11 @@ var sound_notification = function(type) {
     }
 }
 
+
 /* Creation of a socket instance */
 var socket = new io.Socket();
+
+var online = new Array();
 
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
@@ -31,6 +34,7 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     clear = $('<div />').text(clear).html();
 
     clear = linkify(clear);
+    clear = smilify(clear);
 
     /* Tooltip for the date of the msg. For the client, 
        displayed in left ; for others in right */
@@ -106,14 +110,24 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
 
 }
 
+var join_comptoir = function() {
+    data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
+    socket.send(data);
+    $(".badge", "#my-" + $("#cid").val()).remove();
+    return;
+}
+
+
 /* Connect the socket to the server with the comptoir id, 
    to be alerted on new messages posted on this comptoir */
 var connected = function() {
     socket.subscribe($("#cid").val());
-    data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
+    data = {action: "identification", session_key: $('#session_key').val()};
     socket.send(data);
+    join_comptoir();
     return;
 }
+
 
 /* Unrelevant for now */
 var entityMap = {
@@ -187,12 +201,24 @@ $('#new-msg').keydown(function(e){
 
 var update_badge = function(cid, user, date) {
     if ($(".badge", "#my-" + cid).length == 0) {
-        $("#my-" + cid).append("<span class=\"badge active\">1</span>");
+        $("td.td-name", "#my-" + cid).append("<span class=\"badge active\">1</span>");
     } else {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);
     }
     $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
+}
+
+
+var online_to_string = function(online) {
+    str = "";
+    for (var i=0; i < online.length; i++) {
+        str += online[i];
+        if (i < online.length - 1) {
+            str += " • ";
+        }
+    }
+    return str;
 }
 
 /* Handler for new data received through the socket */
@@ -208,7 +234,14 @@ var messaged = function(data) {
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
     } else if (data.type == "joined") {
-        pop_alert("info", "New connection: " + data.user + " cmptrs: " + data.cmptrs);
+        username = data.user;
+        if (username != $("#user-name").html() && online.indexOf(username) == -1) {
+            online.push(username);
+        }
+
+        $("#users-connected").text(online_to_string(online));
+//        pop_alert("info", "New connection: " + data.user);
+        /*
     } else if (data.type == "users") {
         online = "";
         for (var i = 0; i < data.users_list.length; i++) {
@@ -220,6 +253,14 @@ var messaged = function(data) {
             online += data.users_list[i];
         }
         $("#users-connected").text(online);
+        */
+    } else if (data.type == "left") {
+        username = data.user;
+        if (online.indexOf(username) != -1) {
+            online.pop(username);
+        }
+
+        $("#users-connected").text(online_to_string(online));
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
     }

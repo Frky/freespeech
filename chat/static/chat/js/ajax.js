@@ -21,4 +21,3 @@ var getXMLHttpRequest = function() {
     return xhr;
 }
 
-

@@ -20,6 +20,7 @@ var tmp_id = -1;
 var key_field = $("#comptoir-key");
 /* Field of the hash */
 var hash_field = $("#comptoir-key-hash");
+var copy_key_btn = $("#copy-key-button");
 
 var global_key_storage = "";
 
@@ -80,15 +81,17 @@ var generateTmpKeyId = function() {
    from a tmp register to a permanent register */
 var keyFound = function(id, isTmp) {
     var private_key = localStorage.getItem(id);
+    console.log("Okay, key found: " + private_key); 
     if (isTmp) {
         localStorage.setItem(key_id, private_key);
         localStorage.removeItem(id);
     }
-    $("#comptoir-key").val(private_key);
+    key_field.val(private_key);
     updateKey(key_id, true);
     
     if (private_key != "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff") {
-        $("#key-tr").removeClass("hidden");
+        key_field.parent().parent().removeClass("hidden");
+        copy_key_btn.removeClass("hidden");
     }
 }
 
@@ -136,6 +139,7 @@ var checkHashUICallback = function(data) {
 
     // If the server returns False, it means that the username is already used
     if (data === "False") {
+        key_field.parent().parent().removeClass("hidden");
         key_field.parent().removeClass("has-success");
         key_field.parent().addClass("has-error");
         hash_field.parent().removeClass("has-success");
@@ -168,7 +172,7 @@ var Decrypt_all = function() {
         ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {
             $( this ).find(".clear").text(Decrypt_Text(ciph, localStorage.getItem(key_id)));
-            $( this ).find(".clear").html(linkify($( this ).find(".clear").html()));
+            $( this ).find(".clear").html(smilify(linkify($( this ).find(".clear").html())));
         }
     });
 }
@@ -181,6 +185,8 @@ var tryNextTmpKey = function() {
     } while (localStorage.getItem(key_id_tmp + tmp_id.toString()) == null && tmp_id < 100);
 
     if (tmp_id == 100) {
+        key_field.parent().parent().removeClass("hidden");
+        copy_key_btn.removeClass("hidden");
         return;
     }
 
@@ -189,9 +195,11 @@ var tryNextTmpKey = function() {
 }
 
 var findKey = function() {
-    if (localStorage.getItem(key_id) != null) {
+    if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") {
+        console.log("Okay, I already know this one.");
         keyFound(key_id, false);
     } else {
+        console.log("I'll test 0xFF..FF first.");
         localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         tryNextTmpKey();
     }
@@ -216,13 +224,28 @@ $("#comptoir-key").change(function() {
 //     update_key();
 // });
 
-var init = function() {
+var key_init = function() {
     
     /* This function checks if there is a key set up either on 
        the key register associated to this comptoir, or in some
        temporary register in case this is the first connection since the
        creation of the comptoir */
+
+    console.log("Let's find the key!");
+
+    key_id = "comptoir_key_" + $("#cid").val();
+    /* Field of the key */
+    key_field = $("#comptoir-key");
+    /* Field of the hash */
+    hash_field = $("#comptoir-key-hash");
+
+    key_field.parent().parent().addClass("hidden");
+    copy_key_btn.addClass("hidden");
+    key_field.parent().removeClass("has-success");
+    key_field.parent().removeClass("has-error");
+
     findKey();
+
     setTimeout(function() {
         checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
     }, 500);
@@ -232,6 +255,8 @@ var init = function() {
     Decrypt_all();
 }
 
-if ($("#chatbox").length != 0) {
-    init();
-}
+$(document).ready(function() {
+    if ($("#chatbox").length != 0) {
+        key_init();
+    }
+});
