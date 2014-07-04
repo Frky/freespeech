@@ -172,7 +172,7 @@ var Decrypt_all = function() {
         ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {
             $( this ).find(".clear").text(Decrypt_Text(ciph, localStorage.getItem(key_id)));
-            $( this ).find(".clear").html(linkify($( this ).find(".clear").html()));
+            $( this ).find(".clear").html(smilify(linkify($( this ).find(".clear").html())));
         }
     });
 }
@@ -255,6 +255,8 @@ var key_init = function() {
     Decrypt_all();
 }
 
-if ($("#chatbox").length != 0) {
-    key_init();
-}
+$(document).ready(function() {
+    if ($("#chatbox").length != 0) {
+        key_init();
+    }
+});

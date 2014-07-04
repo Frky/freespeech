@@ -14,6 +14,7 @@ var sound_notification = function(type) {
     }
 }
 
+
 /* Creation of a socket instance */
 var socket = new io.Socket();
 
@@ -27,6 +28,7 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     clear = $('<div />').text(clear).html();
 
     clear = linkify(clear);
+    clear = smilify(clear);
 
     /* Tooltip for the date of the msg. For the client, 
        displayed in left ; for others in right */
