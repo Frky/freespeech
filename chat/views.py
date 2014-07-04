@@ -55,6 +55,8 @@ def index(request):
 
     template_name = "chat/index.html"
 
+    context["title"] = ""
+    context["description"] = ""
     context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm()
 
     comptoir_created = False
@@ -444,3 +446,10 @@ def ajax_comptoir(request, cid):
 
 def under_work(request):
     return render(request, "chat/under_work.html")
+
+
+def cmptr_info(request, cid):
+    comptoir = get_object_or_404(Comptoir, id=cid)
+    json_data = "{\"title\": \"" + comptoir.title + "\", \"description\": \"" + comptoir.description + "\"}"
+    return HttpResponse(json_data, mimetype='application/json')
+

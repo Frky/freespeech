@@ -195,7 +195,7 @@ $('#new-msg').keydown(function(e){
 
 var update_badge = function(cid, user, date) {
     if ($(".badge", "#my-" + cid).length == 0) {
-        $("#my-" + cid).append("<span class=\"badge active\">1</span>");
+        $("td.td-name", "#my-" + cid).append("<span class=\"badge active\">1</span>");
     } else {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);
@@ -220,7 +220,6 @@ var messaged = function(data) {
 
     if (data == null) return;
 
-    console.log(data)
     /* If the data is a new message, we add it to the chatbox */
     if (data.type == "new-message") {
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
