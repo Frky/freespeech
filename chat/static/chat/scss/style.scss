@@ -31,17 +31,19 @@ html, body {
 section {
     position: absolute;
     left: 0px;
-    right: 500px;
+    right: 550px;
     height: 100%;
 
     overflow-y: scroll;
+    overflow: -moz-scrollbars-none;
 }
+
 
 header {
     position: absolute;
     right: 0px;
-    width: 500px;
-    height: 45%;
+    width: 550px;
+    height: 250px;
 
     h1 {
         display: inline-block;
@@ -73,6 +75,13 @@ header {
         }
     }
 
+    #cmptr-info {
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+
+}
+
     #register-form, #login-form {
         display: block;
         width: 100%;
@@ -96,35 +105,44 @@ header {
         }
     }
 
-    #my-comptoirs {
-        font-size: 0.8em;
-        height: 180px;
+#my-comptoirs {
+    font-size: 0.8em;
+    height: 300px;
+        
+    .theader {
+        height: 20px;
+        font-weight: bold;
+        margin-bottom: 0px;
+    }
 
-        & .list {
-            overflow-y: scroll;
-            height: 100%;
+    .scrollable {
+        overflow-y: scroll;
+        overflow: -moz-scrollbars-none;
+    }
 
-            p {
-                display: inline-block;
-                width: 31%;
-                right: 2%;
-                word-break: break-word;
-            }
+    td.td-name, td.td-users {
+        width: 41%;
+    }
+
+    td.td-name {
+        span.badge {
+            display: inline-block;
+            vertical-align: middle;
+            float: right;
         }
-
-        & > p:first-child {
-            margin-right: 10px;
-            font-weight: bold;
+        span.txt {
+            overflow-x: hidden;
         }
     }
 }
 
+
 aside {
     position: absolute;
     right: 0px;
-    top: 45%;
+    top: 250px;
+    bottom: 0px;
     width: 500px;
-    height: 55%;
 
     footer {
         text-align: right;
@@ -320,9 +338,15 @@ a:hover {
     }
 }
 
-#send-form {
-    width: 100%;
+div#aside-panel {
+    position: fixed;
+    bottom: 30px;
+    right: 0px;
+    width: 500px;
+}
 
+
+#send-form {
     div {
         margin: auto 3%;
         width: 94%;
@@ -330,7 +354,7 @@ a:hover {
 
     #new-msg {
         width: 94%;
-        height: 150px;
+        height: 90px;
         padding: 5px;
         resize: none;
 
@@ -427,6 +451,4 @@ img.smiley {
 }
 
 #cmptr-info {
-    margin-top: 20px;
-    margin-bottom: 20px;
 }

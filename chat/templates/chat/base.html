@@ -85,7 +85,15 @@
             </blockquote>
 
 
-            <div id="cmptr-info"><h2 class="title">{{ title }}</h2> <span>{{ description }}</span></div>
+            <div id="cmptr-info"><h2 class="title">{{ title }}</h2> <span class="desc">{{ description }}</span></div>
+
+            {% block header_option %}
+            {% endblock %}
+
+            {% endblock %}
+	    </header>
+
+        <aside>
 
             {% if not user.is_authenticated %}
                 <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
@@ -111,36 +119,45 @@
                 </form>
 
             {% else %}
-
-                <div class="hidden" id="my-comptoirs">
-                    <p>Comptoirs I have joined</p>
-                    <div class="list">
+                <div class="" id="my-comptoirs">
+                    <table class="theader table table-hover">
+                        <thead>
+                            <td class="td-name">Comptoirs I have joined</td>
+                            <td class="td-addr">Address</td>
+                            <td class="td-users">Someone's here ?</td>
+                        </thead>
+                    </table>
+                    <div class="scrollable">
+                    <table class="table table-hover">
+                        <tbody>
                         {% for c,n in user.comptoirs reversed %}
-                        <p id="my-{{ c.id }}">
-                            {{ c.title }}
+                        <tr id="my-{{ c.id }}">
+                            <td class="td-name">
+                                <span class="txt">{{ c.title }}</span>
+                                {% if n != 0 %}
+                                    <span class="badge active">{{ n }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="td-addr">
                             <a class="cmptr-link" value="{{ c.id }}"
                                 {# url "join_comptoir" c.id #}
                                 {% if c.last_message.owner != None %}
                                     class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
                                 {% endif %}
                                 >{{ c.id }}</a>
-                            {% if n != 0 %}
-                                <span class="badge active">{{ n }}</span>
-                            {% endif %}
+                            </td>
+                            <td class="td-users">(Not implemented yet)</td>
+                        </tr>
                         <!--</p> Hack to remove whitespace between p elements (note HTML5 compliancy)-->
                         {% endfor %}
+                        </tbody>
+                    </table>
                     </div>
                 </div>
             {% endif %}
-
-            {% block header_option %}
-            {% endblock %}
-
-            {% endblock %}
-	    </header>
-
-        <aside>
             {% block footer_option %}
+
+            <div id="aside-panel">
     <table id="options-container" class="hidden">
         <tr id="cpy-url-btn-tr">
             <td class="lbl">
@@ -199,7 +216,8 @@
         </div>
     {% endif %}
 
-    </form>
+</form>
+            </div>
             {% endblock %}
             <footer>
                 {% block footer %}
