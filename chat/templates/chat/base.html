@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{% static 'chat/generated/css/style.css' %}" />
         <script src="{% static 'chat/js/ajax.js' %}"></script>
         <script src="{% static 'chat/js/jquery.min.js' %}"></script>
+        <script src="{% static 'chat/js/jquery-ui-custom.min.js' %}"></script>
 		<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
         <script src="{% static 'chat/js/alerts.js' %}"></script>
@@ -212,6 +213,7 @@
         <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
 
         <div class="validation">
+            <input type="button" value="Wizz!" id="wizz-btn" class="btn btn-default">
             <input type="submit" value="Say!" class="btn btn-default submit-button">
         </div>
     {% endif %}
@@ -271,6 +273,10 @@
 
     <audio id="msgAlert">
         <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
+    </audio>
+
+    <audio id="wizzAlert">
+        <source src="{% static 'chat/sounds/wizz.ogg' %}" type="audio/ogg">
     </audio>
 
 	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>

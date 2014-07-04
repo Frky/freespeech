@@ -261,6 +261,15 @@ var messaged = function(data) {
         }
 
         $("#users-connected").text(online_to_string(online));
+    } else if (data.type == "wizz") {
+        /* Notification to the sound alert manager */
+        sound_notification("wizz");
+        /* Shaking the chatbox */
+        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#content").effect("shake", {times: 6}, 500, function() {
+            $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        });
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
     }
@@ -271,10 +280,10 @@ var closed = function() {
 }
 
 $("#wizz-btn").click( function() {
-    /* Notification to the sound alert manager */
-    sound_notification("wizz");
-    /* Shaking the chatbox */
-    $("#chatbox").effect("shake", {times: 6}, 500);
+
+    data = {cid: $("#cid").val(), action: "wizz", hash: $("#comptoir-key-hash").val()};
+    socket.send(data);
+
 });
 
 

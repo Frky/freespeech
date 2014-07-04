@@ -158,3 +158,19 @@ def message(request, socket, context, message):
                     else:
                         osock.send({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
 
+    elif action == "wizz":
+        user = filter(lambda x: x[0] == socket, connected_users)[0][1]
+        cid = message["cid"]
+        comptoir = Comptoir.objects.get(id=cid)
+        context["cid"] = cid
+        context["username"] = user.username
+
+        if (comptoir.key_hash != message["hash"]):
+            socket.send({"type": "error", "error_msg": "Your wizz was rejected because your key is not valid."})
+        else:
+            for other_user in connected_users: #get_all_users():
+                osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+                if comptoir in ocmptrs:
+                    if ocid == cid:
+                        osock.send({"type": "wizz"}) #, "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
+
