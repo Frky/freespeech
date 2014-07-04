@@ -85,6 +85,8 @@
             </blockquote>
 
 
+            <div id="cmptr-info"><h2 class="title">{{ title }}</h2> <span>{{ description }}</span></div>
+
             {% if not user.is_authenticated %}
                 <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
                     {% csrf_token %}
