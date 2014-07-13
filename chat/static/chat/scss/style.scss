@@ -336,10 +336,8 @@ a:hover {
 
         position: absolute;
         top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        padding-bottom: 150px;
+        bottom: 150px;
+        width: 100%;
         overflow-y: scroll;
 
         #loader {
@@ -374,7 +372,7 @@ a:hover {
         position: absolute;
         bottom: 0px;
         height: 150px;
-        width: 100%;
+        width: 94%;
     }
     
     table.cmptr-page {

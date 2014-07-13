@@ -31,10 +31,10 @@ var getComptoirInfosCallback = function(data) {
 
 
 var getComptoirContentCallback = function(data, cid) {
-    window.history.replaceState({}, cid, cid);
-    console.log("Attention, je vais changer le cid");
+    var old_location = window.location.pathname;
     $("#cid").val(cid);
     $("#content").html(data);
+    /*
     $('#chatbox').slimScroll({
         height: 'auto',
         position: 'right',
@@ -47,15 +47,24 @@ var getComptoirContentCallback = function(data, cid) {
         wheelStep: 8,
         railVisible: true,
     });
+    $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+    */
     if ($("#chatbox").length != 0) {
         key_init();
     }
 
+    $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
+    if (old_location == "/") {
+        $("#options-container").removeClass("hidden");
+        init_cmptr();
+    }
+
+    window.history.replaceState({}, cid, cid);
     join_comptoir();
 
     $("#send-form").removeClass("hidden");
     bind_keys();
-    $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 }
 
 
