@@ -39,14 +39,14 @@ def unquote_new(value):
     return unquote(value)
 
 
-context = dict()
-context['registerForm'] = RegisterForm()
-context['version'] = VERSION
 comptoir_created = False
 
 
 
 def index(request):
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     """
 	Home view
 
@@ -73,6 +73,9 @@ def auth(request):
 	
     """
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     template_name = "chat/login.html"
 
     if request.method == 'POST':
@@ -105,6 +108,9 @@ def register(request):
 
     """
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     template_name = "chat/register.html"
 
     form = RegisterForm(request.POST or None)
@@ -169,6 +175,9 @@ def sign_out(request):
 
     """
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     logout(request)
 
     return redirect("home")
@@ -178,6 +187,9 @@ def create_comptoir(request):
 
     global comptoir_created
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     form = ComptoirForm(request.POST or None)
 
     if form.is_valid():
@@ -233,6 +245,9 @@ def check_hash(request):
 
 def join_comptoir(request, cid):
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     template_name = "chat/see_comptoir.html"
 
     comptoir = get_object_or_404(Comptoir, id=cid)
@@ -286,6 +301,9 @@ def join_comptoir(request, cid):
 
 def report(request):
     template_name = "chat/report.html"
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
 
     if request.method == "POST":
         if "description" not in request.POST.keys() or request.POST['description'] == "":
@@ -306,12 +324,18 @@ def report(request):
 
 def about(request):
     template_name = "chat/about.html"
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
 
     return render(request, template_name, context)
 
 
 def reporting_box(request):
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     template_name = "chat/reporting_box.html"
     
     user = request.user
@@ -358,6 +382,9 @@ def load_previous_messages(request):
 def ajax_comptoir(request, cid):
     template_name = "chat/ajax_cmptr.html"
 
+    context = RequestContext(request)
+    context['registerForm'] = RegisterForm()
+    context['version'] = VERSION
     comptoir = get_object_or_404(Comptoir, id=cid)
         
     if comptoir is None:
