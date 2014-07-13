@@ -36,7 +36,7 @@
                 </td>
                 <td class="nopoint"></td>
                 <td>
-                    <form action="{% url "send" %}" method="post" id="send-form" class="hidden">
+                    <form method="post" id="send-form" class="hidden">
                         {% csrf_token %}
                         <input type="hidden" id="cid" name="cid" value="{{ id }}">
                         {% if user.is_authenticated %}
