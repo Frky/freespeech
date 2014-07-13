@@ -69,12 +69,20 @@ def leaving(request, socket, context):
         
     session, user_infos = user_entry[0], user_entry[1]
 
-    for cu in connected_users.values():
-        if cu == user_infos:
+    # Send to the new connected user the list of currently connected users
+    users_list = list()
+    for other_user in connected_users.values():
+        if other_user == user_entry:
             continue
-        set_of_cmpt = set(user_infos[2])
-        if len(set_of_cmpt.intersection(cu[2])) > 0:
-            cu[0].send({"type": "left", "user": user_infos[1].username})
+        osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+        if ocid == cu[3]:
+            users_list.append(ouser.username)
+
+    for cu in connected_users.values():
+        if cu == user_entry:
+            continue
+        if user_entry[3] == cu[3]:
+            cu[0].send({"type": "users", "users_list": users_list})
 
     connected_users.pop(session)
 
@@ -113,7 +121,23 @@ def message(request, socket, context, message):
             print "User error."
             return
 
+        old_cid = connected_users[session_key][3]
+
         connected_users[session_key] = (user_entry[0], user_entry[1], user_entry[2], message["cid"])
+
+        # Send to the new connected user the list of currently connected users
+        users_list = list()
+        for other_user in connected_users.values():
+                osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+                if ocid == message["cid"]:
+                    users_list.append(ouser.username)
+                    # In the same time, we notify the new user to others
+                    osock.send({"type": "joined", "user": connected_users[session_key][1].username})
+                if ocid == old_cid and osock != connected_users[session_key][0]:
+                    # In this case, notification for the deconnection of the user
+                    osock.send({"type": "left", "user": connected_users[session_key][1].username})
+
+        socket.send({"type": "users", "users_list": users_list})
 
         return
 
@@ -127,10 +151,14 @@ def message(request, socket, context, message):
 
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
 
+            
+
     elif action == "identification":
         identify(socket, session_key)
 
         user_infos = connected_users[session_key]
+
+        return
 
         for cu in connected_users.values():
             if cu == user_infos:
@@ -140,7 +168,6 @@ def message(request, socket, context, message):
                 cu[0].send({"type": "joined", "user": user_infos[1].username})
 
     elif action == "post":
-    
         user = connected_users[session_key][1]
         cid = message["cid"]
         comptoir = Comptoir.objects.get(id=cid)
@@ -165,7 +192,7 @@ def message(request, socket, context, message):
                     if ocid != cid and ouser != user:
                         osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
                     else:
-                        osock.send({"type": "new-message", "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
+                        osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
 
     elif action == "wizz":
         user = connected_users[session_key][1]
