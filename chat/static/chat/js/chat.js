@@ -211,7 +211,7 @@ var update_badge = function(cid, user, date) {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);
     }
-    $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
+//    $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
 }
 
 

@@ -33,7 +33,6 @@ var checkComptoirForm = function(form) {
 }
 
 $("#comptoir-form").submit(function() {
-    console.log($("#public-btn").val());
     if (!checkComptoirForm($( this ))) {
         event.preventDefault();
     }

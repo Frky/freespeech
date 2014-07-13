@@ -26,7 +26,6 @@ var getComptoirContent = function(callback, cid) {
 var getComptoirInfosCallback = function(data) {
     $(".title", "#cmptr-info").text(data.title);
     $(".desc", "#cmptr-info").text(data.description);
-    console.log(data["title"]);
 }
 
 
