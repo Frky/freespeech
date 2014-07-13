@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
+from django.template import RequestContext
 from django.core import serializers
 from django.utils import simplejson
 from django.core.exceptions import ObjectDoesNotExist
