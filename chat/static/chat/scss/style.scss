@@ -43,7 +43,7 @@ header {
     position: absolute;
     right: 0px;
     width: 550px;
-    height: 250px;
+    height: 200px;
 
     h1 {
         display: inline-block;
@@ -57,8 +57,8 @@ header {
     }
 
     blockquote {
+        margin-top: 20px;
         display: block;
-        height: 17%;
     }
 
     nav {
@@ -75,18 +75,55 @@ header {
         }
     }
 
-    #cmptr-info {
-        margin-top: 50px;
-        margin-bottom: 20px;
-    }
-
 }
 
+#login-form, #register-form {
+    width: 100%;
+    padding-right: 20px;
+
+    table {
+        min-width: 100%;
+        max-width: 100%;
+        
+        td {
+            padding-bottom: 10px;
+        }
+
+        .field-td {
+            width: 45%;
+        }
+
+        .submit-td {
+            width: 35%;
+        }
+    
+        .help-td {
+            width: 10%;
+            padding-bottom: 10px;
+            text-align: center;
+
+            .btn {
+                margin-top: 0px;
+            }
+        }
+
+        .field-td, .submit-td {
+            input {
+                width: 100%;
+            }
+        }
+
+    }
+}
+
+
+/*
     #register-form, #login-form {
         display: block;
         width: 100%;
 
         .help-block {
+            width: 5%;
 
         }
 
@@ -101,27 +138,47 @@ header {
             text-align: center;
             float: right;
             margin-right: 50px;
-            width: 30%;
+            width: 25%;
+        }
+
+        #submitButton {
+            display: block;
         }
     }
+*/
 
-#my-comptoirs {
+
+#my-comptoirs, #connexion-forms {
     font-size: 0.8em;
-    height: 300px;
-        
+    position: absolute;
+    top: 200px;
+    bottom: 300px;
+    width: 550px;
+
     .theader {
+        width: 94%;
         height: 20px;
         font-weight: bold;
         margin-bottom: 0px;
     }
 
-    .scrollable {
-        overflow-y: scroll;
+    .hiddenscroll {
+        overflow: hidden;
         overflow: -moz-scrollbars-none;
     }
 
+    .scrollable {
+        position: absolute;
+        top: 30px;
+        bottom: 0px;
+        width: 94%;
+        overflow-y: auto;
+        /*
+        */
+    }
+
     td.td-name, td.td-users {
-        width: 41%;
+        width: 40%;
     }
 
     td.td-name {
@@ -138,11 +195,10 @@ header {
 
 
 aside {
-    position: absolute;
+    position: fixed;
     right: 0px;
-    top: 250px;
-    bottom: 0px;
-    width: 500px;
+    height: 100%;
+    width: 550px;
 
     footer {
         text-align: right;
@@ -262,18 +318,60 @@ a:hover {
 
 }
 
-#chatbox {
+#content {
 
-    #loader {
-        width: 12px; 
-        margin: auto;
-        margin-bottom: 10px;
-        padding-top: 50px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 550px;
+
+    #chatbox {
+
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        padding-bottom: 150px;
+        overflow-y: scroll;
+
+        #loader {
+            width: 12px; 
+            margin: auto;
+            margin-bottom: 10px;
+            padding-top: 50px;
+        }
+    
+        text-align: center;
+    
+        .msg-info {
+                
+            margin-bottom: 0px;
+            
+            .user {
+                font-weight: bold;    
+            }
+    
+        }
+    
+        .date-of-msg {
+            font-size: 0.8em;
+        }
+    
+        .others .date-of-msg {
+            margin-left: 10px;
+        }
     }
-
-    text-align: center;
-
-    table {
+    
+    #sendbox {
+        position: absolute;
+        bottom: 0px;
+        height: 150px;
+        width: 100%;
+    }
+    
+    table.cmptr-page {
         width: 94%;
         margin: auto 3%;
         tr {
@@ -283,15 +381,15 @@ a:hover {
             td {
                 width: 2%;
                 text-align: center;
-                vertical-align: baseline;
-
+                vertical-align: top;
+    
                 &.nopoint {
                     background-image: url('../../images/vert-line.png');
                     background-size: 100%;
                     background-repeat: repeat-y;
                 }
                 // background-position: 11px 0px;
-
+    
                 &.point {
                     background-image: url('../../images/vert-line-80.png');
                     background-size: 100% 100%;
@@ -311,38 +409,22 @@ a:hover {
                 th {
                     text-align: center;
                 }
-/*                border-style: solid;
+                  border-style: solid;
                 border-width: 1px 0px 0px 0px;
                 border-color: #428bca;
-*/
+    
             }
         }
     }
 
-    .msg-info {
-            
-        margin-bottom: 0px;
-        
-        .user {
-            font-weight: bold;    
-        }
-
-    }
-
-    .date-of-msg {
-        font-size: 0.8em;
-    }
-
-    .others .date-of-msg {
-        margin-left: 10px;
-    }
 }
 
 div#aside-panel {
     position: fixed;
     bottom: 30px;
     right: 0px;
-    width: 500px;
+    width: 550px;
+    height: 250px;
 }
 
 
@@ -369,7 +451,7 @@ div#aside-panel {
 }
 
 table#options-container {
-    width: 94%%;
+    width: 94%;
     margin: auto 3%;
 
     tr {

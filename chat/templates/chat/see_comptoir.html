@@ -4,14 +4,10 @@
 
     {% load staticfiles %}
 
-<!--
-    <h1>{{ title }}</h1>
-    <h3>{{ description }}</h3>
-    -->
     <div id="chatbox">
         <input type="hidden" id="top_senti" value={{ msgs.first.id }}>
         <img src="{% static 'chat/images/loader_ball.gif' %}" alt="Loading ..." class="hidden" id="loader" />
-        <table>
+        <table class="cmptr-page">
             <tbody>
             {% for msg in msgs %}
                 {% ifchanged %}
@@ -35,6 +31,34 @@
             </tbody>
         </table>
         <input type="hidden" id="last-msg" value="{{ senti }}">
+    </div>
+    <div id="sendbox">
+        <table class="cmptr-page">
+            <tr>
+                <td id="cmptr-info">
+                    <h2 class="title">{{ title }}</h2> <span class="desc">{{ description }}</span>
+                </td>
+                <td class="nopoint"></td>
+                <td>
+                    <form action="{% url "send" %}" method="post" id="send-form" class="hidden">
+                        {% csrf_token %}
+                        <input data-cid="{{ id }}" type="hidden" id="cid" name="cid" value="{{ id }}">
+                        {% if user.is_authenticated %}
+                            <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
+                            <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+
+        <!--
+        <div class="validation">
+            <input type="button" value="Wizz!" id="wizz-btn" class="btn btn-default">
+            <input type="submit" value="Say!" class="btn btn-default submit-button">
+        </div>
+        -->
+
+        </table>
     </div>
 
 {% endblock %}

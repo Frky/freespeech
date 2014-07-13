@@ -65,6 +65,7 @@
             {% endblock %}
         </section>
 
+        <aside>
         <header>
             {% block header %}
 
@@ -86,53 +87,95 @@
             </blockquote>
 
 
-            <div id="cmptr-info"><h2 class="title">{{ title }}</h2> <span class="desc">{{ description }}</span></div>
-
             {% block header_option %}
             {% endblock %}
 
             {% endblock %}
 	    </header>
 
-        <aside>
 
             {% if not user.is_authenticated %}
+                <div id="connexion-forms">
                 <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
                     {% csrf_token %}
-                    <p><input name="username" type="login" class="form-control" placeholder="Username"></p>
-                    <p><input name="password" type="password" class="form-control" placeholder="Password"></p>
-                    <p><input type="submit" class="btn btn-default" value="> Log in"></p>
+                    <table>
+                        <tr>
+                            <td class="field-td">
+                                <input name="username" type="login" class="form-control" placeholder="Username">
+                            </td>
+                            <td class="help-td">
+                            </td>
+                            <td class="submit-td">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-td">
+                                <input name="password" type="password" class="form-control" placeholder="Password">
+                            </td>
+                            <td class="help-td">
+                            </td>
+                            <td class="submit-td">
+                                <input type="submit" class="btn btn-default" value="Log in">
+                            </td>
+                        </tr>
+                    </table>
                 </form>
 
                 <form class="formContainer hidden" method="post" action="{% url "register" %}" id="register-form">
                     {% csrf_token %}
+                    <table>
                     {% for field in registerForm %}
-                        <div class="fieldContainer">
+                        <tr>
+                            <td class="field-td">
                                 {{ field }}
-                        </div>
+                            </td>
+                            <td class="help-td">
+                            </td>
+                            <td class="submit-td">
+                            </td>
+                        </tr>
                     {% endfor %}
-                        <div class="fieldContainer">
-                            <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
-                        </div>
-                    <div id="submitButton">
-                        <input class="btn btn-default" type="submit" value="> Register">
-                    </div>
+                        <tr>
+                            <td class="field-td">
+                                <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
+                            </td>
+                            <td class="help-td">
+                                <a href="#" class="fsp-popover btn btn-info help-block"id="beta_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
+                                This site is still under development. For now, you need to have an inscription key to be able
+                                to register. If you don't have one, you can ask for it at fsp@udtq.fr.
+                                ">
+                                ?</a>
+                            </td>
+                            <td class="submit-td">
+                                <input class="btn btn-default" type="submit" value="> Register">
+                            </td>
+                        </tr>
+                    </table>
                 </form>
-
+                </div>
             {% else %}
-                <div class="" id="my-comptoirs">
+                <div id="my-comptoirs">
                     <table class="theader table table-hover">
                         <thead>
+                            <td class="td-ciph">Ciphered</td>
                             <td class="td-name">Comptoirs I have joined</td>
                             <td class="td-addr">Address</td>
                             <td class="td-users">Someone's here ?</td>
                         </thead>
                     </table>
+                    <div class="hiddenscroll">
                     <div class="scrollable">
                     <table class="table table-hover">
                         <tbody>
                         {% for c,n in user.comptoirs reversed %}
-                        <tr id="my-{{ c.id }}">
+                        <tr id="my-{# c.id #}">
+                            <td class="td-ciph">
+                                {% if c.public  %}
+                                    N
+                                {% else %}
+                                    Y
+                                {% endif %}
+                            </td>
                             <td class="td-name">
                                 <span class="txt">{{ c.title }}</span>
                                 {% if n != 0 %}
@@ -140,8 +183,8 @@
                                 {% endif %}
                             </td>
                             <td class="td-addr">
-                            <a class="cmptr-link" value="{{ c.id }}"
-                                {# url "join_comptoir" c.id #}
+                                <a class="cmptr-link" value="{{ c.id }}"
+                                    {% url "join_comptoir" c.id %}
                                 {% if c.last_message.owner != None %}
                                     class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
                                 {% endif %}
@@ -153,6 +196,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    </div>
                     </div>
                 </div>
             {% endif %}
@@ -195,30 +239,15 @@
                 <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
             </td>
         </tr>
+        <tr id="users-connected-tr">
+            <td class="lbl">
+                <label>Online</label>
+            </td>
+            <td id="users-connected" class="fld">
+            </td>
+        </tr>
     </table>
 
-    <form action="{% url "send" %}" method="post" id="send-form" class="hidden">
-    <div id="users-connected-content">
-            Online: <span id="users-connected"></span>
-        </div>
-        {% csrf_token %}
-
-
-        <input type="hidden" id="cid" name="cid" value="{{ id }}">
-
-    {% if user.is_authenticated %}
-
-        <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
-
-        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="form-control" autofocus></textarea>
-
-        <div class="validation">
-            <input type="button" value="Wizz!" id="wizz-btn" class="btn btn-default">
-            <input type="submit" value="Say!" class="btn btn-default submit-button">
-        </div>
-    {% endif %}
-
-</form>
             </div>
             {% endblock %}
             <footer>
@@ -282,6 +311,7 @@
 	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
 
     <script>
+        $(".fsp-popover").popover();
         $("[name='sound-alert']").bootstrapSwitch();
         $("#sound-alert-btn").on('switchChange', function() {
             $("#sound-alert-btn").val(1 - $("#sound-alert-btn").val());
@@ -317,18 +347,6 @@
         } );
 
 
-        $('#chatbox').slimScroll({
-            height: 'auto',
-            position: 'right',
-            size: '2px',
-            railSize: '1px',
-            distance: '20px',
-            color: '#428bca',
-            railColor: '#222',
-            railOpacity: 0.1,
-            wheelStep: 8,
-            railVisible: true,
-        });
 
         if (window.location.pathname != "/") {
             $("#options-container").removeClass("hidden");
