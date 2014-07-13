@@ -32,6 +32,7 @@ var getComptoirInfosCallback = function(data) {
 
 var getComptoirContentCallback = function(data, cid) {
     window.history.replaceState({}, cid, cid);
+    console.log("Attention, je vais changer le cid");
     $("#cid").val(cid);
     $("#content").html(data);
     $('#chatbox').slimScroll({
@@ -52,8 +53,8 @@ var getComptoirContentCallback = function(data, cid) {
 
     join_comptoir();
 
-    $("#options-container").removeClass("hidden");
     $("#send-form").removeClass("hidden");
+    bind_keys();
     $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
 }
 

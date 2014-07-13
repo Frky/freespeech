@@ -81,7 +81,6 @@ var generateTmpKeyId = function() {
    from a tmp register to a permanent register */
 var keyFound = function(id, isTmp) {
     var private_key = localStorage.getItem(id);
-    console.log("Okay, key found: " + private_key); 
     if (isTmp) {
         localStorage.setItem(key_id, private_key);
         localStorage.removeItem(id);
@@ -196,10 +195,8 @@ var tryNextTmpKey = function() {
 
 var findKey = function() {
     if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") {
-        console.log("Okay, I already know this one.");
         keyFound(key_id, false);
     } else {
-        console.log("I'll test 0xFF..FF first.");
         localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         tryNextTmpKey();
     }
@@ -231,8 +228,6 @@ var key_init = function() {
        temporary register in case this is the first connection since the
        creation of the comptoir */
 
-    console.log("Let's find the key!");
-
     key_id = "comptoir_key_" + $("#cid").val();
     /* Field of the key */
     key_field = $("#comptoir-key");
@@ -256,7 +251,9 @@ var key_init = function() {
 }
 
 $(document).ready(function() {
+    console.log($("#cid").val());
     if ($("#chatbox").length != 0) {
         key_init();
     }
 });
+
