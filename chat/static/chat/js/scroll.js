@@ -50,8 +50,6 @@ var previousMsgCallback = function(data) {
 
         /* Prepend the older messages to the chatbox */
         $("#chatbox table tbody").prepend(messages_html);
-        /* Setting all the tooltips for dates */
-        $('.fsp-tooltip').tooltip('destroy').tooltip();
 
         /* Scrolling back to where we were before the load */
         var new_height = $("#chatbox").prop("scrollHeight");
@@ -59,6 +57,9 @@ var previousMsgCallback = function(data) {
         var ink = String(new_height - current_height - real_height/2) + "px"
         $("#chatbox").slimScroll({scrollTo: String(new_height - current_height) + "px"});
         $("#chatbox").slimScroll({ scrollTo: ink, animate: true });
+
+        /* Setting all the tooltips for dates */
+        $('.fsp-tooltip').tooltip('destroy').tooltip();
 
         /* Setting the senti to the new value */
         $("#top_senti").val(senti);

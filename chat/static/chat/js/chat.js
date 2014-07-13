@@ -4,18 +4,27 @@
 
 var msg_alert;
 var sound_alert;
+
 var sound_notification = function(type) {
-    if (sound_alert.val() == 0 || document.hasFocus()) {
+    if (sound_alert.val() == 0) {
         return;
     }
 
-    if (type == "msg") {
+    if (type == "msg" && !document.hasFocus()) {
         msg_alert.play();
+        return;
+    }
+
+    if (type == "wizz") {
+        wizz_alert.play();
     }
 }
 
+
 /* Creation of a socket instance */
 var socket = new io.Socket();
+
+var online = new Array();
 
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
@@ -25,6 +34,7 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     clear = $('<div />').text(clear).html();
 
     clear = linkify(clear);
+    clear = smilify(clear);
 
     /* Tooltip for the date of the msg. For the client, 
        displayed in left ; for others in right */
@@ -100,14 +110,26 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
 
 }
 
+var join_comptoir = function() {
+    console.log($("#cid").val());
+    data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
+    socket.send(data);
+    $(".badge", "#my-" + $("#cid").val()).remove();
+    return;
+}
+
+
 /* Connect the socket to the server with the comptoir id, 
    to be alerted on new messages posted on this comptoir */
 var connected = function() {
-    socket.subscribe($("#cid").val());
-    data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
+    console.log($("#cid").val());
+    // socket.subscribe($("#cid").val());
+    data = {action: "identification", session_key: $('#session_key').val()};
     socket.send(data);
+    join_comptoir();
     return;
 }
+
 
 /* Unrelevant for now */
 var entityMap = {
@@ -155,39 +177,58 @@ $("#send-form").submit(function(event) {
     submit_msg();
 });
 
+
+
 /* Remember ctrl pressed to distinguish 
    Enter for submission and Enter for a line feed */
 var ctrl_pressed = false;
 
-/* Update on ctrl press */
-$('#new-msg').keyup(function(e){
-    if(e.which == 17){
-        ctrl_pressed = false;
-    }
-});
+var bind_keys = function() {
 
-/* Submission with "Enter" key ; line feed if CTRL */
-$('#new-msg').keydown(function(e){
-    if (e.which == 17) {
-        ctrl_pressed = true;
-    } else if (e.which == 13){
-        if (!ctrl_pressed) {
-            e.preventDefault();
-            submit_msg();
+    /* Update on ctrl press */
+    $('#new-msg').keyup(function(e){
+        if(e.which == 17){
+            ctrl_pressed = false;
         }
-    }
-});
+    });
+    
+    /* Submission with "Enter" key ; line feed if CTRL */
+    $('#new-msg').keydown(function(e){
+        if (e.which == 17) {
+            ctrl_pressed = true;
+        } else if (e.which == 13){
+            if (!ctrl_pressed) {
+                e.preventDefault();
+                submit_msg();
+            }
+        }
+    });
+}
 
 
 var update_badge = function(cid, user, date) {
     if ($(".badge", "#my-" + cid).length == 0) {
-        $("#my-" + cid).append("<span class=\"badge active\">1</span>");
+        $("td.td-name", "#my-" + cid).append("<span class=\"badge active\">1</span>");
     } else {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);
     }
     $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
 }
+
+
+var online_to_string = function(online) {
+    str = "";
+    for (var i=0; i < online.length; i++) {
+        str += online[i];
+        if (i < online.length - 1) {
+            str += ", ";
+        }
+    }
+    return str;
+}
+
+online_div = $("#users-connected");
 
 /* Handler for new data received through the socket */
 var messaged = function(data) {
@@ -196,24 +237,59 @@ var messaged = function(data) {
 
     /* If the data is a new message, we add it to the chatbox */
     if (data.type == "new-message") {
+        /* Perform a verification on the cid: this avoids problems when the same user is connected simultaneously on
+           several comptoirs, it may receive back its own message that targets another comptoir */
+        if (data.cid != $("#cid").val()) {
+            return;
+        }
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
         $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
+
     } else if (data.type == "joined") {
-        pop_alert("info", "New connection: " + data.user + " cmptrs: " + data.cmptrs);
+        username = data.user;
+        online = online_div.text().split(", ");
+        if (online.indexOf(username) == -1) {
+            online.push(username);
+        }
+        $("#users-connected").text(online_to_string(online));
+        if (username != $("#user-name").text()) {
+            pop_alert("info", "New connection: " + data.user);
+        }
+
     } else if (data.type == "users") {
         online = "";
         for (var i = 0; i < data.users_list.length; i++) {
             username = data.users_list[i];
-            if (username == $("#user-name").html()) continue;
-            if (i > 0) {
-                online += " • ";
-            }
             online += data.users_list[i];
+            if (i < data.users_list.length - 1) {
+                online += ", ";
+            }
         }
         $("#users-connected").text(online);
+
+    } else if (data.type == "left") {
+        username = data.user;
+        console.log(username);
+        online = online_div.text().split(", ");
+        if (online.indexOf(username) != -1) {
+            online.pop(username);
+        }
+
+        $("#users-connected").text(online_to_string(online));
+        pop_alert("info", "Leaving: " + username);
+
+    } else if (data.type == "wizz") {
+        /* Notification to the sound alert manager */
+        sound_notification("wizz");
+        /* Shaking the chatbox */
+        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#content").effect("shake", {times: 6}, 500, function() {
+            $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        });
+        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
     }
@@ -223,16 +299,47 @@ var closed = function() {
     pop_alert("danger", "Connection closed !");
 }
 
+$("#wizz-btn").click( function() {
+
+    data = {cid: $("#cid").val(), action: "wizz", hash: $("#comptoir-key-hash").val(), session_key: $('#session_key').val()};
+    socket.send(data);
+
+});
+
+
 /* Mapping the two handlers */
 socket.on('connect', connected);
 socket.on('message', messaged);
 socket.on('disconnect', closed);
 
-/* Connect the socket to the server */
-socket.connect();
+var init_cmptr = function() {
+
+        $('#chatbox').slimScroll({
+            height: 'auto',
+            position: 'right',
+            size: '2px',
+            railSize: '1px',
+            distance: '20px',
+            color: '#428bca',
+            railColor: '#222',
+            railOpacity: 0.1,
+            wheelStep: 8,
+            railVisible: true,
+        });
+
+
+        msg_alert = $("#msgAlert")[0];
+        wizz_alert = $("#wizzAlert")[0];
+        sound_alert = $("#sound-alert-btn");
+        $("#chatbox").slimScroll({scrollTo: (parseInt($("#chatbox")[0].scrollHeight) - 150).toString() + "px"});
+        bind_keys();
+
+        /* Connect the socket to the server */
+        socket.connect();
+
+}
 
 $("body").ready(function() {
-        msg_alert = $("#msgAlert")[0];
-        sound_alert = $("#sound-alert-btn");
-        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        console.log($("#cid").val());
+        init_cmptr();
 });
