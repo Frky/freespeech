@@ -173,12 +173,18 @@ header {
         bottom: 0px;
         width: 94%;
         overflow-y: auto;
-        /*
-        */
+
+        td.td-ciph {
+            text-align: center;
+        }
     }
 
     td.td-name, td.td-users {
-        width: 40%;
+        width: 36%;
+    }
+
+    td.td-ciph {
+        width: 10%;
     }
 
     td.td-name {

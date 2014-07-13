@@ -157,7 +157,7 @@
                 <div id="my-comptoirs">
                     <table class="theader table table-hover">
                         <thead>
-                            <td class="td-ciph">Ciphered</td>
+                            <td class="td-ciph">Private</td>
                             <td class="td-name">Comptoirs I have joined</td>
                             <td class="td-addr">Address</td>
                             <td class="td-users">Someone's here ?</td>
@@ -171,9 +171,8 @@
                         <tr id="my-{# c.id #}">
                             <td class="td-ciph">
                                 {% if c.public  %}
-                                    N
                                 {% else %}
-                                    Y
+                                    <span class="glyphicon glyphicon-tag"></span>
                                 {% endif %}
                             </td>
                             <td class="td-name">
