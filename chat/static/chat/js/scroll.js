@@ -55,8 +55,8 @@ var previousMsgCallback = function(data) {
         var new_height = $("#chatbox").prop("scrollHeight");
         var real_height = $("#chatbox").height();
         var ink = String(new_height - current_height - real_height/2) + "px"
-        $("#chatbox").slimScroll({scrollTo: String(new_height - current_height) + "px"});
-        $("#chatbox").slimScroll({ scrollTo: ink, animate: true });
+        $('#chatbox').scrollTop(new_height - current_height);
+//        $('#chatbox').animate({ scrollTop: ink }, 500);
 
         /* Setting all the tooltips for dates */
         $('.fsp-tooltip').tooltip('destroy').tooltip();
