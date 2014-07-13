@@ -252,6 +252,15 @@
             <footer>
                 {% block footer %}
 		        {% endblock %}
+
+                <audio id="msgAlert">
+                    <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
+                </audio>
+
+                <audio id="wizzAlert">
+                    <source src="{% static 'chat/sounds/wizz.ogg' %}" type="audio/ogg">
+                </audio>
+
                 <div id="left-menu">
                     <a href="{% url "about" %}">About</a>
                     •
@@ -262,96 +271,23 @@
             </footer>
         </aside>
 
-	    <script src="{% static 'chat/js/key_management.js' %}"></script>
-	    <script src="{% static 'chat/js/form_check.js' %}"></script>
-        <script type="text/javascript">
-            $('.fsp-tooltip').tooltip();
-            $("#login-button").click(function() {
-                $("#login-form").toggleClass("hidden");
-                $("#register-form").addClass("hidden");
-            });
-            $("#register-button").click(function() {
-                $("#register-form").toggleClass("hidden");
-                $("#login-form").addClass("hidden");
-            });
-            $("#user-name").click(function() {
-                $("#my-comptoirs").toggleClass("hidden");
-            });
+        
+        
+	        <script src="{% static 'chat/js/key_management.js' %}"></script>
+	        <script src="{% static 'chat/js/form_check.js' %}"></script>
+	        <script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
 
-            $('#my-comptoirs .list').slimScroll({
-                width: 'auto',
-                height: '160px',
-                position: 'right',
-                size: '4px',
-                color: '#428bca',
-                railColor: '#222',
-                railOpacity: 0.1,
-                wheelStep: 8,
-                railVisible: true
-            });
-        </script>
+            {% if user.is_authenticated %}
+                {% load socketio_tags %}
+                {% socketio %}
+	            <script src="{% static 'chat/js/chat.js' %}"></script>
+        	    <script src="{% static 'chat/js/scroll.js' %}"></script>
+                <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
+            {% endif %}
+
+	        <script src="{% static 'chat/js/init_page_elements.js' %}"></script>
+
         {% block additionnal_script %}
-    {% if user.is_authenticated %}
-        {% load socketio_tags %}
-        {% socketio %}
-	    <script src="{% static 'chat/js/chat.js' %}"></script>
-	    <script src="{% static 'chat/js/scroll.js' %}"></script>
-        <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
-    {% endif %}
-
-    <audio id="msgAlert">
-        <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
-    </audio>
-
-    <audio id="wizzAlert">
-        <source src="{% static 'chat/sounds/wizz.ogg' %}" type="audio/ogg">
-    </audio>
-
-	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
-
-    <script>
-        $(".fsp-popover").popover();
-        $("[name='sound-alert']").bootstrapSwitch();
-        $("#sound-alert-btn").on('switchChange', function() {
-            $("#sound-alert-btn").val(1 - $("#sound-alert-btn").val());
-        });
-//        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
-
-        var urlcpy = new ZeroClipboard( document.getElementById("copy-url-button"), {
-            moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
-        } );
-
-        urlcpy.on( 'dataRequested', function (client, args) {
-            client.setText(window.location.href);
-        });
-
-        urlcpy.on( "load", function(client) {
-            client.on( "complete", function(client, args) {
-                pop_alert("info", "Comptoir address copied to clipboard. Share it!");
-            } );
-        } );
-
-        var keycpy = new ZeroClipboard( document.getElementById("copy-key-button"), {
-            moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
-        } );
-
-        keycpy.on( 'dataRequested', function (client, args) {
-            client.setText($("#comptoir-key").val());
-        });
-
-        keycpy.on( "load", function(client) {
-            client.on( "complete", function(client, args) {
-                pop_alert("info", "Comptoir key copied to clipboard. Share it!");
-            } );
-        } );
-
-
-
-        if (window.location.pathname != "/") {
-            $("#options-container").removeClass("hidden");
-            $("#send-form").removeClass("hidden");
-        }
-    </script>
 
         {% endblock %}
 

@@ -99,29 +99,5 @@
 
 {% load staticfiles %}
 <script type="text/javascript">
-    $("#plus a").click(function() {
-        $("#comptoir-form").toggleClass("hidden");
-        $('#plus').toggleClass("toggle");
-    });
-/*    $("#id_public").click(function () {
-        $("#id_key_hash-container").toggleClass("invisible");
-        $("#key-field-container").toggleClass("invisible");
-        $("#generate-key").toggleClass("invisible");
-    });*/
-    $("[name='public']").bootstrapSwitch();
-    $('#public-btn').on('switchChange', function () {
-        $("#public-btn").val(1 - $("#public-btn").val());
-        $("#manage-key-container").toggleClass("invisible");
-        $("#note").toggleClass("invisible");
-        createKey();
-        $("#id_key_hash-container").addClass("invisible");
-        $("#key-field-container").addClass("invisible");
-        $("#generate-key-container").addClass("invisible");
-    });
-    $("#manage-key").click(function() {
-        $("#id_key_hash-container").toggleClass("invisible");
-        $("#key-field-container").toggleClass("invisible");
-        $("#generate-key-container").toggleClass("invisible");
-    });
 </script>
 {% endblock %}

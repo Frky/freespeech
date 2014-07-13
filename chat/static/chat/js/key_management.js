@@ -250,10 +250,4 @@ var key_init = function() {
     Decrypt_all();
 }
 
-$(document).ready(function() {
-    console.log($("#cid").val());
-    if ($("#chatbox").length != 0) {
-        key_init();
-    }
-});
 

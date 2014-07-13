@@ -241,7 +241,8 @@ var messaged = function(data) {
             return;
         }
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
-        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
     /* Elsif it is an error, we alert the user */
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
@@ -282,11 +283,7 @@ var messaged = function(data) {
         /* Notification to the sound alert manager */
         sound_notification("wizz");
         /* Shaking the chatbox */
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
-        $("#content").effect("shake", {times: 6}, 500, function() {
-            $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
-        });
-        $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
+        $("#content").effect("shake", {times: 6}, 500);
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
     }
@@ -311,6 +308,7 @@ socket.on('disconnect', closed);
 
 var init_cmptr = function() {
 
+        /*
         $('#chatbox').slimScroll({
             height: 'auto',
             position: 'right',
@@ -323,19 +321,17 @@ var init_cmptr = function() {
             wheelStep: 8,
             railVisible: true,
         });
-
+        $("#chatbox").slimScroll({scrollTo: (parseInt($("#chatbox")[0].scrollHeight) - 150).toString() + "px"});
+        */
 
         msg_alert = $("#msgAlert")[0];
         wizz_alert = $("#wizzAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        $("#chatbox").slimScroll({scrollTo: (parseInt($("#chatbox")[0].scrollHeight) - 150).toString() + "px"});
         bind_keys();
 
         /* Connect the socket to the server */
         socket.connect();
 
+        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 }
 
-$("body").ready(function() {
-        init_cmptr();
-});
