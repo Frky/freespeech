@@ -111,7 +111,6 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
 }
 
 var join_comptoir = function() {
-    console.log($("#cid").val());
     data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
     socket.send(data);
     $(".badge", "#my-" + $("#cid").val()).remove();
@@ -122,8 +121,7 @@ var join_comptoir = function() {
 /* Connect the socket to the server with the comptoir id, 
    to be alerted on new messages posted on this comptoir */
 var connected = function() {
-    console.log($("#cid").val());
-    // socket.subscribe($("#cid").val());
+    socket.subscribe("freespeech");
     data = {action: "identification", session_key: $('#session_key').val()};
     socket.send(data);
     join_comptoir();
@@ -272,7 +270,6 @@ var messaged = function(data) {
 
     } else if (data.type == "left") {
         username = data.user;
-        console.log(username);
         online = online_div.text().split(", ");
         if (online.indexOf(username) != -1) {
             online.pop(username);
@@ -340,6 +337,5 @@ var init_cmptr = function() {
 }
 
 $("body").ready(function() {
-        console.log($("#cid").val());
         init_cmptr();
 });

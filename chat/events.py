@@ -93,7 +93,7 @@ def identify(socket, session_key):
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
 
-    if not user.is_authenticated or user.username == "AnonymousUser":
+    if not user.is_authenticated() or user.is_anonymous():
         return
 
     user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
@@ -102,7 +102,7 @@ def identify(socket, session_key):
 
 @events.on_message(channel="^")
 def message(request, socket, context, message):
-   
+
     try:
         action = message["action"]
         session_key = message["session_key"]
