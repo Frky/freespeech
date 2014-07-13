@@ -218,8 +218,9 @@ var update_badge = function(cid, user, date) {
 var online_to_string = function(online) {
     str = "";
     for (var i=0; i < online.length; i++) {
+        if (online[i] == "") continue;
         str += online[i];
-        if (i < online.length - 1) {
+        if (online.length > 1 && i < online.length - 1) {
             str += ", ";
         }
     }
@@ -227,6 +228,25 @@ var online_to_string = function(online) {
 }
 
 online_div = $("#users-connected");
+
+var add_user_online = function(username, comptoir) {
+    if (comptoir == $("#cid").val()) {
+        online = online_div.text().split(", ");
+        if (online.indexOf(username) == -1) {
+            online.push(username);
+        }
+        online_div.text(online_to_string(online));
+    }
+
+    if (username != $("#user-name").text()) {
+        online = $(".td-users", "#my-" + comptoir).text().split(", ");
+        if (online.indexOf(username) == -1) {
+            online.push(username);
+        }
+        $(".td-users", "#my-" + comptoir).text(online_to_string(online));
+    }
+}
+
 
 /* Handler for new data received through the socket */
 var messaged = function(data) {
@@ -249,15 +269,14 @@ var messaged = function(data) {
 
     } else if (data.type == "joined") {
         username = data.user;
-        online = online_div.text().split(", ");
-        if (online.indexOf(username) == -1) {
-            online.push(username);
+        for (var i = 0; i < data.cmptrs.length; i++) {
+            add_user_online(username, data.cmptrs[i]);
         }
-        $("#users-connected").text(online_to_string(online));
+        /*
         if (username != $("#user-name").text()) {
             pop_alert("info", "New connection: " + data.user);
         }
-
+        */
     } else if (data.type == "users") {
         online = "";
         for (var i = 0; i < data.users_list.length; i++) {
@@ -271,12 +290,20 @@ var messaged = function(data) {
 
     } else if (data.type == "left") {
         username = data.user;
+        $("td.td-users", ".scrollable").each(function() {
+            online = $(this).text().split(", ");
+            if (online.indexOf(username) != -1) {
+                online.pop(username);
+                $(this).text(online_to_string(online));
+            }
+        });
+
         online = online_div.text().split(", ");
         if (online.indexOf(username) != -1) {
             online.pop(username);
+            online_div.text(online_to_string(online));
         }
 
-        $("#users-connected").text(online_to_string(online));
         pop_alert("info", "Leaving: " + username);
 
     } else if (data.type == "wizz") {
