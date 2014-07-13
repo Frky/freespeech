@@ -64,44 +64,6 @@ def index(request):
     return render(request, template_name, context)
 
 
-@csrf_exempt
-def send(request):
-    """
-	View used to send messages to a chat synchronously
-	Redirect to home view after posting
-
-    """    
-    
-    # The user must be authenticated to be able to send messages
-    if not request.user.is_authenticated or str(request.user) == "AnonymousUser":
-        return HttpResponse("Error")
-
-    # He also needs to have access to the comptoir
-    if not request.session[request.POST['cid']]:
-        return HttpResponse("Error")
-
-    if request.method != "POST":
-    	return redirect("home")
-
-    Message(content=request.POST['msg'], comptoir=Comptoir.objects.get(id=request.POST['cid']), owner=request.user).save()
-    
-    return HttpResponse("OK")
-
-
-@csrf_exempt
-def update(request):
-    """
-	Update the chat box by requesting the new messages
-
-    """
-
-    comptoir = Comptoir.objects.get(id=request.POST["cid"])
-
-    index = request.POST['index']
-    return HttpResponse(serializers.serialize("json", Message.objects.all().filter(comptoir=comptoir, id__gt=int(index)), fields=("owner", "date", "content")))
-
-
-
 # ================================= USER MANAGEMENT RELATED VIEWS ================================= #
 
 def auth(request):
