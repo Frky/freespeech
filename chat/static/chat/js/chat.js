@@ -250,6 +250,7 @@ var reconnect = function() {
     socket.on('disconnect', closed);
 
     /* Connect the socket to the server */
+    console.log("Connecting socket ...");
     socket.connect();
 
     pop_alert("info", "Reconnection successful.");
@@ -373,6 +374,7 @@ var init_cmptr = function() {
         bind_keys();
 
         /* Connect the socket to the server */
+        console.log("Connecting socket ...");
         socket.connect();
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);

@@ -22,76 +22,55 @@ import datetime
 connected_users = dict()
 timezone_local = pytz.timezone(TIME_ZONE)
 
-def get_all_users():
-    all_users = list()
-    for cuser in connected_users.values():
-        all_users += cuser
-    return list(set(all_users))
-
 
 @events.on_disconnect(channel="^")
 def leaving(request, socket, context):
 
-    #    try:
-    #        user = User.objects.get(username=context["username"])
-    #        cid = context["cid"]
-    #    except KeyError:
-    #        return
-    #
-    #    comptoir = Comptoir.objects.get(id=cid)
-    #
-    #    if not hasattr(user, 'chatuser'):
-    #        ChatUser(user=user).save()
-    #    try:
-    #        lv = user.chatuser.last_visits.filter(comptoir=comptoir)
-    #        if len(lv) > 1:
-    #            for extra_lv in user.chatuser.last_visits.get(comptoir=comptoir):
-    #                extra_lv.delete()
-    #            lv = LastVisit(comptoir=comptoir)
-    #            lv.save()
-    #            user.chatuser.last_visits.add(lv)
-    #            user.chatuser.last_visits.save()
-    #        else:
-    #            lv = lv[0]
-    #    except ObjectDoesNotExist:
-    #        lv = LastVisit(comptoir=comptoir)
-    #        lv.save()
-    #        user.chatuser.last_visits.add(lv)
-    #        user.chatuser.last_visits.save()
-    #
-    #    lv.date = datetime.datetime.utcnow().replace(tzinfo=utc)
-    #    lv.save()
-    #    
+    # Try to get the user entry from the dictionary
     try:
         user_entry = filter(lambda x: x[1][0] == socket, connected_users.items())[0]
     except IndexError:
         return
-        
+    # If the socket has been updated since, let's ignore
+    if socket != user_entry[0]:
+        return
     session, user_infos = user_entry[0], user_entry[1]
-
-    # Send to the new connected user the list of currently connected users
+    # Iteration on all connected users
     for other_user in connected_users.values():
+        # Skipping for the user that left
         if other_user == user_entry:
             continue
+        # Getting information on the other user
         osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+        # Computing the common list of comptoirs
         common_cid = [c.id for c in set(ocmptrs).intersection(set(user_infos[2]))]
+        # If this list is not empty
         if len(common_cid) > 0:
+            # We notify that the user has left
             osock.send({"type": "left", "user": user_infos[1].username})
-
+    # Remove the entry of the left user from the dictionary
     connected_users.pop(session)
 
 
 def identify(socket, session_key):
-
+    # Getting session object from session key
     session = Session.objects.get(session_key=session_key)
+    # Getting user corresponding to the session key
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
-
+    # If the user is not logged in, return
     if not user.is_authenticated() or user.is_anonymous():
         return
-
+    # Get all comptoirs related to the user
     user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
-    connected_users[session_key] = ((socket, user, user_cmptrs, None))
+    # If the user is already present with another socket
+    if user in [ui[1] for ui in connected_users.values()]:
+        connected_users[session_key] = ((socket, user, user_cmptrs, None))
+        # Updating the socket
+    else:
+        # Creation of a new entry in the dictionary
+        connected_users[session_key] = ((socket, user, user_cmptrs, None))
+    return
 
 
 @events.on_message(channel="^")
@@ -104,91 +83,73 @@ def message(request, socket, context, message):
         print "Session key error."
         return
 
-    if action == "join": # and comptoir.key_hash == message["hash"]:
+    if action == "join":
+        # Try to get the user from the dictionary
         try:
             user_entry = connected_users[session_key]
         except KeyError:
             print "Key Error."
             return
-
+        # If the user is not logged in, reject the joining
         if not user_entry[1].is_authenticated() or user_entry[1].is_anonymous():
             print "User error."
             return
-
-        old_cid = connected_users[session_key][3]
-
+        # Updating the current comptoir of the user
         connected_users[session_key] = (user_entry[0], user_entry[1], user_entry[2], message["cid"])
 
-        return
-
-        return
-
-        cid = context["cid"]
-        if cid not in connected_users:
-            connected_users[cid] = list()
-            
-        connected_users[cid].append((user.username, socket))
-        # socket.send_and_broadcast({"type": "users", "users_list": get_all_users()})
-        # socket.send_and_broadcast_channel({"type": "users", "users_list": list(set([u[0] for u in connected_users[cid]]))}, channel=message["cid"])
-
-        user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
-
-            
-
     elif action == "identification":
+        # Identification of the new user with the session key
         identify(socket, session_key)
-
+        # Getting user entry in the dictionary
         user_entry = connected_users[session_key]
-
+        # Iteration on all users
         for other_user in connected_users.values():
                 osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+                # Computing the common comptoirs between the new user and each other user
                 common_cid = [c.id for c in set(ocmptrs).intersection(set(user_entry[2]))]
+                # If there are some common comptoirs
                 if len(common_cid) > 0:
+                    # We notify both entites that the other is connected
                     user_entry[0].send({"type": "joined", "user": ouser.username, "cmptrs": common_cid})
                     osock.send({"type": "joined", "user": user_entry[1].username, "cmptrs": common_cid})
-                # In the same time, we notify the new user to others
-#                osock.send({"type": "joined", "user": connected_users[session_key][1].username, "cmptrs": })
-                continue
-                if ocid == old_cid and osock != connected_users[session_key][0]:
-                    # In this case, notification for the deconnection of the user
-                    osock.send({"type": "left", "user": connected_users[session_key][1].username})
-
-        return
-
-        for cu in connected_users.values():
-            if cu == user_infos:
-                continue
-            set_of_cmpt = set(user_infos[2])
-            if len(set_of_cmpt.intersection(cu[2])) > 0:
-                cu[0].send({"type": "joined", "user": user_infos[1].username})
 
     elif action == "post":
+        # Get user information from dictionary
         user = connected_users[session_key][1]
+        # Get cid where to post the message
         cid = message["cid"]
+        # Get the corresponding comptoir object
         comptoir = Comptoir.objects.get(id=cid)
-        context["cid"] = cid
-        context["username"] = user.username
-
+        # If the hash of the comptoir key does not match with the db
         if (comptoir.key_hash != message["hash"]):
+            # We reject the message
             socket.send({"type": "error", "error_msg": "Your message was rejected because your key is not valid."})
-        else:
-            msg = Message(owner=user, comptoir=comptoir, content=message["content"])
-            msg.save()
-            comptoir.last_message = msg
-            comptoir.save()
+            return
+        # Creation of a new message object
+        msg = Message(owner=user, comptoir=comptoir, content=message["content"])
+        # Saving the message
+        msg.save()
+        # Updating last message on the comptoir
+        comptoir.last_message = msg
+        comptoir.save()
     
-            # At this point the date of the message is in utc format, so we need to correct it 
-            msg_local_date = msg.date.astimezone(timezone_local)
-    
+        # At this point the date of the message is in utc format, so we need to correct it 
+        msg_local_date = msg.date.astimezone(timezone_local)
+        # Iteration on each connected user to deliver the new message
+        for other_user in connected_users.values():
+            osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+            # If the currently iterated user is related to the comptoir
+            if comptoir in ocmptrs:
+                # If the comptoir is not the one where the user is connected (and if the user is not the one
+                # that posted the message)
+                if ocid != cid and ouser != user:
+                    # We just send an update-badge message
+                    osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
+                else:
+                    # Else we deliver the message
+                    osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
 
-            for other_user in connected_users.values(): #get_all_users():
-                osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
-                if comptoir in ocmptrs:
-                    if ocid != cid and ouser != user:
-                        osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
-                    else:
-                        osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
-
+    # To be commented
     elif action == "wizz":
         user = connected_users[session_key][1]
         cid = message["cid"]
@@ -199,9 +160,9 @@ def message(request, socket, context, message):
         if (comptoir.key_hash != message["hash"]):
             socket.send({"type": "error", "error_msg": "Your wizz was rejected because your key is not valid."})
         else:
-            for other_user in connected_users.values(): #get_all_users():
+            for other_user in connected_users.values(): 
                 osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
                 if comptoir in ocmptrs:
                     if ocid == cid:
-                        osock.send({"type": "wizz"}) #, "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
+                        osock.send({"type": "wizz"}) 
 
