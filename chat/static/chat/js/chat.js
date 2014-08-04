@@ -183,19 +183,10 @@ var ctrl_pressed = false;
 
 var bind_keys = function() {
 
-    /* Update on ctrl press */
-    $('#new-msg').keyup(function(e){
-        if(e.which == 17){
-            ctrl_pressed = false;
-        }
-    });
-    
     /* Submission with "Enter" key ; line feed if CTRL */
     $('#new-msg').keydown(function(e){
-        if (e.which == 17) {
-            ctrl_pressed = true;
-        } else if (e.which == 13){
-            if (!ctrl_pressed) {
+        if (e.which == 13 && !e.ctrlKey){
+            if (!e.crtlKey) {
                 e.preventDefault();
                 submit_msg();
             }
@@ -247,6 +238,23 @@ var add_user_online = function(username, comptoir) {
     }
 }
 
+var reconnect = function() {
+    pop_alert("info", "Trying to reconnect ...");
+
+    /* Creation of a socket instance */
+    socket = new io.Socket();
+
+    /* Mapping the two handlers */
+    socket.on('connect', connected);
+    socket.on('message', messaged);
+    socket.on('disconnect', closed);
+
+    /* Connect the socket to the server */
+    socket.connect();
+
+    pop_alert("info", "Reconnection successful.");
+}
+
 
 /* Handler for new data received through the socket */
 var messaged = function(data) {
@@ -290,6 +298,10 @@ var messaged = function(data) {
 
     } else if (data.type == "left") {
         username = data.user;
+        if (username == $("#user-name").text()) {
+            reconnect();
+            return;
+        }
         $("td.td-users", ".scrollable").each(function() {
             online = $(this).text().split(", ");
             if (online.indexOf(username) != -1) {
@@ -317,6 +329,7 @@ var messaged = function(data) {
 }
 
 var closed = function() {
+    console.log("Oups.");
     pop_alert("danger", "Connection closed !");
 }
 
@@ -327,6 +340,9 @@ $("#wizz-btn").click( function() {
 
 });
 
+
+/* Creation of a socket instance */
+var socket = new io.Socket();
 
 /* Mapping the two handlers */
 socket.on('connect', connected);
