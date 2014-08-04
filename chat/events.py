@@ -124,6 +124,12 @@ def message(request, socket, context, message):
         if (comptoir.key_hash != message["hash"]):
             # We reject the message
             socket.send({"type": "error", "error_msg": "Your message was rejected because your key is not valid."})
+            socket.send({"type": "ack"})
+            return
+        # If the message is empty, reject it
+        if message["content"] == "":
+            socket.send({"type": "error", "error_msg": "Your message was rejected because it is empty."})
+            socket.send({"type": "ack"})
             return
         # Creation of a new message object
         msg = Message(owner=user, comptoir=comptoir, content=message["content"])
