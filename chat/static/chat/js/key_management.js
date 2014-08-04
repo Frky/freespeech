@@ -171,7 +171,7 @@ var Decrypt_all = function() {
         ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {
             $( this ).find(".clear").text(Decrypt_Text(ciph, localStorage.getItem(key_id)));
-            $( this ).find(".clear").html(smilify(linkify($( this ).find(".clear").html())));
+            $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
         }
     });
 }

@@ -132,12 +132,15 @@ def message(request, socket, context, message):
         # Updating last message on the comptoir
         comptoir.last_message = msg
         comptoir.save()
-    
         # At this point the date of the message is in utc format, so we need to correct it 
         msg_local_date = msg.date.astimezone(timezone_local)
         # Iteration on each connected user to deliver the new message
         for other_user in connected_users.values():
             osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+            # if the user is the one that posted the message
+            if ouser == user:
+                # Send acknoledgement
+                socket.send({"type": "ack"})
             # If the currently iterated user is related to the comptoir
             if comptoir in ocmptrs:
                 # If the comptoir is not the one where the user is connected (and if the user is not the one

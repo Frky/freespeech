@@ -33,6 +33,7 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
 
+    clear = crlfy(clear);
     clear = linkify(clear);
     clear = smilify(clear);
 
