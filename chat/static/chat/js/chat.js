@@ -186,6 +186,7 @@ var submit_msg = function() {
             - the hash of the secret key, to allow the server to check that we indeed are allowed to 
             post on this comptoir
     */
+    if ($("#new-msg").val() === "") return;
     disable_sendbox();
     data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
     socket.send(data);
