@@ -152,6 +152,31 @@ var escapeHtml =  function (text) {
     });
 }
 
+var message_pending = false;
+
+var disable_sendbox = function() {
+    $("#new-msg").attr('disabled', true);
+    message_pending = true;
+}
+
+var enable_sendbox = function() {
+    /* Cleaning the input field */
+    $("#new-msg").val("");
+    $("#new-msg").attr('disabled', false);
+    $("#new-msg").focus();
+    message_pending = false;
+}
+
+var message_timeout = function() {
+    if (!message_pending) {
+        return;
+    }
+    message_pending = false;
+    $("#new-msg").attr('disabled', false);
+    $("#new-msg").focus();
+    pop_alert("danger", "Your message has not been posted. You may have lost connection with the server.");
+}
+
 /* Function to submit a new message through the socket */
 var submit_msg = function() {
     /* The data contains:
@@ -161,13 +186,11 @@ var submit_msg = function() {
             - the hash of the secret key, to allow the server to check that we indeed are allowed to 
             post on this comptoir
     */
-    $("#new-msg").val().replace("\n", "<br />");
+    disable_sendbox();
     data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
-
     socket.send(data);
+    setTimeout(message_timeout, 3000);
 
-    /* Cleaning the input field */
-    $("#new-msg").val("");
 }
 
 /* Handler for the submission of the form */
@@ -320,6 +343,8 @@ var messaged = function(data) {
 
         pop_alert("info", "Leaving: " + username);
 
+    } else if (data.type == "ack") {
+        enable_sendbox();
     } else if (data.type == "wizz") {
         /* Notification to the sound alert manager */
         sound_notification("wizz");
