@@ -537,5 +537,22 @@ img.smiley {
     height: 1.2em;
 }
 
-#cmptr-info {
+.msg-deleted {
+    color: #428bca;
+}
+
+
+.glyphicon-options {
+    display: inline-block;
+    float: right;
+
+    span {
+        zoom: 70%;
+        margin-left: 10px;
+    }
+
+    span:hover {
+        color: $orange;
+        cursor: pointer;
+    }
 }

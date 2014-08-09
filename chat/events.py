@@ -153,7 +153,7 @@ def message(request, socket, context, message):
                     osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
                 else:
                     # Else we deliver the message
-                    osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date)})
+                    osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date), "mid": msg.id})
 
     # To be commented
     elif action == "wizz":

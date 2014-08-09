@@ -17,6 +17,7 @@ if not UNDER_WORK:
     
         url(r'^$', 'chat.views.index', name='home'),
         url(r'^check_hash', 'chat.views.check_hash', name='check_hash'),
+        url(r'^remove-msg', 'chat.views.remove_msg', name="remove_msg"),
         url(r'^about$', 'chat.views.about', name='about'),
         url(r'^previous_msg$', 'chat.views.load_previous_messages', name='previous_msg'),
         url(r'^login$', 'chat.views.auth', name='login'),

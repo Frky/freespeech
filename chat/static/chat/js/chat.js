@@ -28,7 +28,7 @@ var online = new Array();
 
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
-var addMessage = function(user, cipher, clear, msgdate, insert) {
+var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
     
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
@@ -88,14 +88,18 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     if (user != $("#user-name").html()) {
         new_message += '<td></td>';
     } else {
-        new_message += '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span></td>';
+        new_message += '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span>';
+        new_message = add_glyphicons(new_message);
+        new_message += "</td>";
     }
 
     new_message += '</tr>';
     
     if (insert) {
         /* Append the new message to the chatbox */
-        $("#chatbox table tbody").append(new_message);
+        $("#chatbox table tbody").append(new_message)
+        
+        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
 
         $('.fsp-tooltip').tooltip('destroy').tooltip();
 
@@ -107,7 +111,6 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     } else {
         return new_message;
     }
-
 
 }
 
@@ -309,7 +312,7 @@ var messaged = function(data) {
         if (data.cid != $("#cid").val()) {
             return;
         }
-        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
+        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
     /* Elsif it is an error, we alert the user */
@@ -414,5 +417,7 @@ var init_cmptr = function() {
         socket.connect();
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
+        msg_management_init_all();
 }
 
