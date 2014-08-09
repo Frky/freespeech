@@ -80,7 +80,15 @@ var getComptoirContentCallback = function(data, cid) {
 
 
 $(".cmptr-link").click(function () {
-        var cid =  $(this).text();
+    /* Get the comptoir id we need to load */
+    var cid =  $(this).text();
+    /* If we already are on a comptoir page */
+    if ($("#chatbox").length > 0) {
+        /* We get the new comptoir asynchronously */
         getComptoirContent(getComptoirContentCallback, cid);
         $.getJSON("cmptrinfo-" + cid, getComptoirInfosCallback);
+    } else {
+        /* Else we get it with a get request */
+        window.location.href = cid;
+    }
 });

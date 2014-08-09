@@ -92,10 +92,9 @@ $(document).ready(function() {
             $("#key-field-container").toggleClass("invisible");
             $("#generate-key-container").toggleClass("invisible");
         });
-    } else {
+    } else if ($("#chatbox").length > 0) {
         $("#options-container").removeClass("hidden");
         $("#send-form").removeClass("hidden");
-    
         key_init();
         init_cmptr();
     }
