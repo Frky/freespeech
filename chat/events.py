@@ -31,9 +31,6 @@ def leaving(request, socket, context):
         user_entry = filter(lambda x: x[1][0] == socket, connected_users.items())[0]
     except IndexError:
         return
-    # If the socket has been updated since, let's ignore
-    if socket != user_entry[0]:
-        return
     session, user_infos = user_entry[0], user_entry[1]
     # Iteration on all connected users
     for other_user in connected_users.values():

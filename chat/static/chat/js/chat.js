@@ -324,6 +324,7 @@ var messaged = function(data) {
 
     } else if (data.type == "left") {
         username = data.user;
+        console.log(username + " is leaving.");
         if (username == $("#user-name").text()) {
             reconnect();
             return;

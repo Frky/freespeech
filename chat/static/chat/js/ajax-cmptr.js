@@ -59,6 +59,18 @@ var getComptoirContentCallback = function(data, cid) {
         init_cmptr();
     }
 
+    /* Updating connected users */
+    online = $("#user-name").text();
+    others = $("td.td-users", "#my-" + cid).text().split(", ");
+    console.log(others);
+    for (var i = 0; i < others.length; i++) {
+        if (others[i] != "") {
+            online += ", ";
+        }
+        online += others[i];
+    }
+    $("#users-connected").text(online);
+
     window.history.replaceState({}, cid, cid);
     join_comptoir();
 
