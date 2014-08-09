@@ -167,6 +167,11 @@ var enable_sendbox = function() {
     message_pending = false;
 }
 
+var send_wizz = function() {
+    data = {cid: $("#cid").val(), action: "wizz", hash: $("#comptoir-key-hash").val(), session_key: $('#session_key').val()};
+    socket.send(data);
+}
+
 var message_timeout = function() {
     if (!message_pending) {
         return;
@@ -186,11 +191,21 @@ var submit_msg = function() {
             - the hash of the secret key, to allow the server to check that we indeed are allowed to 
             post on this comptoir
     */
-    if ($("#new-msg").val() === "") return;
-    disable_sendbox();
-    data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
-    socket.send(data);
-    setTimeout(message_timeout, 3000);
+    switch ($("#new-msg").val()) {
+        case "":
+            return;
+            break;
+        case "/wizz":
+            send_wizz();
+            $("#new-msg").val("");
+            break;
+        default:
+            disable_sendbox();
+            data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
+            socket.send(data);
+            setTimeout(message_timeout, 3000);
+            break;
+    }
 
 }
 
@@ -351,7 +366,7 @@ var messaged = function(data) {
         /* Notification to the sound alert manager */
         sound_notification("wizz");
         /* Shaking the chatbox */
-        $("#content").effect("shake", {times: 6}, 500);
+        $("#chatbox").velocity("callout.shake", "500ms", "true");
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
     }
@@ -361,13 +376,6 @@ var closed = function() {
     console.log("Oups.");
     pop_alert("danger", "Connection closed !");
 }
-
-$("#wizz-btn").click( function() {
-
-    data = {cid: $("#cid").val(), action: "wizz", hash: $("#comptoir-key-hash").val(), session_key: $('#session_key').val()};
-    socket.send(data);
-
-});
 
 
 /* Creation of a socket instance */
