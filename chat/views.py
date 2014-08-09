@@ -312,7 +312,7 @@ def report(request):
             report = BugReport(description=request.POST['description'])
             if 'url' in request.POST.keys():
                 report.url = request.POST['url']
-            report.reporter = None if not request.user.is_authenticated or request.user.username == "AnonymousUser" else request.user
+            report.reporter = None if (not request.user.is_authenticated() or request.user.is_anonymous()) else request.user
             report.save()
             messages.info(request, "Your report has been sent. Thank you.")
             return redirect("home")
