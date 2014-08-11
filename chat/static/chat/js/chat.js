@@ -18,6 +18,10 @@ var sound_notification = function(type) {
     if (type == "wizz") {
         wizz_alert.play();
     }
+
+    if (type == "left") {
+        left_alert.play();
+    }
 }
 
 
@@ -359,6 +363,7 @@ var messaged = function(data) {
         }
 
         pop_alert("info", "Leaving: " + username);
+        sound_notification("left");
 
     } else if (data.type == "ack") {
         enable_sendbox();
@@ -406,6 +411,7 @@ var init_cmptr = function() {
 
         msg_alert = $("#msgAlert")[0];
         wizz_alert = $("#wizzAlert")[0];
+        left_alert = $("#leftAlert")[0];
         sound_alert = $("#sound-alert-btn");
         bind_keys();
 
