@@ -92,6 +92,8 @@ $(document).ready(function() {
             $("#key-field-container").toggleClass("invisible");
             $("#generate-key-container").toggleClass("invisible");
         });
+        $("#my-comptoirs").addClass("hidden");
+        $("aside").addClass("micro");
     } else if ($("#chatbox").length > 0) {
         $("#options-container").removeClass("hidden");
         $("#send-form").removeClass("hidden");
