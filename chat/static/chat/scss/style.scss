@@ -176,6 +176,7 @@ header {
 
         td.td-ciph {
             text-align: center;
+
         }
     }
 
@@ -195,6 +196,13 @@ header {
         }
         span.txt {
             overflow-x: hidden;
+        }
+    }
+
+    tr {
+        background-color: rgba(255, 255, 255, 0.5);
+        &:hover {
+     //       background-color: rgba(255, 255, 255, 0.9);
         }
     }
 }
@@ -430,6 +438,13 @@ div#aside-panel {
     right: 0px;
     width: 550px;
     height: 250px;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    /*
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+    */
 }
 
 
@@ -541,7 +556,12 @@ img.smiley {
 }
 
 
-aside.micro {
+div#aside-bg {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 550px;
     background-image: url('../../images/micro.png');
     background-position: bottom;
     background-repeat: no-repeat;
