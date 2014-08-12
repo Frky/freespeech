@@ -199,6 +199,11 @@ header {
         }
     }
 
+    td.td-sound:hover {
+        cursor: pointer;
+        color: $orange;
+    }
+
     tr {
         background-color: rgba(255, 255, 255, 0.5);
         &:hover {

@@ -19,6 +19,13 @@ $("#user-name").click(function() {
     $("#my-comptoirs").toggleClass("hidden");
 });
 
+
+$(".td-sound").click(function() {
+    $(".toggle-sound", this).toggleClass("glyphicon-volume-up");
+    $(".toggle-sound", this).toggleClass("glyphicon-volume-off");
+});
+
+
 /* Initialisation of the slimscroll */
 /*
 $('#my-comptoirs .list').slimScroll({

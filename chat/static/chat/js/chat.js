@@ -6,6 +6,7 @@ var msg_alert;
 var sound_alert;
 
 var sound_notification = function(type) {
+    
     if (sound_alert.val() == 0) {
         return;
     }
@@ -104,7 +105,7 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
         $('.fsp-tooltip').tooltip('destroy').tooltip();
 
         /* Notification to the sound alert manager */
-        if (user != $("#user-name").html()) {
+        if (user != $("#user-name").html() && $(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up")) {
             sound_notification("msg");
         }
 
@@ -374,6 +375,9 @@ var messaged = function(data) {
         $("#chatbox").velocity("callout.shake", "500ms", "true");
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
+        if ($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up")) {
+            sound_notification("msg");
+        }
     }
 }
 
