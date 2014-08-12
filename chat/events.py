@@ -170,5 +170,5 @@ def message(request, socket, context, message):
                 osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
                 if comptoir in ocmptrs:
                     if ocid == cid:
-                        osock.send({"type": "wizz"}) 
+                        osock.send({"type": "wizz", "from": user.username}) 
 

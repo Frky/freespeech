@@ -373,6 +373,10 @@ var messaged = function(data) {
         sound_notification("wizz");
         /* Shaking the chatbox */
         $("#chatbox").velocity("callout.shake", "500ms", "true");
+        /* Add message on chatbox */
+        $("#chatbox table tbody").append("<tr><td colspan=\"3\" class=\"central-msg wizz\">" + data.from + " sent a wizz.</td></tr>");
+        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
         if ($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up")) {
