@@ -541,15 +541,15 @@ img.smiley {
     color: #428bca;
 }
 
+.glyphicon {
+        zoom: 70%;
+        margin-left: 5px;
+        margin-right: 5px;
+}
 
 .glyphicon-options {
     display: inline-block;
     float: right;
-
-    span {
-        zoom: 70%;
-        margin-left: 10px;
-    }
 
     span:hover {
         color: $orange;

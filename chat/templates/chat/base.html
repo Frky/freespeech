@@ -273,7 +273,7 @@
             </footer>
         </aside>
 
-        <!-- Modal -->
+        <!-- DELETION Modal -->
         <div class="modal fade" id="confirm-del-msg" tabindex="-1" role="dialog" aria-labelledby="confirm-del-msg-label" aria-hidden="true">
             <input type="hidden" id="msg-to-delete" value="" />
           <div class="modal-dialog modal-sm">
@@ -294,9 +294,29 @@
           </div>
         </div>
         
+        <!-- EDITION Modal -->
+        <div class="modal fade" id="edit-msg" tabindex="-1" role="dialog" aria-labelledby="confirm-del-msg-label" aria-hidden="true">
+            <input type="hidden" id="msg-to-edit" value="" />
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Edition</h4>
+              </div>
+              <div class="modal-body">
+                  <textarea placeholder="What's on your mind ?" name="msg" id="edit-msg-box" class="form-control" autofocus="" value=""></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirm-edit-msg-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
             <script>
                 var glyphicon_options = '<span class="glyphicon-options invisible">' 
-                //        + '<span class="glyphicon glyphicon-edit"></span>'
+                                            + '<span class="glyphicon glyphicon-edit"></span>'
                                             + '<span class="glyphicon glyphicon-remove"></span></span>';
             </script>
         
