@@ -6,13 +6,8 @@ from freespeech.settings import UNDER_WORK
 # from django.contrib import admin
 # admin.autodiscover()
 
-import chat
-
 if not UNDER_WORK:
     urlpatterns = patterns('',
-        # Examples:
-        # url(r'^$', 'freespeech.views.home', name='home'),
-        # url(r'^freespeech/', include('freespeech.foo.urls')),
         url("", include('django_socketio.urls')),
     
         url(r'^$', 'chat.views.index', name='home'),
@@ -28,13 +23,16 @@ if not UNDER_WORK:
         url(r'^ajax-(?P<cid>[-A-Za-z0-9_]+)$', 'chat.views.ajax_comptoir', name="ajax_comptoir"),
         url(r'^cmptrinfo-(?P<cid>[-A-Za-z0-9_]+)$', 'chat.views.cmptr_info', name="cmptr_info"),
         url(r'^(?P<cid>[-A-Za-z0-9_]+)$', 'chat.views.join_comptoir', name="join_comptoir"),
-        # Uncomment the admin/doc line below to enable admin documentation:
-        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    
-        # Uncomment the next line to enable the admin:
-        # url(r'^admin/', include(admin.site.urls)),
+
+        # Account management
+        url(r'^password/change/$',
+            'django.contrib.auth.views.password_change',
+            {'template_name': 'chat/password_change.html', 'post_change_redirect': 'home'},
+            name="password_change",
+            ),
+
     )
 else:
     urlpatterns = patterns('',
-        url(r'^', 'chat.views.under_work', name='under_work'),
-    )
+                           url(r'^', 'chat.views.under_work', name='under_work'),
+                           )
