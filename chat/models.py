@@ -9,6 +9,7 @@ class IndependantMessage(models.Model):
     owner = models.ForeignKey(User, null=False)
     content = models.CharField(max_length=2048)
     date = models.DateTimeField(auto_now_add=True)
+    last_edit = models.DateTimeField(auto_now=True, null=True)
 
 
 class Comptoir(RandomPrimaryIdModel):

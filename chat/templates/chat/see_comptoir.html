@@ -19,13 +19,33 @@
                 {% endifchanged %}
                 <tr>
                     {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
-                    <td {% if msg.owner != user %}class="message" id="{{ msg.id }}"{% endif %}><span class="clear"></span><span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span></td>
+                    <td {% if msg.owner != user %}class="message" id="{{ msg.id }}"{% endif %}>
+                        <span class="clear"></span>
+                        <span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span>
+
+                        {% if msg.owner != user and msg.last_edit != None and msg.last_edit != msg.date %}
+                            <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="right" rel="tooltip">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        {% endif %}
+                    </td>
+
                     {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
                     <td class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
                     {% else %}
                     <td class="nopoint"></td>
                     {% endifchanged %}
-                    <td {% if msg.owner == user %}class="message" id="{{ msg.id }}" {% endif %}><span class="clear"></span><span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span></td>
+
+                    <td {% if msg.owner == user %}class="message" id="{{ msg.id }}" {% endif %}>
+                        {% if msg.owner == user and msg.last_edit != None and msg.last_edit != msg.date %}
+                            <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="left" rel="tooltip">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        {% endif %}
+
+                        <span class="clear"></span>
+                        <span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
