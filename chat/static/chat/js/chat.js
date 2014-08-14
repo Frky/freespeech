@@ -247,6 +247,17 @@ var bind_keys = function() {
             }
         }
     });
+
+    $("#edit-msg-box").keydown(function(e){
+        if (e.which == 13 && !e.ctrlKey){
+            if (!e.crtlKey) {
+                e.preventDefault();
+                $("#edit-msg").modal('hide');
+                mid = $("#msg-to-edit").val();
+                edit_message(mid);
+            }
+        }
+    });
 }
 
 

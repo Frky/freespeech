@@ -41,11 +41,15 @@ var edit_msg_server = function(msgid, oldcipher, newcipher) {
     socket.send(data);
 }
 
+
 var edit_msg_client = function(element) {
         msg_id = element.parents(".message")[0].id;
         $("#msg-to-edit").val(msg_id);
-        $("#edit-msg-box").val($(".clear", element.parents(".message")[0]).text());
         $('#edit-msg').modal();
+        setTimeout(function () { 
+            $("#edit-msg-box").focus(); 
+            $("#edit-msg-box").val($(".clear", element.parents(".message")[0]).text());
+        }, 500);
 }
 
 
