@@ -72,7 +72,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
     new_message += '<tr>';
 
     if (user != $("#user-name").html()) {
-        new_message +=  '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>';
+        new_message +=  '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>';
     } else {
         new_message +=  '<td></td>'; 
     }
@@ -184,6 +184,18 @@ var message_timeout = function() {
     $("#new-msg").focus();
     pop_alert("danger", "Your message has not been posted. You may have lost connection with the server.");
 }
+
+
+var replace_message = function(mid, newcipher, newclear) {
+    $(".ciphered", ".message#" + mid).html(newcipher);
+    if ($(".message#" + mid).is(":first-child")) {
+        $(".message#" + mid).append(glyph_edited);
+    } else {
+        $(".message#" + mid).prepend(glyph_edited);
+    }
+    $(".clear", ".message#" + mid).html(newclear);
+}
+
 
 /* Function to submit a new message through the socket */
 var submit_msg = function() {
@@ -372,6 +384,11 @@ var messaged = function(data) {
         $("#chatbox").velocity("callout.shake", "500ms", "true");
     } else if (data.type == "update-badge") {
         update_badge(data.cid, data.user, data.msgdate);
+    } else if (data.type == "edit-msg") {
+        mid = data.mid;
+        newcipher = data.content;
+        newclear = Decrypt_Text(newcipher, localStorage.getItem(key_id));
+        replace_message(mid, newcipher, newclear);
     }
 }
 
@@ -413,7 +430,6 @@ var init_cmptr = function() {
         bind_keys();
 
         /* Connect the socket to the server */
-        console.log("Connecting socket ...");
         socket.connect();
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);

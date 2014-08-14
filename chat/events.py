@@ -155,6 +155,44 @@ def message(request, socket, context, message):
                     # Else we deliver the message
                     osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date), "mid": msg.id})
 
+
+    elif action == "edit-msg":
+        # Get user from dictionary
+        user = connected_users[session_key][1]
+        # Get the socket of the user
+        sock = connected_users[session_key][0]
+        # Get cid where to edit the message
+        cid = message["cid"]
+        # Get the corresponding comptoir object
+        comptoir = Comptoir.objects.get(id=cid)
+        # Get the id of the message to edit
+        mid = message["mid"]
+        # Get the message object
+        msg = Message.objects.get(id=mid)
+        # Check the owner of the message
+        if msg.owner != user:
+            sock.send({"type": "error", "error_msg": "You cannot edit a message that does not belong to you. The new message has not been saved on the server."})
+            return
+        if msg.content != message["oldmsg"]:
+            sock.send({"type": "error", "error_msg": "The edition has failed. The new message has not been saved on the server."})
+            return
+        # If the hash of the comptoir key does not match with the db
+        if (comptoir.key_hash != message["hash"]):
+            # We reject the message
+            socket.send({"type": "error", "error_msg": "Edition was rejected because your key is not valid."})
+            return
+        # Update message content
+        msg.content = message["newmsg"]
+        # Save modification
+        msg.save()
+        # Propagate the edition to connected users
+        for other_user in connected_users.values():
+            osock, ouser, ocmptrs, ocid = other_user[0], other_user[1], other_user[2], other_user[3]
+            # If the currently iterated user is related to the comptoir
+            if cid == ocid:
+                # We notify the modification
+                osock.send({"type": "edit-msg", "cid": message["cid"], "mid": mid, "content": message["newmsg"]})
+
     # To be commented
     elif action == "wizz":
         user = connected_users[session_key][1]
