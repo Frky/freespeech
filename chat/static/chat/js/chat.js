@@ -189,9 +189,13 @@ var message_timeout = function() {
 var replace_message = function(mid, newcipher, newclear) {
     $(".ciphered", ".message#" + mid).html(newcipher);
     if ($(".message#" + mid).is(":first-child")) {
-        $(".message#" + mid).append(glyph_edited);
+        if ($("span.glyphicon-pencil", ".message#" + mid).length == 0) {
+            $(".message#" + mid).append(glyph_edited);
+        }
     } else {
-        $(".message#" + mid).prepend(glyph_edited);
+        if ($("span.glyphicon-pencil", ".message#" + mid).length == 0) {
+            $(".message#" + mid).prepend(glyph_edited);
+        }
     }
     $(".clear", ".message#" + mid).html(newclear);
 }

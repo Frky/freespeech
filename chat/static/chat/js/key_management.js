@@ -174,10 +174,11 @@ var Decrypt_all = function() {
             $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
             if ($( this ).is(":last-child", "tr")) {
                 $(this).append(glyphicon_options);
-               // "<span class=\"glyphicon glyphicon-remove invisible\"></span>");
             }
         } else {
             $( this ).find(".clear").html("<i class=\"msg-deleted\">Message deleted.</i>");
+            $( this ).find(".glyphicon-pencil").remove();
+
         }
     });
 }
