@@ -128,8 +128,13 @@ def message(request, socket, context, message):
             socket.send({"type": "error", "error_msg": "Your message was rejected because it is empty."})
             socket.send({"type": "ack"})
             return
+        # Try to determine if this is a '/me' message or not
+        try:
+            me_msg = message["me_msg"]
+        except KeyError:
+            me_msg = False
         # Creation of a new message object
-        msg = Message(owner=user, comptoir=comptoir, content=message["content"])
+        msg = Message(owner=user, comptoir=comptoir, content=message["content"], me_message=me_msg)
         # Saving the message
         msg.save()
         # Updating last message on the comptoir
@@ -153,8 +158,15 @@ def message(request, socket, context, message):
                     osock.send({"type": "update-badge", "cid": message["cid"], "user": user.username, "msgdate": date_to_tooltip(msg_local_date)})
                 else:
                     # Else we deliver the message
-                    osock.send({"type": "new-message", "cid": message["cid"], "user": user.username, "content": message["content"], "msgdate": date_to_tooltip(msg_local_date), "mid": msg.id})
-
+                    osock.send({
+                                "type": "new-message", 
+                                "cid": message["cid"], 
+                                "user": user.username, 
+                                "content": message["content"], 
+                                "me_msg": me_msg, 
+                                "msgdate": date_to_tooltip(msg_local_date), 
+                                "mid": msg.id,
+                                })
 
     elif action == "edit-msg":
         # Get user from dictionary
@@ -183,6 +195,7 @@ def message(request, socket, context, message):
             return
         # Update message content
         msg.content = message["newmsg"]
+        msg.edited = True
         # Save modification
         msg.save()
         # Propagate the edition to connected users
