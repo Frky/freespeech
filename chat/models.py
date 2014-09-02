@@ -10,6 +10,8 @@ class IndependantMessage(models.Model):
     content = models.CharField(max_length=2048)
     date = models.DateTimeField(auto_now_add=True)
     last_edit = models.DateTimeField(auto_now=True, null=True)
+    edited = models.BooleanField(default=False)
+    me_message = models.BooleanField(default=False)
 
 
 class Comptoir(RandomPrimaryIdModel):
