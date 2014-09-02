@@ -31,9 +31,46 @@ var socket = new io.Socket();
 
 var online = new Array();
 
+
+/* Function to add a new '/me' message to the chat box.
+ * Called at each reception of a message of this type through the socket */
+var addMeMessage = function(user, cipher, clear, msgdate, mid, insert) {
+
+    /* Escaping html code in new messages to avoid XSS */
+    clear = $('<div />').text(clear).html();
+
+    var new_message = "<tr class=\"center-msg me\" data-author=\"" + user + "\">";
+    new_message += "<td colspan=\"3\" class=\"message\">";
+    new_message += "<span class=\"author\">" + user + "</span>\n";
+    new_message += "<span class=\"clear\">" + clear + "</span>";
+    new_message += "<span class=\"ciphered hidden\">" + cipher + "</span>";
+    new_message += "</td>";
+    new_message += "</tr>";
+
+    if (insert) {
+        /* Append the new message to the chatbox */
+        $("#chatbox table tbody").append(new_message)
+        
+        /* NOTE: for now, no edition/deletion is possible for /me messages */
+        // msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
+
+        /* NOTE: For now, no date tooltip on /me messages */
+        // $('.fsp-tooltip').tooltip('destroy').tooltip();
+
+        /* Notification to the sound alert manager */
+        if (user != $("#user-name").html()) {
+            sound_notification("msg");
+        }
+
+    } else {
+        return new_message;
+    }
+}
+
+
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
-var addMessage = function(user, cipher, clear, msgdate, insert) {
+var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
     
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
@@ -77,7 +114,7 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     new_message += '<tr>';
 
     if (user != $("#user-name").html()) {
-        new_message +=  '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>';
+        new_message +=  '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>';
     } else {
         new_message +=  '<td></td>'; 
     }
@@ -93,14 +130,18 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     if (user != $("#user-name").html()) {
         new_message += '<td></td>';
     } else {
-        new_message += '<td class="message"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span></td>';
+        new_message += '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span>';
+        new_message = add_glyphicons(new_message);
+        new_message += "</td>";
     }
 
     new_message += '</tr>';
     
     if (insert) {
         /* Append the new message to the chatbox */
-        $("#chatbox table tbody").append(new_message);
+        $("#chatbox table tbody").append(new_message)
+        
+        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
 
         $('.fsp-tooltip').tooltip('destroy').tooltip();
 
@@ -112,7 +153,6 @@ var addMessage = function(user, cipher, clear, msgdate, insert) {
     } else {
         return new_message;
     }
-
 
 }
 
@@ -177,6 +217,15 @@ var send_wizz = function() {
     socket.send(data);
 }
 
+/*
+var meify = function(el) {
+    var author = el.data("author"); 
+    el.html("<td colspan=\"3\" class=\"message central-msg me\"></td");
+    
+    console.log(author);
+}*/
+
+
 var message_timeout = function() {
     if (!message_pending) {
         return;
@@ -187,6 +236,22 @@ var message_timeout = function() {
     pop_alert("danger", "Your message has not been posted. You may have lost connection with the server.");
 }
 
+
+var replace_message = function(mid, newcipher, newclear) {
+    $(".ciphered", ".message#" + mid).html(newcipher);
+    if ($(".message#" + mid).is(":first-child")) {
+        if ($("span.glyphicon-pencil", ".message#" + mid).length == 0) {
+            $(".message#" + mid).append(glyph_edited);
+        }
+    } else {
+        if ($("span.glyphicon-pencil", ".message#" + mid).length == 0) {
+            $(".message#" + mid).prepend(glyph_edited);
+        }
+    }
+    $(".clear", ".message#" + mid).html(newclear);
+}
+
+
 /* Function to submit a new message through the socket */
 var submit_msg = function() {
     /* The data contains:
@@ -196,7 +261,8 @@ var submit_msg = function() {
             - the hash of the secret key, to allow the server to check that we indeed are allowed to 
             post on this comptoir
     */
-    switch ($("#new-msg").val()) {
+    var msg = $("#new-msg").val();
+    switch (msg) {
         case "":
             return;
             break;
@@ -206,8 +272,20 @@ var submit_msg = function() {
             break;
         default:
             disable_sendbox();
-            data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text($("#new-msg").val(), localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val()};
+            /* Boolean to indicate if it is a '/me' message */
+            var me_msg = false
+            /* Looking for '/me' substring */
+            if (msg.substring(0, 4) == "/me ") {
+                /* In this case, updating the boolean */
+                me_msg = true;
+                /* Removing the substring '/me ' */
+                msg = msg.slice(4);
+            }
+            /* Creating the data to be sent to the server */
+            data = {cid: $("#cid").val(), action: "post", content: Encrypt_Text(msg, localStorage.getItem(key_id)), session_key: $('#session_key').val(), hash: $("#comptoir-key-hash").val(), me_msg: me_msg};
+            /* Sending data */
             socket.send(data);
+            /* Set timeout to raise an error if no ack was received from server within 3s */
             setTimeout(message_timeout, 3000);
             break;
     }
@@ -234,6 +312,17 @@ var bind_keys = function() {
             if (!e.crtlKey) {
                 e.preventDefault();
                 submit_msg();
+            }
+        }
+    });
+
+    $("#edit-msg-box").keydown(function(e){
+        if (e.which == 13 && !e.ctrlKey){
+            if (!e.crtlKey) {
+                e.preventDefault();
+                $("#edit-msg").modal('hide');
+                mid = $("#msg-to-edit").val();
+                edit_message(mid);
             }
         }
     });
@@ -314,7 +403,12 @@ var messaged = function(data) {
         if (data.cid != $("#cid").val()) {
             return;
         }
-        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, true);
+        /* Testing if this is a '/me' message */
+        if (data.me_msg) {
+            addMeMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
+        } else {
+            addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
+        }
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
     /* Elsif it is an error, we alert the user */
@@ -382,6 +476,11 @@ var messaged = function(data) {
         if ($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up")) {
             sound_notification("msg");
         }
+    } else if (data.type == "edit-msg") {
+        mid = data.mid;
+        newcipher = data.content;
+        newclear = Decrypt_Text(newcipher, localStorage.getItem(key_id));
+        replace_message(mid, newcipher, newclear);
     }
 }
 
@@ -424,9 +523,10 @@ var init_cmptr = function() {
         bind_keys();
 
         /* Connect the socket to the server */
-        console.log("Connecting socket ...");
         socket.connect();
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
+        msg_management_init_all();
 }
 

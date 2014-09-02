@@ -168,10 +168,32 @@ var checkHashCallback = function(data) {
 var Decrypt_all = function() {
     if (!Test_Key(localStorage.getItem(key_id))) return;
     $(".message").each(function() {
-        ciph = $( this ).find(".ciphered").text();
+        var ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {
-            $( this ).find(".clear").text(Decrypt_Text(ciph, localStorage.getItem(key_id)));
+            var clear = Decrypt_Text(ciph, localStorage.getItem(key_id));
+            $( this ).find(".clear").text(clear);
             $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
+            if ($( this ).is(":last-child", "tr")) {
+                $(this).append(glyphicon_options);
+            }
+            /*
+            if (clear.substring(0, 3) == "/me") {
+                meify($( this ).parent());
+            }
+            */
+            /*
+            else {
+                var author = $( this ).parent().data("author");
+                var el = $( this ).parent();
+                el.html("<td colspan=\"3\" class=\"central-msg me\"></td");
+                $("td", el).text(author + clear);
+                $("td", el).find("").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
+            }
+            */
+        } else {
+            $( this ).find(".clear").html("<i class=\"msg-deleted\">Message deleted.</i>");
+            $( this ).find(".glyphicon-pencil").remove();
+
         }
     });
 }

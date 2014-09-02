@@ -379,6 +379,29 @@ def load_previous_messages(request):
     json_data = simplejson.dumps({'previous_msgs': m_list})
 
 
+def remove_msg(request):
+    try:
+        cid = request.GET["cid"]
+        mid = request.GET["mid"]
+        chash = request.GET["chash"]
+    except Exception:
+        print "Key Error"
+        return HttpResponse("KO")
+    try:
+        msg = Message.objects.get(id=mid)
+        cmptr = Comptoir.objects.get(id=cid)
+    except Exception:
+        print "Value Error"
+        return HttpResponse("KO")
+
+    if msg.owner != request.user or chash != cmptr.key_hash:
+        print "Hash error"
+        return HttpResponse("KO")
+
+    msg.content = ""
+    msg.save()
+    return HttpResponse("OK")
+
 def ajax_comptoir(request, cid):
     template_name = "chat/ajax_cmptr.html"
 

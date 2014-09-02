@@ -50,6 +50,7 @@ var getComptoirContentCallback = function(data, cid) {
     */
     if ($("#chatbox").length != 0) {
         key_init();
+        msg_management_init_all();
     }
 
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);

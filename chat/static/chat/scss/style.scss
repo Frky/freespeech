@@ -552,6 +552,10 @@ table#options-container {
     width: 400px;
 }
 
+#edit-msg-box {
+    resize: none;
+    height: 90px;
+}
 
 /* HACK bootstrap tooltip */
 
@@ -563,7 +567,24 @@ img.smiley {
     height: 1.2em;
 }
 
-#cmptr-info {
+.msg-deleted {
+    color: #428bca;
+}
+
+.glyphicon {
+        zoom: 70%;
+        margin-left: 5px;
+        margin-right: 5px;
+}
+
+.glyphicon-options {
+    display: inline-block;
+    float: right;
+
+    span:hover {
+        color: $orange;
+        cursor: pointer;
+    }
 }
 
 
