@@ -173,7 +173,7 @@ var Decrypt_all = function() {
             var clear = Decrypt_Text(ciph, localStorage.getItem(key_id));
             $( this ).find(".clear").text(clear);
             $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
-            if ($( this ).is(":last-child", "tr")) {
+            if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
                 $(this).append(glyphicon_options);
             }
             /*

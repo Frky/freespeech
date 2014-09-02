@@ -39,8 +39,8 @@ var addMeMessage = function(user, cipher, clear, msgdate, mid, insert) {
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
 
-    var new_message = "<tr class=\"center-msg me\" data-author=\"" + user + "\">";
-    new_message += "<td colspan=\"3\" class=\"message\">";
+    var new_message = "<tr data-author=\"" + user + "\">";
+    new_message += "<td colspan=\"3\" class=\"message central-msg me\">";
     new_message += "<span class=\"author\">" + user + "</span>\n";
     new_message += "<span class=\"clear\">" + clear + "</span>";
     new_message += "<span class=\"ciphered hidden\">" + cipher + "</span>";

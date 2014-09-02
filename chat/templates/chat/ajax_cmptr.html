@@ -8,8 +8,8 @@
             <tbody>
             {% for msg in msgs %}
                 {% if msg.me_message %}
-                    <tr class="center-msg me" data-author="{{ msg.owner }}">
-                        <td colspan="3" class="message">
+                    <tr data-author="{{ msg.owner }}">
+                        <td colspan="3" class="message central-msg me">
                             <span class="author">{{ msg.owner }}</span>
                             <span class="clear"></span>
                             <span class="ciphered hidden">{{ msg.content }}</span>
@@ -85,3 +85,4 @@
         -->
 
         </table>
+
