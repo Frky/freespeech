@@ -466,3 +466,12 @@ def cmptr_info(request, cid):
     json_data = "{\"title\": \"" + comptoir.title + "\", \"description\": \"" + comptoir.description + "\"}"
     return HttpResponse(json_data, mimetype='application/json')
 
+
+
+
+
+## TESTING VIEWS FOR 404 & 500 PAGES ##
+
+def error404(request):
+    return render(request, '404.html')
+

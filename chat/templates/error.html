@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+
+		<title>Freespeech</title>
+
+        <meta charset="iso-8859-1">		
+
+		{% load staticfiles %}
+
+        <link rel="stylesheet" href="{% static 'chat/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'chat/generated/css/error.css' %}" />
+        <link rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
+
+        <script src="{% static 'chat/js/jquery.min.js' %}"></script>
+        <script src="{% static 'chat/js/jquery.zoomooz.min.js' %}"></script>
+        <script src="{% static 'chat/js/error_page.js' %}"></script>
+    
+</head>
+<body>
+    <div id="pi">
+        {% include 'pi.html' %}
+    </div>
+    <script>
+        $( document ).ready(function() {
+            {% block error_search %}
+            {% endblock %}
+        });
+    </script>
+</body>
+</html>
