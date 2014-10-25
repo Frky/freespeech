@@ -6,12 +6,15 @@ from freespeech.settings import UNDER_WORK
 # from django.contrib import admin
 # admin.autodiscover()
 
+# handler404 = 'chat.views.error404'
+
 if not UNDER_WORK:
     urlpatterns = patterns('',
         url("", include('django_socketio.urls')),
     
         url(r'^$', 'chat.views.index', name='home'),
         url(r'^404$', 'chat.views.error404', name='error404'),
+        url(r'^505$', 'chat.views.error505', name='error505'),
         url(r'^check_hash', 'chat.views.check_hash', name='check_hash'),
         url(r'^remove-msg', 'chat.views.remove_msg', name="remove_msg"),
         url(r'^about$', 'chat.views.about', name='about'),

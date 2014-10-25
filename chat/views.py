@@ -471,7 +471,9 @@ def cmptr_info(request, cid):
 
 
 ## TESTING VIEWS FOR 404 & 500 PAGES ##
-
 def error404(request):
     return render(request, '404.html')
+
+def error505(request):
+    return render(request, '505.html')
 
