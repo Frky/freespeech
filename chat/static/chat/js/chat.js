@@ -4,10 +4,29 @@
 
 var msg_alert;
 var sound_alert;
+var last_left;
+var last_joined;
 
-var sound_notification = function(type) {
+var delayed_sound = function(type, cid) {
+
+
+    if (type == "joined") {
+        joined_alert.play();
+    }
+
+}
+
+
+var sound_notification = function(type, cid) {
     
+    /* If the global control of the sound is off, we return */
     if (sound_alert.val() == 0) {
+        return;
+    }
+
+    /* If this is a comptoir notification and the sound of this comptoir 
+       is off, then we return */
+    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up"))) {
         return;
     }
 
@@ -22,6 +41,13 @@ var sound_notification = function(type) {
 
     if (type == "left") {
         left_alert.play();
+    }
+
+    if (type == "joined") {
+        if (last_left == last_joined) {
+            return;
+        }
+        joined_alert.play();
     }
 }
 
@@ -146,8 +172,8 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
         $('.fsp-tooltip').tooltip('destroy').tooltip();
 
         /* Notification to the sound alert manager */
-        if (user != $("#user-name").html() && $(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up")) {
-            sound_notification("msg");
+        if (user != $("#user-name").html()) {
+            sound_notification("msg", data.cid);
         }
 
     } else {
@@ -415,14 +441,25 @@ var messaged = function(data) {
     } else if (data.type == "error") {
         pop_alert("danger", data.error_msg);
 
-    } else if (data.type == "joined") {
+    } else if (data.type == "joined" || data.type == "connected") {
         username = data.user;
         for (var i = 0; i < data.cmptrs.length; i++) {
             add_user_online(username, data.cmptrs[i]);
         }
+        
+        if (data.type == "joined") {
+            last_joined = username;
+            setTimeout(function() {
+                last_joined = "";
+            }, 1000);
+
+            if (username != $("#user-name").text()) {
+                sound_notification("joined", "");
+            }
+        }
+
         /*
         if (username != $("#user-name").text()) {
-            pop_alert("info", "New connection: " + data.user);
         }
         */
     } else if (data.type == "users") {
@@ -457,14 +494,19 @@ var messaged = function(data) {
             online_div.text(online_to_string(online));
         }
 
+        last_left = username;
+        setTimeout(function() {
+            last_left = "";
+        }, 1000);
+
         pop_alert("info", "Leaving: " + username);
-        sound_notification("left");
+        sound_notification("left", "");
 
     } else if (data.type == "ack") {
         enable_sendbox();
     } else if (data.type == "wizz") {
         /* Notification to the sound alert manager */
-        sound_notification("wizz");
+        sound_notification("wizz", data.cid);
         /* Shaking the chatbox */
         $("#chatbox").velocity("callout.shake", "500ms", "true");
         /* Add message on chatbox */
@@ -519,6 +561,7 @@ var init_cmptr = function() {
         msg_alert = $("#msgAlert")[0];
         wizz_alert = $("#wizzAlert")[0];
         left_alert = $("#leftAlert")[0];
+        joined_alert = $("#joinedAlert")[0];
         sound_alert = $("#sound-alert-btn");
         bind_keys();
 

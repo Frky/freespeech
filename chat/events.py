@@ -107,7 +107,9 @@ def message(request, socket, context, message):
                 # If there are some common comptoirs
                 if len(common_cid) > 0:
                     # We notify both entites that the other is connected
-                    user_entry[0].send({"type": "joined", "user": ouser.username, "cmptrs": common_cid})
+                    # For the new arrivant, the notification is of type "Already connected"
+                    user_entry[0].send({"type": "connected", "user": ouser.username, "cmptrs": common_cid})
+                    # For the others, the notification is of type "Just arrived"
                     osock.send({"type": "joined", "user": user_entry[1].username, "cmptrs": common_cid})
 
     elif action == "post":
