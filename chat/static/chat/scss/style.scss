@@ -148,7 +148,8 @@ header {
 */
 
 
-#my-comptoirs, #connexion-forms {
+// #my-comptoirs, 
+#connexion-forms {
     font-size: 0.8em;
     position: absolute;
     top: 200px;
@@ -219,9 +220,66 @@ aside {
     height: 100%;
     width: 550px;
 
+    header { 
+        height: 200px;
+    }
+
+    #aside-panel {
+
+        position: absolute;
+        top: 200px;
+        bottom: 50px;
+        width: 550px;
+        
+        .panel-tabs {
+            float: right;
+            width: 30px;
+
+            .tab {
+                height: 140px;
+                margin-bottom: 2px;
+                background-color: rgba(255,255,255,0.9);
+                border-style: solid;
+                border-width: 2px 0px 2px 2px;
+                border-color: #428bca;
+                border-radius: 10px 0px 0px 10px;
+
+                &.active {
+                    width: 32px;
+                    background-color: rgba(255,255,255,1);
+                }
+            }
+        }
+
+        .panel-contents {
+            float: right;
+            height: 100%;
+            background-color: rgba(255,255,255,0.9);
+
+            .content
+            {
+                padding: 15px;
+                display: none;
+
+                &.active {
+                    width: 510px;
+                    height: 100%;
+                    display: inline-block;
+                    border-style: solid;
+                    border-color: #428bca;
+                    border-radius: 0px 0px 0px 10px;
+                    border-width: 2px 0px 2px 2px;
+
+                }
+            }
+        }
+
+    }
+
     footer {
         text-align: right;
         width: 94%;
+        height: 30px;
         margin: auto 3%;
         position: absolute;
         bottom: 0px;
@@ -443,22 +501,6 @@ a:hover {
 
 }
 
-div#aside-panel {
-    position: fixed;
-    bottom: 30px;
-    right: 0px;
-    width: 550px;
-    height: 250px;
-
-    background-color: rgba(255, 255, 255, 0.5);
-    /*
-    border-style: solid;
-    border-color: black;
-    border-width: 3px;
-    */
-}
-
-
 #send-form {
     div {
         margin: auto 3%;
@@ -538,7 +580,7 @@ table#options-container {
     }
 }
 
-#msg-alert-tr {
+#msg-alert-tr, #notif-alert-tr {
     .fld {
         text-align: right;
     }

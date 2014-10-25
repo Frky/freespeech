@@ -48,6 +48,12 @@ $("#sound-alert-btn").on('switchChange', function() {
     $("#sound-alert-btn").val(1 - $("#sound-alert-btn").val());
 });
 
+/* Initialisation of the switch button for notifications */
+$("[name='notif-alert']").bootstrapSwitch();
+$("#notif-alert-btn").on('switchChange', function() {
+    $("#notif-alert-btn").val(1 - $("#notif-alert-btn").val());
+});
+
 /* Initialisation of flash copy to clipboard */
 var urlcpy = new ZeroClipboard( document.getElementById("copy-url-button"), {
     moviePath: "{% static 'chat/flash/ZeroClipboard.swf' %}"
@@ -102,6 +108,18 @@ $(document).ready(function() {
         $("#my-comptoirs").addClass("hidden");
         $("aside").addClass("micro");
     } else if ($("#chatbox").length > 0) {
+
+        $(".panel-tabs .tab").each(function() {
+            $(this).click(function() {
+                $("#aside-panel .active").each(function() {
+                    $(this).removeClass("active");
+                });
+                tab_content = $(this).attr("href");
+                $(this).addClass("active");
+                $(tab_content).addClass("active");
+            });
+        });
+
         $("#options-container").removeClass("hidden");
         $("#send-form").removeClass("hidden");
         key_init();

@@ -6,6 +6,9 @@ var msg_alert;
 var sound_alert;
 var last_left;
 var last_joined;
+var unread = 0;
+
+var page_title = "Freespeech";
 
 var delayed_sound = function(type, cid) {
 
@@ -14,6 +17,15 @@ var delayed_sound = function(type, cid) {
         joined_alert.play();
     }
 
+}
+
+
+var update_title = function() {
+    if (unread == 0) {
+        document.title = page_title;
+    } else {
+        document.title = "(" + unread + ") " + page_title;
+    }
 }
 
 
@@ -171,8 +183,10 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
 
         $('.fsp-tooltip').tooltip('destroy').tooltip();
 
-        /* Notification to the sound alert manager */
+        /* Notification to the sound alert manager and update window title */
         if (user != $("#user-name").html()) {
+            unread += 1;
+            update_title();
             sound_notification("msg", data.cid);
         }
 
@@ -362,6 +376,8 @@ var update_badge = function(cid, user, date) {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);
     }
+    unread += 1;
+    update_title();
 //    $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
 }
 
@@ -558,12 +574,30 @@ var init_cmptr = function() {
         $("#chatbox").slimScroll({scrollTo: (parseInt($("#chatbox")[0].scrollHeight) - 150).toString() + "px"});
         */
 
+        $(window).focus(function() {
+            unread = 0;
+            update_title();
+        });
+
         msg_alert = $("#msgAlert")[0];
         wizz_alert = $("#wizzAlert")[0];
         left_alert = $("#leftAlert")[0];
         joined_alert = $("#joinedAlert")[0];
         sound_alert = $("#sound-alert-btn");
         bind_keys();
+
+        /*
+        var init_sound_plop = false;
+        sound_alert.parent().click(function() {
+            if (!init_sound_plop) {
+                init_sound_plop = true;
+                sound_alert.parent().click(function() {
+                    console.log("Changing sound.");
+                });
+            }
+            console.log("Changing sound.");
+        });
+        */
 
         /* Connect the socket to the server */
         socket.connect();

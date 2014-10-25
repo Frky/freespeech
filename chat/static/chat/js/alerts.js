@@ -1,5 +1,12 @@
 
+var notif_alert_id = "#notif-alert-btn";
+
 var pop_alert = function(alert_type, alert_message) {
+        
+        if ($(notif_alert_id).val() == 0) {
+            return;
+        }
+
         if (alert_type == "danger") {
             alert_name = "Error!";
         } else if (alert_type == "warning") {
