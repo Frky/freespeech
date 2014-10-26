@@ -232,26 +232,38 @@ aside {
         position: absolute;
         top: 200px;
         bottom: 50px;
-        width: 550px;
+        width: 100%;
         
         .panel-tabs {
             float: right;
             width: 30px;
             
-            .tab-area:hover, .active {
+            .tab-area:hover, .active, .active-init {
                 cursor: pointer;
                 .tab {
-                    transform: translate(0px, 140px) rotate(-90deg);
-                    transition: 0.3s ease-in-out;
+                    @include transform(translate(0px, 140px) rotate(-90deg));
+                    @include transition(0.3s ease-in-out);
                 }
+            }
+
+            .tab-area.active {
+                    .left-arrow {
+                        display: none;
+                    }
+                    .right-arrow {
+                        display: inline-block;
+                    }
             }
 
             .tab {
                 width: 140px;
                 height: 140px;
-                transform-origin: left top 0;
-                transform: translate(20px, 140px) rotate(-90deg);
-                transition: 0.3s ease-in-out;
+                -webkit-transform-origin: left top 0;
+                   -moz-transform-origin: left top 0;
+                    -ms-transform-origin: left top 0;
+                        transform-origin: left top 0;
+                @include transform(translate(20px, 140px) rotate(-90deg));
+                @include transition(0.3s ease-in-out);
                 margin-bottom: 2px;
                 background-color: rgba(255,255,255,0.9);
                 border-style: solid;
@@ -262,7 +274,13 @@ aside {
                 text-align: center;
                 padding-top: 5px;
 
-                
+                .left-arrow {
+                    display: inline-block;
+                }
+                .right-arrow {
+                    display: none;
+                }
+
             }
         }
 
@@ -285,15 +303,15 @@ aside {
             
                 background-color: rgba(255,255,255,0.9);
 
-                transform: translate(550px, 0px);
-                transition: 0.5s ease-in-out;
+                @include transform(translate(550px, 0px));
+                @include transition(0.5s ease-in-out);
 
                 position: absolute;
 
                 &.active {
                     display: block;
-                    transform: translate(0px, 0px);
-                    transition: 0.5s ease-in-out;
+                    @include transform(translate(0px, 0px));
+                    @include transition(0.5s ease-in-out);
                 }
             }
 
@@ -384,9 +402,10 @@ a:hover {
     font-size: 30em;
     text-align: center;
     @include transform(rotate(0deg));
+    @include transform(translate(0px, 0px));
 
-    @include transition(0.5s font-size ease-in-out);
-    @include transition(0.5s transform ease-in-out);
+    @include transition(0.5s ease-in-out);
+//    @include transition(0.5s transform ease-in-out);
 
     a {
         color: $midnightblue;
@@ -398,7 +417,8 @@ a:hover {
 
     &.toggle {
         font-size: 5em;
-        @include transform(rotate(360deg));
+//        @include transform(translate(-150px, 0px));
+//        @include transform(rotate(90deg));
     }
 }
 
@@ -500,7 +520,8 @@ a:hover {
         position: absolute;
         top: 0px;
         bottom: 150px;
-        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         overflow-y: scroll;
         word-break: break-all;
 
@@ -540,9 +561,12 @@ a:hover {
     }
     
     table.cmptr-page {
-        width: 94%;
+        min-width: 94%;
+        max-width: 94%;
         margin: auto 3%;
         tr {
+            min-width: 100%;
+            max-width: 100%;
             &.author {
                 font-weight: bold;
             }
@@ -550,7 +574,7 @@ a:hover {
                 width: 2%;
                 text-align: center;
                 vertical-align: top;
-    
+
                 /*
                 &.nopoint {
                     background-image: url('../../images/vert-line.png');
@@ -576,6 +600,7 @@ a:hover {
                 width: 49%;
                 text-align: left;
                 background: none;
+    
             }
             &.senti {
                 th {

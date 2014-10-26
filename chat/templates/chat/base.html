@@ -189,8 +189,14 @@
         <div class="panel-tabs">
             
             {% if user.is_authenticated %}
-            <div class="tab-area active">
+            <div class="tab-area active-init">
                 <div class="tab" href="#my-comptoirs">
+                    <span class="left-arrow">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </span>
+                    <span class="right-arrow">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </span>
                     My comptoirs
                 </div>
             </div>
@@ -200,14 +206,26 @@
             {% if user.is_authenticated %}
             <div class="tab-area">
                 <div class="tab hidden" href="#option-panel" id="option-panel-tab">
+                    <span class="left-arrow">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </span>
+                    <span class="right-arrow">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </span>
                     Options
                 </div>
             </div>
             {% endif %}
 
             {% if not user.is_authenticated %}
-            <div class="tab-area active">
+            <div class="tab-area active-init">
                 <div class="tab" href="#login-panel">
+                    <span class="left-arrow">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </span>
+                    <span class="right-arrow">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </span>
                     Log in
                 </div>
             </div>
@@ -216,6 +234,12 @@
             {% if not user.is_authenticated %}
             <div class="tab-area">
                 <div class="tab" href="#register-panel">
+                    <span class="left-arrow">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </span>
+                    <span class="right-arrow">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </span>
                     Register
                 </div>
             </div>

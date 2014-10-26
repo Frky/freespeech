@@ -124,6 +124,7 @@ $(document).ready(function() {
     }
         $(".panel-tabs .tab-area").each(function() {
             $(this).click(function() {
+                $(".active-init").removeClass("active-init");
                 var tab_content = $(".tab", this).attr("href");
                 if (!$(tab_content).hasClass("active")) {
                     $("#aside-panel .active").each(function() {
