@@ -403,7 +403,7 @@ def remove_msg(request):
     return HttpResponse("OK")
 
 def ajax_comptoir(request, cid):
-    template_name = "chat/ajax_cmptr.html"
+    template_name = "chat/includes/cmptr.html"
 
     context = RequestContext(request)
     context['registerForm'] = RegisterForm()

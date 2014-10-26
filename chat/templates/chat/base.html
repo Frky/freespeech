@@ -70,14 +70,15 @@
     {% endblock %}
     </section>
 
-    <div id="aside-bg"></div>
+    <div id="aside-bg" class="invisible"></div>
     <aside>
     <header>
     {% block header %}
 
     {% if not user.is_authenticated %}
-    <nav>
+    <nav> <span> You are not logged in.</span><!--
     <span><a id="login-button">Log in</a> | <a id="register-button">Register</a></span>
+    -->
     <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
     </nav>
     {% else %}
@@ -102,147 +103,126 @@
 	</header>
 
 
-    {% if not user.is_authenticated %}
-    <div id="connexion-forms">
-        <form id="login-form" class="hidden" action="{% url "login" %}" method="post">
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td class="field-td">
-                        <input name="username" type="login" class="form-control" placeholder="Username">
-                    </td>
-                    <td class="help-td">
-                    </td>
-                    <td class="submit-td">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="field-td">
-                        <input name="password" type="password" class="form-control" placeholder="Password">
-                    </td>
-                    <td class="help-td">
-                    </td>
-                    <td class="submit-td">
-                        <input type="submit" class="btn btn-default" value="Log in">
-                    </td>
-                </tr>
-            </table>
-        </form>
-
-        <form class="formContainer hidden" method="post" action="{% url "register" %}" id="register-form">
-            {% csrf_token %}
-            <table>
-                {% for field in registerForm %}
-                <tr>
-                    <td class="field-td">
-                        {{ field }}
-                    </td>
-                    <td class="help-td">
-                    </td>
-                    <td class="submit-td">
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr>
-                    <td class="field-td">
-                        <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
-                    </td>
-                    <td class="help-td">
-                        <a href="#" class="fsp-popover btn btn-info help-block"id="beta_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
-                            This site is still under development. For now, you need to have an inscription key to be able
-                            to register. If you don't have one, you can ask for it at fsp@udtq.fr.
-                            ">
-                            ?</a>
-                    </td>
-                    <td class="submit-td">
-                        <input class="btn btn-default" type="submit" value="> Register">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    {% endif %}
-
     <div id="aside-panel">
         <div class="panel-contents">
-            <div class="content" id="my-comptoirs">
-                Parapluie doré.
-            </div>
-            <div class="content" id="option-panel">
-                <table id="options-container" class="hidden">
-                    <tr id="cpy-url-btn-tr">
-                        <td class="lbl">
-                            {# if not public #}
-                            <button class="btn btn-default" id="copy-key-button">Copy comptoir key</button>
-                            {# endif #}
-                        </td>
-                        <td class="fld">
-                            <button class="btn btn-default" id="copy-url-button">Copy comptoir address</button>
-                        </td>
-                    </tr>
 
-                    <tr id="msg-alert-tr">
-                        <td class="lbl">
-                            <label>Allow sounds (general) ?</label>
-                        </td>
-                        <td class="fld">
-                            <input id="sound-alert-btn" value=1 name="sound-alert" type="checkbox" unchecked data-off-text="O" data-on-text="I" checked bootstrap-switch-disabled>
-                        </td>
-                    </tr>
-                    <tr id="notif-alert-tr">
-                        <td class="lbl">
-                            <label>Notifications ?</label>
-                        </td>
-                        <td class="fld">
-                            <input id="notif-alert-btn" value=1 name="notif-alert" type="checkbox" unchecked data-off-text="O" data-on-text="I" checked bootstrap-switch-disabled>
-                        </td>
-                    </tr>
-                    <tr id="key-tr">
-                        <td class="lbl">
-                            <label class="control-label" for="comptoir-key">Key</label>
-                        </td>
-                        <td class="fld">
-                            <input id="comptoir-key" class="control-label form-control" value="">
-                        </td>
-                    </tr>
-                    <tr id="hash-tr" class="hidden">
-                        <td class="lbl">
-                            <label class="control-label" for="comptoir-key-hash">Hash</label>
-                        </td>
-                        <td class="fld">
-                            <input id="comptoir-key-hash" class="form-control" value="" disabled="true">
-                        </td>
-                    </tr>
-                    <tr id="users-connected-tr">
-                        <td class="lbl">
-                            <label>Online</label>
-                        </td>
-                        <td id="users-connected" class="fld"></td>
-                    </tr>
-                </table>
+            {% if user.is_authenticated %}
+            <div class="content" id="my-comptoirs">
+                {% include "chat/includes/my-comptoirs.html" %}
             </div>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <div class="content hidden" id="option-panel">
+                {% include "chat/includes/option-panel.html" %}
+            </div>
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            <div class="content" id="login-panel">
+                <form id="login-form" action="{% url "login" %}" method="post">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td class="field-td">
+                                <input name="username" type="login" class="form-control" placeholder="Username">
+                            </td>
+                            <td class="help-td">
+                            </td>
+                            <td class="submit-td">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-td">
+                                <input name="password" type="password" class="form-control" placeholder="Password">
+                            </td>
+                            <td class="help-td">
+                            </td>
+                            <td class="submit-td">
+                                <input type="submit" class="btn btn-default" value="> Log in">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            <div class="content" id="register-panel">
+                <form class="formContainer" method="post" action="{% url "register" %}" id="register-form">
+                    {% csrf_token %}
+                    <table>
+                        {% for field in registerForm %}
+                        <tr>
+                            <td class="field-td">
+                                {{ field }}
+                            </td>
+                            <td class="help-td">
+                            </td>
+                            <td class="submit-td">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td class="field-td">
+                                <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
+                            </td>
+                            <td class="help-td">
+                                <a href="#" class="fsp-popover btn btn-info help-block"id="beta_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
+                                    This site is still under development. For now, you need to have an inscription key to be able
+                                    to register. If you don't have one, you can ask for it at fsp@udtq.fr.
+                                    ">
+                                    ?</a>
+                            </td>
+                            <td class="submit-td">
+                                <input class="btn btn-default" type="submit" value="> Register">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            {% endif %}
+
         </div>
+
+
         <div class="panel-tabs">
-            <div class="tab" href="#my-comptoirs">
+            
+            {% if user.is_authenticated %}
+            <div class="tab-area active">
+                <div class="tab" href="#my-comptoirs">
+                    My comptoirs
+                </div>
             </div>
-            <div class="tab" href="#option-panel">
+            {% endif %}
+            
+            
+            {% if user.is_authenticated %}
+            <div class="tab-area">
+                <div class="tab hidden" href="#option-panel" id="option-panel-tab">
+                    Options
+                </div>
             </div>
-            <div class="tab">
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            <div class="tab-area active">
+                <div class="tab" href="#login-panel">
+                    Log in
+                </div>
             </div>
-            <div class="tab">
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            <div class="tab-area">
+                <div class="tab" href="#register-panel">
+                    Register
+                </div>
             </div>
+            {% endif %}
+
         </div>
     </div>
-    <script>
-        $('#my-comptoirs a').click(function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-        })
-        $('#option-panel a').click(function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-        })
-    </script>
     {% block footer_option %}
     {% endblock %}
     <footer>

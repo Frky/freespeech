@@ -36,6 +36,7 @@ section {
 
     overflow-y: scroll;
     overflow: -moz-scrollbars-none;
+    overflow: -webkit-scrollbars-none;
 }
 
 
@@ -44,6 +45,8 @@ header {
     right: 0px;
     width: 550px;
     height: 200px;
+
+    background-color: rgba(255, 255, 255, 0.9);
 
     h1 {
         display: inline-block;
@@ -148,7 +151,7 @@ header {
 */
 
 
-// #my-comptoirs, 
+/*
 #connexion-forms {
     font-size: 0.8em;
     position: absolute;
@@ -212,7 +215,7 @@ header {
         }
     }
 }
-
+*/
 
 aside {
     position: fixed;
@@ -234,43 +237,124 @@ aside {
         .panel-tabs {
             float: right;
             width: 30px;
+            
+            .tab-area:hover, .active {
+                cursor: pointer;
+                .tab {
+                    transform: translate(0px, 140px) rotate(-90deg);
+                    transition: 0.3s ease-in-out;
+                }
+            }
 
             .tab {
+                width: 140px;
                 height: 140px;
+                transform-origin: left top 0;
+                transform: translate(20px, 140px) rotate(-90deg);
+                transition: 0.3s ease-in-out;
                 margin-bottom: 2px;
                 background-color: rgba(255,255,255,0.9);
                 border-style: solid;
-                border-width: 2px 0px 2px 2px;
+                border-width: 2px 2px 2px 2px;
                 border-color: #428bca;
-                border-radius: 10px 0px 0px 10px;
+                border-radius: 5px;
 
-                &.active {
-                    width: 32px;
-                    background-color: rgba(255,255,255,1);
-                }
+                text-align: center;
+                padding-top: 5px;
+
+                
             }
         }
 
         .panel-contents {
-            float: right;
+            float: left;
             height: 100%;
-            background-color: rgba(255,255,255,0.9);
 
             .content
             {
                 padding: 15px;
-                display: none;
+
+                width: 510px;
+                min-height: 350px;
+                max-height: 100%;
+                display: inline-block;
+                border-style: solid;
+                border-color: #428bca;
+                border-radius: 5px;
+                border-width: 0px;
+            
+                background-color: rgba(255,255,255,0.9);
+
+                transform: translate(550px, 0px);
+                transition: 0.5s ease-in-out;
+
+                position: absolute;
 
                 &.active {
-                    width: 510px;
-                    height: 100%;
-                    display: inline-block;
-                    border-style: solid;
-                    border-color: #428bca;
-                    border-radius: 0px 0px 0px 10px;
-                    border-width: 2px 0px 2px 2px;
-
+                    display: block;
+                    transform: translate(0px, 0px);
+                    transition: 0.5s ease-in-out;
                 }
+            }
+
+            #my-comptoirs {
+                font-size: 0.8em;
+                height: 100%;
+
+                .theader {
+                    width: 94%;
+                    height: 20px;
+                    font-weight: bold;
+                    margin-bottom: 0px;
+                }
+
+                .hiddenscroll {
+                    overflow: hidden;
+                    overflow: -moz-scrollbars-none;
+                }
+
+                .scrollable {
+                    position: absolute;
+                    top: 50px;
+                    bottom: 0px;
+                    width: 94%;
+                    overflow-y: auto;
+
+                    td.td-ciph {
+                        text-align: center;
+
+                    }
+                }
+
+                td.td-name, td.td-users {
+                    width: 36%;
+                }
+
+                td.td-ciph {
+                    width: 8%;
+                }
+
+                td.td-name {
+                    span.badge {
+                        display: inline-block;
+                        vertical-align: middle;
+                        float: right;
+                    }
+                    span.txt {
+                        overflow-x: hidden;
+                    }
+                }
+
+                td.td-sound:hover {
+                    cursor: pointer;
+                    color: $orange;
+                }
+
+                .scrollable tr {
+                    &:hover {
+                    }
+                }
+
             }
         }
 
@@ -402,6 +486,14 @@ a:hover {
     bottom: 0px;
     left: 0px;
     right: 550px;
+    
+    &.cmptr-page {
+        background-image: url('../../images/vert-line.png');
+        background-repeat: repeat-y;
+        background-size: 22px;
+        background-position: center;
+    }
+
 
     #chatbox {
 
@@ -459,16 +551,20 @@ a:hover {
                 text-align: center;
                 vertical-align: top;
     
+                /*
                 &.nopoint {
                     background-image: url('../../images/vert-line.png');
                     background-size: 100%;
                     background-repeat: repeat-y;
                 }
+                */
                 // background-position: 11px 0px;
     
                 &.point {
-                    background-image: url('../../images/vert-line-80.png');
-                    background-size: 100% 100%;
+                    background-image: url('../../images/vert-line-80w.png');
+                    background-size: 22px;
+                    background-repeat: no-repeat;
+                    background-position: top;
                 }
             }
             td:first-child {
@@ -495,6 +591,7 @@ a:hover {
                 width: 100%;
                 text-align: center;
                 color: #428bca; 
+                background-color: rgba(255, 255, 255, 1);
             }
         }
     }
