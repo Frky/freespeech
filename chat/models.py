@@ -21,6 +21,7 @@ class Comptoir(RandomPrimaryIdModel):
     public = models.BooleanField(default=True)
     last_message = models.ForeignKey(IndependantMessage, null=True)
     key_hash = models.CharField(max_length=512, default="", blank=True, null=True)
+    title_is_ciphered = models.BooleanField(default=False)
     
 
 class Message(IndependantMessage):

@@ -210,7 +210,8 @@ def create_comptoir(request):
                               title=data['title'],
                               description=data['description'],
                               public= not data['public'],
-                              key_hash=data['key_hash'])
+                              key_hash=data['key_hash'],
+                              title_is_ciphered= True)
 
         new_comptoir.save()
 
@@ -267,6 +268,7 @@ def join_comptoir(request, cid):
     context["id"] = comptoir.id
     context['public'] = comptoir.public
     context["request"] = request
+    context["title_is_ciphered"] = comptoir.title_is_ciphered
 
     count = Message.objects.filter(comptoir=comptoir).count()
     msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
@@ -425,6 +427,7 @@ def ajax_comptoir(request, cid):
     context["id"] = comptoir.id
     context['public'] = comptoir.public
     context["request"] = request
+    context["title_is_ciphered"] = comptoir.title_is_ciphered
 
     count = Message.objects.filter(comptoir=comptoir).count()
     msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]

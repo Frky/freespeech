@@ -36,5 +36,21 @@ $("#comptoir-form").submit(function() {
     if (!checkComptoirForm($( this ))) {
         event.preventDefault();
     }
+    clear_title = $("#id_title", this).val();
+    clear_desc = $("#id_description", this).val();
+    if ($("#public-btn").val() == 1) {
+        key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    } else {
+        key = $("#comptoir-key").val();
+    }
+    ciphered_title = Encrypt_Text(clear_title, key);
+    if ($("#public-btn").val() == 1) {
+        key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    } else {
+        key = $("#comptoir-key").val();
+    }
+    ciphered_desc = Encrypt_Text(clear_desc, key);
+    $("#id_title", this).val(ciphered_title);
+    $("#id_description", this).val(ciphered_desc);
 });
 

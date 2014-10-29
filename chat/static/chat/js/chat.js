@@ -604,6 +604,16 @@ var init_cmptr = function() {
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
+        if ($("#cmptr-info").hasClass("ciphered")) {
+            ciphered_title = $(".title", "#cmptr-info").text();
+            clear_title = Decrypt_Text(ciphered_title, $("#comptoir-key").val());
+            $(".title", "#cmptr-info").text(clear_title);
+            ciphered_title = $(".desc", "#cmptr-info").text();
+            clear_title = Decrypt_Text(ciphered_title, $("#comptoir-key").val());
+            $(".desc", "#cmptr-info").text(clear_title);
+        }
+
+        $("#cmptr-info").removeClass("hidden");
         msg_management_init_all();
 }
 
