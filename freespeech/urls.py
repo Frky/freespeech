@@ -13,6 +13,7 @@ if not UNDER_WORK:
         url("", include('django_socketio.urls')),
     
         url(r'^$', 'chat.views.index', name='home'),
+        url(r'^welcome$', 'chat.views.welcome', name='welcome'),
         url(r'^404$', 'chat.views.error404', name='error404'),
         url(r'^505$', 'chat.views.error505', name='error505'),
         url(r'^check_hash', 'chat.views.check_hash', name='check_hash'),

@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.core import serializers
 from django.utils import simplejson
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -477,3 +478,25 @@ def error404(request):
 def error505(request):
     return render(request, '505.html')
 
+def welcome(request):
+
+    if "email" in request.POST: 
+        requester = request.POST["email"]
+    
+        if requester == "":
+            return render(request, "chat/welcome.html", {"error": "email address not provided"})
+        else:
+
+            # Checking if already asked for a key 
+            with open("chat/beta_requests.log", "r") as log:
+                content = log.read()
+            if content.find(requester) > -1:
+                return render(request, "chat/welcome.html", {"error": "You already asked for a key !"})
+
+            with open("chat/beta_requests.log", "a") as log:
+                log.write("[{0}] {1}\n".format(datetime.datetime.now(), request))
+            send_mail('[BETA KEY REQUEST]', requester + " has asked for a beta key from fsp/welcome", 'fsp@udtq.fr',
+                    ['fsp@udtq.fr'], fail_silently=False)
+            return render(request, "chat/welcome.html", {"request_sent": True})
+    else:
+        return render(request, "chat/welcome.html")

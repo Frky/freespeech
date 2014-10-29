@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+
+<head>
+    <title>Welcome to Freespeech !</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'chat/generated/css/welcome.css' %}" />
+</head>
+
+
+<body>
+
+    <div class="empty"></div>
+
+    <div id="main-box">
+        <h1 id="fsp-title">Freespeech</h1>
+        <h2>Because privacy matters.</h2>
+        <span id="fsp-desc">
+            <p>Web communication plateform</p>
+            <p>End-to-end encryption</p>
+            <p>Open source, free to use and advertising-free</p>
+        
+        </span>
+
+        {% if not request_sent %} 
+        <div id="beta-key-req">
+            <p>Freespeech is still under development. You can ask for a beta key to try it now !</p>
+            <form method="post" action="{% url 'welcome' %}">
+                {% csrf_token %}
+                <p class="fsp-input"><input id="mail-addr" name="email" type="email" placeholder="email address"/>
+                <input type="submit" value="Ask!" /></p>
+                <p class="form-error">{{ error }}</p>
+            </form>
+        </div>
+        {% else %}
+        <div id="confirmation">
+            Your request has been sent. You should receive your beta key in the next few hours.
+        </div>
+        {% endif %}
+    </div>
+
+
+</body>
+
+</html>
