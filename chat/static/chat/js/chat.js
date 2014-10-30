@@ -556,6 +556,31 @@ socket.on('connect', connected);
 socket.on('message', messaged);
 socket.on('disconnect', closed);
 
+
+        var a = 0;
+var decipher_cmptr_info = function() {
+    if ($("#cmptr-info").hasClass("ciphered")) {
+        /* Deciphering title */
+        ciphered_title = $(".title .ciphered", "#cmptr-info").text();
+        key = $("#comptoir-key").val(); 
+        if (typeof(key) == "undefined") {
+            key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        }
+        clear_title = Decrypt_Text(ciphered_title, key);
+        $(".title .clear", "#cmptr-info").text(clear_title);
+
+        /* Deciphering description */
+        ciphered_desc = $(".desc .ciphered", "#cmptr-info").text();
+        key = $("#comptoir-key").val(); 
+        if (typeof(key) == "undefined") {
+            key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        }
+        clear_desc = Decrypt_Text(ciphered_desc, key);
+        $(".desc .clear", "#cmptr-info").text(clear_desc);
+    }
+
+}
+
 var init_cmptr = function() {
 
         /*
@@ -604,16 +629,7 @@ var init_cmptr = function() {
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
-        if ($("#cmptr-info").hasClass("ciphered")) {
-            ciphered_title = $(".title", "#cmptr-info").text();
-            clear_title = Decrypt_Text(ciphered_title, $("#comptoir-key").val());
-            $(".title", "#cmptr-info").text(clear_title);
-            ciphered_title = $(".desc", "#cmptr-info").text();
-            clear_title = Decrypt_Text(ciphered_title, $("#comptoir-key").val());
-            $(".desc", "#cmptr-info").text(clear_title);
-        }
-
-        $("#cmptr-info").removeClass("hidden");
+        decipher_cmptr_info();
         msg_management_init_all();
 }
 

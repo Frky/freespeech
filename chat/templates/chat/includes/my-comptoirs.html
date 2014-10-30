@@ -13,7 +13,7 @@
                         <table class="table table-hover">
                             <tbody>
                                 {% for c,n in user.comptoirs reversed %}
-                                <tr id="my-{{ c.id }}">
+                                <tr id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}>
                                     <td class="td-ciph">
                                         {% if c.public  %}
                                         {% else %}

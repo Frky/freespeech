@@ -26,6 +26,7 @@ var getComptoirContent = function(callback, cid) {
 var getComptoirInfosCallback = function(data) {
     $(".title", "#cmptr-info").text(data.title);
     $(".desc", "#cmptr-info").text(data.description);
+
 }
 
 
@@ -63,7 +64,6 @@ var getComptoirContentCallback = function(data, cid) {
     /* Updating connected users */
     online = $("#user-name").text();
     others = $("td.td-users", "#my-" + cid).text().split(", ");
-    console.log(others);
     for (var i = 0; i < others.length; i++) {
         if (others[i] != "") {
             online += ", ";
@@ -74,6 +74,8 @@ var getComptoirContentCallback = function(data, cid) {
 
     window.history.replaceState({}, cid, cid);
     join_comptoir();
+
+    decipher_cmptr_info();
 
     $("#send-form").removeClass("hidden");
     bind_keys();
@@ -87,7 +89,7 @@ $(".cmptr-link").click(function () {
     if ($("#chatbox").length > 0) {
         /* We get the new comptoir asynchronously */
         getComptoirContent(getComptoirContentCallback, cid);
-        $.getJSON("cmptrinfo-" + cid, getComptoirInfosCallback);
+        //$.getJSON("cmptrinfo-" + cid, getComptoirInfosCallback);
     } else {
         /* Else we get it with a get request */
         window.location.href = cid;

@@ -60,8 +60,25 @@
     </div>
     <table class="cmptr-page" id="sendbox">
             <tr>
-                <td id="cmptr-info" class="hidden {% if title_is_ciphered %}ciphered{% endif %}">
-                    <h2 class="title">{{ title }}</h2> <span class="desc">{{ description }}</span>
+                <td id="cmptr-info" class="{% if title_is_ciphered %}ciphered{% endif %}">
+                    <h2 class="title">
+                        {% if title_is_ciphered %} 
+                            <span class="ciphered hidden" >{{ title }}</span>
+                            <span class="clear">
+                            </span>
+                        {% else %}
+                            {{ title }}
+                        {% endif %}
+                    </h2> 
+                    <span class="desc">
+                        {% if title_is_ciphered %} 
+                            <span class="ciphered hidden">{{ description }}</span>
+                            <span class="clear">
+                            </span>
+                        {% else %}
+                            {{ description }}
+                        {% endif %}
+                    </span>
                 </td>
                 <td class="nopoint"></td>
                 <td>

@@ -122,6 +122,23 @@ $(document).ready(function() {
         key_init();
         init_cmptr();
     }
+
+        /* Deciphering all comptoir names in panel */
+        $("tr.ciphered", "#my-comptoirs").each(function() {
+            cmptr_id = $(".cmptr-link", this).text().trim();
+            cmptr_name = $(".td-name .txt", this).text();
+            key_id = "comptoir_key_" + cmptr_id;
+            if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") { 
+                key = localStorage.getItem(key_id);
+            } else {
+                key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+            }
+            console.log("Deciphering: " + cmptr_name + " | " + key);
+            clear_title = Decrypt_Text(cmptr_name, key);
+            console.log(clear_title);
+            $(".td-name .txt", this).text(clear_title);
+        });
+
         $(".panel-tabs .tab-area").each(function() {
             $(this).click(function() {
                 $(".active-init").removeClass("active-init");
