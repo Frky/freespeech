@@ -1,0 +1,75 @@
+@import "colors";
+@import "fonts";
+
+body, html {padding: 0; margin: 0; height: 100%;}
+
+body {
+    background-color: $white;
+}
+
+header {
+    position: relative;
+    height: 70px;
+    background-color: $grey;
+    border-bottom: 1px solid $white;
+
+    font-family: Santor, serif;
+    color: $white;
+
+    h1 {
+        position: absolute;
+        margin: 0;
+        left: 20px;
+        top: 20px;
+
+        font-weight: 100;
+        text-transform: lowercase;
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+
+    blockquote {
+        position: absolute;
+        right: 0;
+        bottom: -3px;
+        margin: 0;
+        padding: 0px 10px 0 5px;
+
+        background-color: $grey;
+
+        font-size: 0.8em;
+    }
+}
+
+.background {
+    height: 100%;
+
+    .triangle-left {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        display: block;
+        width: 200%;
+        height: 110%;
+        background-color: $black;
+        transform-origin: 0 110%;
+        transform: rotate(-30deg);
+    }
+
+    .triangle-right {
+        z-index: -1;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        display: block;
+        width: 200%;
+        height: 200%;
+        opacity: 0.5;
+        background-color: $light-grey;
+        transform-origin: 0 0;
+        transform: rotate(-50deg);
+    }
+}
