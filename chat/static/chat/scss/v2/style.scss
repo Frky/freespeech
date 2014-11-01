@@ -1,5 +1,9 @@
 @import "colors";
 @import "fonts";
+@import "forms";
+
+$header-size: 70px;
+$left-margin: 20px;
 
 body, html {padding: 0; margin: 0; height: 100%;}
 
@@ -7,9 +11,19 @@ body {
     background-color: $white;
 }
 
+a {
+    text-decoration: none;
+    color: $white;
+
+    &:hover {
+        text-decoration: underline;
+        color: $light-grey;
+    }
+}
+
 header {
     position: relative;
-    height: 70px;
+    height: $header-size;
     background-color: $grey;
     border-bottom: 1px solid $white;
 
@@ -19,29 +33,56 @@ header {
     h1 {
         position: absolute;
         margin: 0;
-        left: 20px;
+        left: $left-margin;
         top: 20px;
 
+        font-family: inherit;
+        color: inherit;
         font-weight: 100;
         text-transform: lowercase;
 
         a {
             text-decoration: none;
-            color: inherit;
+            color: $white;
+
+            &:hover {
+                text-decoration: none;
+                color: $white;
+            }
         }
     }
 
     blockquote {
+        $padding: 5px;
         position: absolute;
-        right: 0;
         bottom: -3px;
-        margin: 0;
-        padding: 0px 10px 0 5px;
+        margin: 0 0 0 $left-margin - $padding;
+        padding: 0px 10px 0 $padding;
 
         background-color: $grey;
 
-        font-size: 0.8em;
+        font-size: 0.7em;
     }
+
+    nav {
+        $nav-height: 15px;
+        height: $nav-height;
+        position: absolute;
+        right: 10px;
+        top: $header-size / 2 - $nav-height / 2;
+
+        font-family: Helvetica, sans-serif;
+        font-weight: 100;
+        font-size: 0.75em;
+
+        a {
+            cursor: pointer;
+        }
+    }
+}
+
+.hidden {
+    display: none;
 }
 
 .background {
@@ -62,14 +103,63 @@ header {
     .triangle-right {
         z-index: -1;
         position: absolute;
-        top: 70px;
+        top: $header-size;
         left: 0;
         display: block;
         width: 200%;
         height: 200%;
         opacity: 0.5;
-        background-color: $light-grey;
+        background-color: $grey2;
         transform-origin: 0 0;
         transform: rotate(-50deg);
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Helvetica, sans-serif;
+    font-weight: 100;
+    text-transform: uppercase;
+    color: $light-grey;
+
+    &.title {
+        font-family: Santor, serif;
+        text-transform: lowercase;
+    }
+}
+
+h2 {
+    font-size: 2em;
+}
+
+section#content {
+    font-size: 0.9em;
+    font-family: Helvetica, sans-serif;
+    width: 100%;
+    height: 100%;
+
+    p {
+        font-weight: 100;
+        color: $light-grey;
+    }
+
+    form#comptoir-form {
+        text-align: center;
+    }
+}
+
+#login-panel, #register-panel {
+    position: absolute;
+    top: 40%;
+    left: $left-margin;
+
+    color: $white;
+
+    .title {
+        color: inherit;
+    }
+
+    input {
+        display: block;
+        margin: 10px 0;
     }
 }

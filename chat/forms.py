@@ -29,9 +29,9 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         # self.base_fields['username'].label = ""
 
-        self.base_fields['username'].widget = forms.TextInput(attrs={'placeholder': "Username", 'class': "form-control"})
-        self.base_fields['password1'].widget = forms.TextInput(attrs={'type': 'password', 'placeholder': "Password", 'class': "form-control"})
-        self.base_fields['password2'].widget = forms.TextInput(attrs={'type': 'password', 'placeholder': "Password (again)", 'class': "form-control"})
+        self.base_fields['username'].widget = forms.TextInput(attrs={'placeholder': "username", 'class': "form-control"})
+        self.base_fields['password1'].widget = forms.TextInput(attrs={'type': 'password', 'placeholder': "password", 'class': "form-control"})
+        self.base_fields['password2'].widget = forms.TextInput(attrs={'type': 'password', 'placeholder': "password (again)", 'class': "form-control"})
 
         super(RegisterForm, self).__init__(*args, **kwargs)
 

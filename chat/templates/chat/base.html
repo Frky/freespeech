@@ -43,12 +43,83 @@
         <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
 
         <blockquote>« Whereof one cannot speak, thereof one must be silent. »</blockquote>
+
+        <nav>
+            {% if not user.is_authenticated %}
+                <a id="login-button">Log in</a> | <a id="register-button">Register</a>
+            {% else %}
+            <span id="user-name">{{ user|truncatechars:20 }}</span> | <a href="{% url "logout" %}">Log out</a> | <a href="{% url 'password_change' %}">Pwd</a>
+            {% endif %}
+        </nav>
     </header>
+
+    <section id="content">
+    {% block content %}
+    {% endblock %}
+    </section>
+
+    {% if not user.is_authenticated %}
+        <div class="content" id="login-panel">
+            <form id="login-form" action="{% url "login" %}" method="post" class="hidden">
+                <h3 class="title">Login</h3>
+                {% csrf_token %}
+                <input name="username" type="login" class="form-control" placeholder="username">
+                <input name="password" type="password" class="form-control" placeholder="password">
+                <input type="submit" class="btn btn-default" value="Log in &#8594;">
+            </form>
+        </div>
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+        <div class="content" id="register-panel">
+            <form class="formContainer hidden" method="post" action="{% url "register" %}" id="register-form">
+                <h3 class="title">Register</h3>
+                {% csrf_token %}
+                    {% for field in registerForm %}
+                            {{ field }}
+                    {% endfor %}
+                    <input class="form-control" id="beta_key" name="beta_key" placeholder="beta key" type="text" />
+                    <a href="#" class="fsp-popover btn btn-info help-block"id="beta_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
+                        This site is still under development. For now, you need to have an inscription key to be able
+                        to register. If you don't have one, you can ask for it at fsp@udtq.fr.
+                        ">
+                        ?</a>
+                    <input class="btn btn-default" type="submit" value="Register &#8594;">
+                    </tr>
+                </table>
+            </form>
+        </div>
+    {% endif %}
 
     <div class="background">
         <div class="triangle-left"></div>
         <div class="triangle-right"></div>
     </div>
+
+    <script>
+        var glyphicon_options = '<span class="glyphicon-options invisible">'
+            + '<span class="glyphicon glyphicon-edit"></span>'
+            + '<span class="glyphicon glyphicon-remove"></span></span>';
+    </script>
+
+	<script src="{% static 'chat/js/key_management.js' %}"></script>
+	<script src="{% static 'chat/js/form_check.js' %}"></script>
+	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
+
+    {% if user.is_authenticated %}
+    {% load socketio_tags %}
+    {% socketio %}
+    <script src="{% static 'chat/js/msg-management.js' %}"></script>
+	<script src="{% static 'chat/js/chat.js' %}"></script>
+    <script src="{% static 'chat/js/scroll.js' %}"></script>
+    <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
+    {% endif %}
+
+	<script src="{% static 'chat/js/init_page_elements.js' %}"></script>
+
+    {% block additionnal_script %}
+
+    {% endblock %}
 </body>
 
 </html>
