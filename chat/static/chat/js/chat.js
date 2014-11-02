@@ -634,7 +634,6 @@ var init_cmptr = function() {
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
-        decipher_cmptr_info();
         msg_management_init_all();
 }
 
