@@ -15,10 +15,6 @@ $("#register-button").click(function() {
     $("#login-form").addClass("hidden");
 });
 
-$("#user-name").click(function() {
-    $("#my-comptoirs").toggleClass("hidden");
-});
-
 
 $(".td-sound").click(function() {
     $(".toggle-sound", this).toggleClass("glyphicon-volume-up");
