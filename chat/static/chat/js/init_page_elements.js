@@ -152,4 +152,12 @@ $(document).ready(function() {
                 $(tab_content).toggleClass("active");
             });
         });
+
+    // Hints management
+    $('.hint.betakey').hide()
+    $("#beta_key").on('focusin', function() {
+        $('.hint.betakey').show()
+    }).on('focusout', function() {
+        $('.hint.betakey').hide()
+    });
 });

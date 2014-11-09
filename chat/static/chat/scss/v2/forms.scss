@@ -2,6 +2,7 @@ input[type=login], input[type=email], input[type=text], input[type=password] {
     background-color: transparent;
     border-width: 0px;
     border-bottom: 1px solid $light-grey;
+    width: 100%;
 
     color: $light-grey;
     padding: 0 0 7px 0;
@@ -13,7 +14,7 @@ input[type=login], input[type=email], input[type=text], input[type=password] {
     }
 }
 
-input[type=submit] {
+input[type=submit], button[type=submit] {
     background-color: transparent;
     color: $light-grey;
     border: 1px solid $light-grey;
@@ -24,5 +25,15 @@ input[type=submit] {
     &:hover {
         cursor: pointer;
         border-color: $orange;
+    }
+}
+
+label {
+    color: $light-grey;
+    font-size: 0.9em;
+
+    & > input[type=checkbox] {
+        font-size: 1em;
+        width: 20px !important;
     }
 }

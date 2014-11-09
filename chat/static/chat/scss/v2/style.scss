@@ -124,15 +124,16 @@ h1, h2, h3, h4, h5, h6 {
     &.title {
         font-family: Santor, serif;
         text-transform: lowercase;
+        font-size: 1.4em;
     }
 }
 
 h2 {
-    font-size: 2em;
+    font-size: 3em;
 }
 
 section#content {
-    font-size: 0.9em;
+    font-size: 1em;
     font-family: Helvetica, sans-serif;
     width: 100%;
     height: 100%;
@@ -147,10 +148,11 @@ section#content {
     }
 }
 
-#login-panel, #register-panel {
+#login-panel, #register-panel, #change-pwd-form {
     position: absolute;
     top: 40%;
     left: $left-margin;
+    width: 250px;
 
     color: $white;
 
@@ -161,5 +163,19 @@ section#content {
     input {
         display: block;
         margin: 10px 0;
+        width: 100%;
+        font-size: 1em;
+        font-weight: 100;
+    }
+
+    label input[type=checkbox] {
+        display: inline;
+        width: 20px;
+    }
+
+    .hint {
+        color: $light-grey;
+        font-size: 0.8em;
+        font-family: Helvetica, sans-serif;
     }
 }

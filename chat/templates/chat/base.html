@@ -13,11 +13,13 @@
     <link rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
 
     <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'chat/css/jquery.fs.tipper.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
 
     <!-- SCRIPTS -->
     <script src="{% static 'chat/js/ajax.js' %}"></script>
     <script src="{% static 'chat/js/jquery.min.js' %}"></script>
+    <script src="{% static 'chat/js/libs/jquery.fs.tipper.js' %}"></script>
     <!-- script src="{% static 'chat/js/jquery-ui-custom.min.js' %}"></script -->
     <script src="{% static 'chat/js/jquery.velocity.min.js' %}"></script>
     <script src="{% static 'chat/js/velocity.ui.js' %}"></script>
@@ -79,14 +81,8 @@
                             {{ field }}
                     {% endfor %}
                     <input class="form-control" id="beta_key" name="beta_key" placeholder="beta key" type="text" />
-                    <a href="#" class="fsp-popover btn btn-info help-block"id="beta_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
-                        This site is still under development. For now, you need to have an inscription key to be able
-                        to register. If you don't have one, you can ask for it at fsp@udtq.fr.
-                        ">
-                        ?</a>
+                    <p class="hint betakey">This site is still under development. For now, you need to have an inscription key to be able to register. If you don't have one, you can ask for it at fsp@udtq.fr.</p>
                     <input class="btn btn-default" type="submit" value="Register &#8594;">
-                    </tr>
-                </table>
             </form>
         </div>
     {% endif %}
