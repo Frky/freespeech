@@ -5,7 +5,7 @@
 
 	<title>Freespeech</title>
 
-    <meta charset="iso-8859-1">		
+    <meta charset="utf-8">
 
 	{% load staticfiles %}
 
@@ -36,13 +36,14 @@
 	<script src="{% static 'chat/js/linkify.js' %}"></script>
 	<script src="{% static 'chat/js/smilify.js' %}"></script>
 	<script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
+	<script src="{% static 'chat/js/particles.js' %}"></script>
 
 	{% endblock %}
 </head>
 
 <body>
     <header>
-        <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
+        <h1><a href="{% url 'home' %}">FreeSpeech</a></h1>
 
         <blockquote>« Whereof one cannot speak, thereof one must be silent. »</blockquote>
 
@@ -50,7 +51,7 @@
             {% if not user.is_authenticated %}
                 <a id="login-button">Log in</a> | <a id="register-button">Register</a>
             {% else %}
-            <span id="user-name">{{ user|truncatechars:20 }}</span> | <a href="{% url "logout" %}">Log out</a> | <a href="{% url 'password_change' %}">Pwd</a>
+            <span id="user-name">{{ user|truncatechars:20 }}</span> | <a href="{% url 'logout' %}">Log out</a> | <a href="{% url 'password_change' %}">Pwd</a>
             {% endif %}
         </nav>
     </header>
@@ -62,7 +63,7 @@
 
     {% if not user.is_authenticated %}
         <div class="content" id="login-panel">
-            <form id="login-form" action="{% url "login" %}" method="post" class="hidden">
+            <form id="login-form" action="{% url 'login' %}" method="post" class="hidden">
                 <h3 class="title">Login</h3>
                 {% csrf_token %}
                 <input name="username" type="login" class="form-control" placeholder="username">
@@ -74,7 +75,7 @@
 
     {% if not user.is_authenticated %}
         <div class="content" id="register-panel">
-            <form class="formContainer hidden" method="post" action="{% url "register" %}" id="register-form">
+            <form class="formContainer hidden" method="post" action="{% url 'register' %}" id="register-form">
                 <h3 class="title">Register</h3>
                 {% csrf_token %}
                     {% for field in registerForm %}
@@ -88,7 +89,7 @@
     {% endif %}
 
     <div class="background">
-        <div class="triangle-left"></div>
+        <div id="particle" class="triangle-left"></div>
         <div class="triangle-right"></div>
     </div>
 
