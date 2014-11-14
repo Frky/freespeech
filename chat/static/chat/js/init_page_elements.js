@@ -130,9 +130,12 @@ $(document).ready(function() {
                 key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
             }
             console.log("Deciphering: " + cmptr_name + " | " + key);
-            clear_title = Decrypt_Text(cmptr_name, key);
-            console.log(clear_title);
-            $(".td-name .txt", this).text(clear_title);
+            //TODO CHANGE
+            if (false) {
+                clear_title = Decrypt_Text(cmptr_name, key);
+                console.log(clear_title);
+                $(".td-name .txt", this).text(clear_title);
+            }
         });
 
         $(".panel-tabs .tab-area").each(function() {

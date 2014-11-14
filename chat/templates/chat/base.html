@@ -333,6 +333,13 @@
     {% if user.is_authenticated %}
     {% load socketio_tags %}
     {% socketio %}
+    <script type="text/javascript">
+        var ws_msg_url = "{% url "ws_msg" %}";
+        var ws_uri = "{{ WEBSOCKET_URI }}";
+        var ws_heartbeat = {{ WS4REDIS_HEARTBEAT }};
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ws4redis.js"></script>
+    <script src="{% static 'chat/js/websocket.js' %}"></script>
     <script src="{% static 'chat/js/msg-management.js' %}"></script>
 	<script src="{% static 'chat/js/chat.js' %}"></script>
     <script src="{% static 'chat/js/scroll.js' %}"></script>
