@@ -142,6 +142,7 @@ section#content {
     font-size: 1em;
     font-family: Helvetica, sans-serif;
     width: 100%;
+    text-align: center;
 
     p {
         font-weight: 100;
@@ -182,6 +183,21 @@ section#content {
         color: $light-grey;
         font-size: 0.8em;
         font-family: Helvetica, sans-serif;
+    }
+}
+
+#comptoir-form {
+    width: 400px;
+    margin: 0 auto;
+
+    color: $white;
+
+    input {
+        display: block;
+        margin: 10px 0;
+        width: 100%;
+        font-size: 1em;
+        font-weight: 100;
     }
 }
 

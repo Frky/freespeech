@@ -10,14 +10,14 @@ class ComptoirForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.base_fields['title'].label = "Name"
-        self.base_fields['title'].widget = forms.TextInput(attrs={'placeholder': "Field requested", 'class': "input form-control"})
+        self.base_fields['title'].widget = forms.TextInput(attrs={'placeholder': "name", 'class': "input form-control"})
         self.base_fields['description'].label = "Description"
-        self.base_fields['description'].widget = forms.TextInput(attrs={'placeholder': "", 'class': "input form-control"})
+        self.base_fields['description'].widget = forms.TextInput(attrs={'placeholder': "description", 'class': "input form-control"})
         self.base_fields['public'].label = "Public ?"
         self.base_fields['key_hash'].validators = [v for v in self.base_fields['key_hash'].validators if not isinstance(v, MinLengthValidator)]
         self.base_fields['key_hash'].validators.append(MinLengthValidator(128))
         self.base_fields['key_hash'].label="SHA3 of the key"
-        self.base_fields['key_hash'].widget = forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "input form-control", 'placeholder': "Field requested (you may generate a key)"})
+        self.base_fields['key_hash'].widget = forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "input form-control", 'placeholder': "SHA3 of the key (you may generate a key)"})
         super(ComptoirForm, self).__init__(*args, **kwargs)
 
     class Meta:
