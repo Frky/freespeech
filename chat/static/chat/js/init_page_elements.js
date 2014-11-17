@@ -6,13 +6,13 @@ $('.fsp-tooltip').tooltip();
 
 /* Initialisation of interactive menus */
 $("#login-button").click(function() {
-    $("#login-form").toggleClass("hidden");
-    $("#register-form").addClass("hidden");
+    $("#login-panel").toggleClass("visible");
+    $("#register-panel").removeClass("visible");
 });
 
 $("#register-button").click(function() {
-    $("#register-form").toggleClass("hidden");
-    $("#login-form").addClass("hidden");
+    $("#register-panel").toggleClass("visible");
+    $("#login-panel").removeClass("visible");
 });
 
 $("#user-name").click(function() {

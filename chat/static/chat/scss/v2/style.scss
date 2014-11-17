@@ -184,3 +184,13 @@ section#content {
         font-family: Helvetica, sans-serif;
     }
 }
+
+#login-panel, #register-panel {
+    margin-left: -600px;
+
+    transition: margin 300ms ease;
+
+    &.visible {
+        margin-left: 0;
+    }
+}
