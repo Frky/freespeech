@@ -96,15 +96,22 @@ $(document).ready(function() {
             $("#comptoir-form").toggleClass("hidden");
             $('#plus').toggleClass("toggle");
         });
-        $("[name='public']").bootstrapSwitch();
+        //$("[name='public']").bootstrapSwitch();
+        $("#public input").on("change", function() {
+            if ($(this).val() == "off") {
+                $("#manage-key-container").toggleClass("invisible");
+                $("#note").toggleClass("invisible");
+                createKey();
+                $("#id_key_hash-container").addClass("invisible");
+                $("#key-field-container").addClass("invisible");
+                $("#generate-key-container").addClass("invisible");
+            } else {
+
+            }
+        })
         $('#public-btn').on('switchChange', function () {
             $("#public-btn").val(1 - $("#public-btn").val());
-            $("#manage-key-container").toggleClass("invisible");
-            $("#note").toggleClass("invisible");
-            createKey();
-            $("#id_key_hash-container").addClass("invisible");
-            $("#key-field-container").addClass("invisible");
-            $("#generate-key-container").addClass("invisible");
+
         });
         $("#manage-key").click(function() {
             $("#id_key_hash-container").toggleClass("invisible");

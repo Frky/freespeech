@@ -13,7 +13,15 @@
 
         {% for el in comptoir_form %}
         {% if el.label == "Public ?" %}
-                <input id="public-btn" name="{{ el.name }}" type="checkbox" unchecked data-off-text="Public" data-on-text="Private" bootstrap-switch-disabled value=1>
+                <div id="{{ el.name }}" class="radio-duo">
+                    <label for="{{ el.name}}_0">
+                        Public <input id="{{ el.name}}_0" name="{{ el.name }}" type="radio" checked value="on"/>
+                    </label><!--
+                    --><label for="{{ el.name}}_1">
+                        <input id="{{ el.name}}_1" name="{{ el.name }}" type="radio" value="off" /> Private
+                    </label>
+                </div>
+
                 <b>Info. </b> Your comptoir will be protected by a key. You must provide this key to anyone you want to share the comptoir with.
                 The key will be accessible in the comptoir page.
             <input type="button" class="btn btn-info input" id="manage-key" value="Manage the key myself" />

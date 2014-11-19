@@ -37,3 +37,22 @@ label {
         width: 20px !important;
     }
 }
+
+.radio-duo {
+    & > label {
+        display: inline-block;
+        width: 50%;
+        color: $light-grey;
+
+        & > input[type=radio] {
+            display: inline-block;
+            width: 20px;
+        }
+    }
+    label:first-child {
+        text-align: left;
+    }
+    label:last-child {
+        text-align: right;
+    }
+}
