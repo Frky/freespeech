@@ -56,3 +56,24 @@ label {
         text-align: right;
     }
 }
+
+input[type=radio]:not(old){
+    width     : 2em;
+    margin    : 0;
+    padding   : 0;
+    font-size : 1em;
+    opacity: 0;
+}
+
+.fsp-radio {
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    border: 1px solid $light-grey;
+}
+
+.fsp-radio + input[type=radio]:checked,
+input[type=radio]:checked + .fsp-radio {
+    background-color: $light-grey;
+}
