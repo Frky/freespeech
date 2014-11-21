@@ -175,7 +175,7 @@ $(document).ready(function() {
             opacity: 0.5,
             size: 2,
             size_random: true,
-            nb: 300,
+            nb: 150,
             line_linked: {
                 enable_auto: true,
                 distance: 250,
