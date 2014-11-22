@@ -184,8 +184,11 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
 
         /* Notification to the sound alert manager and update window title */
         if (user != $("#user-name").html()) {
-            unread += 1;
-            update_title();
+
+            if (!document.hasFocus()) {
+                unread += 1;
+                update_title();
+            }
             sound_notification("msg", data.cid);
         }
 
