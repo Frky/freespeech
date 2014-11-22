@@ -15,11 +15,11 @@
         {% if el.label == "Public ?" %}
                 <div id="{{ el.name }}" class="radio-duo">
                     <label for="{{ el.name}}_0">
-                        Public<input id="{{ el.name}}_0" name="{{ el.name }}" type="radio" checked value="on"/><span class="fsp-radio"></span>
+                        Public<input id="{{ el.name}}_0" name="{{ el.name }}" type="radio" checked value="on"/><span class="fsp-radio-outter"><span class="fsp-radio-inner"></span></span>
 
                     </label><!--
                     --><label for="{{ el.name}}_1">
-                        <span class="fsp-radio"></span><input id="{{ el.name}}_1" name="{{ el.name }}" type="radio" value="off" />Private
+                        <input id="{{ el.name}}_1" name="{{ el.name }}" type="radio" value="off" /><span class="fsp-radio-outter"><span class="fsp-radio-inner"></span></span>Private
                     </label>
                 </div>
 
