@@ -75,7 +75,7 @@ var getComptoirContentCallback = function(data, cid) {
     window.history.replaceState({}, cid, cid);
     join_comptoir();
 
-    decipher_cmptr_info();
+    // decipher_cmptr_info();
 
     $("#send-form").removeClass("hidden");
     bind_keys();

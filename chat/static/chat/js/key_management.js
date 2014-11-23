@@ -166,7 +166,13 @@ var checkHashCallback = function(data) {
 }
 
 var Decrypt_all = function() {
+
     if (!Test_Key(localStorage.getItem(key_id))) return;
+    
+    /* First let's decrypt the cmptr description */
+    decipher_cmptr_info(localStorage.getItem(key_id));
+    
+    /* Then let's decrypt all messages */
     $(".message").each(function() {
         var ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {

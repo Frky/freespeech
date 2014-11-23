@@ -185,8 +185,11 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
 
         /* Notification to the sound alert manager and update window title */
         if (user != $("#user-name").html()) {
-            unread += 1;
-            update_title();
+
+            if (!document.hasFocus()) {
+                unread += 1;
+                update_title();
+            }
             sound_notification("msg", data.cid);
         }
 
@@ -557,16 +560,21 @@ socket.on('message', messaged);
 socket.on('disconnect', closed);
 
 
-        var a = 0;
-var decipher_cmptr_info = function() {
+var decipher_cmptr_info = function(key) {
+    if (key == "") {
+        key = $("#comptoir-key").val(); 
+    }
+    if (typeof(key) == "undefined") {
+        key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    }
     if ($("#cmptr-info").hasClass("ciphered")) {
         /* Deciphering title */
         ciphered_title = $(".title .ciphered", "#cmptr-info").text();
-        key = $("#comptoir-key").val(); 
-        if (typeof(key) == "undefined") {
-            key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        }
+        console.log(ciphered_title);
+        console.log(key);
+        key_save = key;
         clear_title = Decrypt_Text(ciphered_title, key);
+        key = key_save;
         $(".title .clear", "#cmptr-info").text(clear_title);
 
         /* Deciphering description */
@@ -629,7 +637,6 @@ var init_cmptr = function() {
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
-        decipher_cmptr_info();
         msg_management_init_all();
 }
 
