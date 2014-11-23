@@ -67,19 +67,60 @@ header {
     }
 
     nav {
-        $nav-height: 15px;
+        $nav-height: 25px;
         height: $nav-height;
         position: absolute;
         right: 10px;
         top: $header-size / 2 - $nav-height / 2;
+        vertical-align: middle;
 
         font-family: Helvetica, sans-serif;
         font-weight: 100;
-        font-size: 0.75em;
+        font-size: 1.3em;
 
         a {
             cursor: pointer;
         }
+    }
+}
+
+#menu-button {
+    position: relative;
+    display: inline-block;
+    height: 19px;
+    width: 22px;
+    vertical-align: text-top;
+    margin: 3px 0 0 10px;
+    cursor: pointer;
+
+    span, span:before, span:after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        background-color: $white;
+        top: 8px;
+    }
+
+    span:before {
+        top: 0;
+        margin-top: -8px;
+    }
+}
+
+aside {
+    position: fixed;
+    background-color: $white;
+    width: 250px;
+    height: 100%;
+    margin-right: -250px;
+    right: 0;
+
+    transition: margin 350ms ease;
+
+    &.visible {
+        margin-right: 0;
     }
 }
 

@@ -51,10 +51,12 @@
             {% if not user.is_authenticated %}
                 <a id="login-button">Log in</a> | <a id="register-button">Register</a>
             {% else %}
-            <span id="user-name">{{ user|truncatechars:20 }}</span> | <a href="{% url 'logout' %}">Log out</a> | <a href="{% url 'password_change' %}">Pwd</a>
+            <span id="user-name">{{ user|truncatechars:20 }}</span><span id="menu-button"><span></span></span>
             {% endif %}
         </nav>
     </header>
+
+    <aside></aside>
 
     <section id="content">
     {% block content %}

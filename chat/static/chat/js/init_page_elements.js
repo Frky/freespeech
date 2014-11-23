@@ -21,6 +21,10 @@ $(".td-sound").click(function() {
     $(".toggle-sound", this).toggleClass("glyphicon-volume-off");
 });
 
+$('#menu-button').on('click', function() {
+    $('aside').toggleClass('visible');
+});
+
 
 /* Initialisation of the slimscroll */
 /*
