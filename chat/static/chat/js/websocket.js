@@ -6,6 +6,8 @@ var new_msg = function(data) {
     /* Perform a verification on the cid: this avoids problems when the same user is connected simultaneously on
     several comptoirs, it may receive back its own message that targets another comptoir */
     if (data.cid != $("#cid").val()) {
+        update_badge(data.cid, data.user, data.msgdate);
+        sound_notification("msg", data.cid);
         return;
     }
     /* Testing if this is a '/me' message */

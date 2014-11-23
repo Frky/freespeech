@@ -32,8 +32,7 @@ from django.utils.timezone import utc
 
 from chat.utils import date_to_tooltip
 
-from ws4redis.publisher import RedisPublisher
-from ws4redis.redis_store import RedisMessage
+from chat.chat_management import Chat
 
 import json
 
@@ -530,31 +529,18 @@ audience = dict()
 
 @csrf_exempt
 def ws_identicate(request):
-    connected_users.append(request.user)
+    Chat.connect(request.user)
+    return HttpResponse("ok")
     
-
 
 @csrf_exempt
 def ws_msg(request):
-    print request.POST
-
     try:
         msg = request.POST["msg"]
         cid = request.POST["cid"]
     except KeyError:
         return HttpResponse("err")
-
-    print "Received message" + msg
-    publisher = RedisPublisher(facility="fsp", users=[request.user])
-    data = {
-                "type": "new-msg",
-                "user": request.user.username,
-                "cid": cid, 
-                "content": msg,
-                "msgdate": "Now",  # TODO
-                "mid": 1,          # TODO
-            }
-    publisher.publish_message(RedisMessage(json.dumps(data)))
+    Chat.message(request.user, cid, msg)
     return HttpResponse("ack")
 
 
