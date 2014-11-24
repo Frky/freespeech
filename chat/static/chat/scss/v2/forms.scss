@@ -76,6 +76,10 @@ input[type=radio]:not(old){
     margin: -1px 10px;
 }
 
+.fsp-radio-inner {
+    transition: background 900ms ease;
+}
+
 input[type=radio]:checked + .fsp-radio-outter {
     .fsp-radio-inner {
         display: inline-block;
@@ -84,6 +88,6 @@ input[type=radio]:checked + .fsp-radio-outter {
         height: 10px;
         border-radius: 50%;
         vertical-align: text-top;
-        margin: 1px 1px 0 0;      
+        margin: 1px;
     }
 }
