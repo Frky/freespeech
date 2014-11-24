@@ -28,7 +28,11 @@
                                     </td>
                                     <td class="td-addr">
                                         <a class="cmptr-link" value="{{ c.id }}"
-                                            href="{% url "join_comptoir" c.id %}"
+                                            {% if id %}
+                                                "{% url "join_comptoir" c.id %}"
+                                            {% else %}
+                                                href="{% url "join_comptoir" c.id %}"
+                                            {% endif %}
                                             {% if c.last_message.owner != None %}
                                             class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
                                             {% endif %}
