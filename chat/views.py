@@ -36,7 +36,8 @@ from chat.chat_management import Chat
 
 import json
 
-VERSION = "0.932"
+VERSION = "0.94"
+
 timezone_local = pytz.timezone(TIME_ZONE)
 
 @register.filter
