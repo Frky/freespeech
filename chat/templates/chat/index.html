@@ -1,57 +1,65 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
-    <h2>Create a comptoir</h2>
-    <form action="{% url "create_comptoir" %}" method="post" id="comptoir-form">
+<h2>Create a comptoir</h2>
+<form action="{% url 'create_comptoir' %}" method="post" id="comptoir-form">
 
 
-        {% if not user.is_authenticated %}
-            <p>You must be logged in to create a comptoir.</p>
-        {% else %}
+    {% if not user.is_authenticated %}
+    <p>You must be logged in to create a comptoir.</p>
+    {% else %}
 
-        {% csrf_token %}
+    {% csrf_token %}
 
-        {% for el in comptoir_form %}
-        {% if el.label == "Public ?" %}
-                <div id="{{ el.name }}" class="radio-duo">
-                    <label for="{{ el.name}}_0">
-                        Public<input id="{{ el.name}}_0" name="{{ el.name }}" type="radio" checked value="on"/><span class="fsp-radio-outter"><span class="fsp-radio-inner"></span></span>
+    {% for el in comptoir_form %}
+    {% if el.label == "Public ?" %}
+    <div id="{{ el.name }}" class="radio-duo">
+        <label for="{{ el.name}}_0">
+            Public<input id="{{ el.name}}_0" name="{{ el.name }}" type="radio" checked value="on"/><span
+                class="fsp-radio-outter"><span class="fsp-radio-inner"></span></span>
 
-                    </label><!--
+        </label><!--
                     --><label for="{{ el.name}}_1">
-                        <input id="{{ el.name}}_1" name="{{ el.name }}" type="radio" value="off" /><span class="fsp-radio-outter"><span class="fsp-radio-inner"></span></span>Private
-                    </label>
-                </div>
+        <input id="{{ el.name}}_1" name="{{ el.name }}" type="radio" value="off"/><span class="fsp-radio-outter"><span
+            class="fsp-radio-inner"></span></span>Private
+    </label>
+    </div>
 
-                <b>Info. </b> Your comptoir will be protected by a key. You must provide this key to anyone you want to share the comptoir with.
-                The key will be accessible in the comptoir page.
-            <input type="button" class="btn btn-info input" id="manage-key" value="Manage the key myself" />
-            <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key" />
-                Comptoir secret key
-                <input class="input form-control" id="comptoir-key">
-                <a href="#" class="fsp-popover btn btn-info" id="key_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
-                    This is the secret key that ensures privacy of your data. All messages will be ciphered with this key before being sent to the server database.<br />
-                    You must share this key with people you want to communicate with. <br /><br />
+    <div class="private-part invisible">
+        <p><b>Info. </b> Your comptoir will be protected by a key. You must provide this key to anyone you want to share
+            the comptoir with. The key will be accessible in the comptoir page.</p>
+        <input type="button" class="btn btn-info input" id="manage-key" value="Manage the key myself"/>
+        <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key"/>
+        Comptoir secret key
+        <input class="input form-control" id="comptoir-key">
+        <a href="#" class="fsp-popover btn btn-info" id="key_help" rel="popover" data-trigger="hover"
+           data-original-title="Whut ?" data-html="true" data-content="
+                This is the secret key that ensures privacy of your data. All messages will be ciphered with this key before being sent to the server database.<br />
+                You must share this key with people you want to communicate with. <br /><br />
 
-                    <b>Important.</b> This key is never sent to freespeech server. Thus, this field is not required. Nevertheless, you must provide the SHA3 hash of your key,
-                    because this will be used by the server to ensure a person can post on your comptoir (more info in <a href='#'>About</a> page).
-                ">?</a>
-        {% else %}
-            {{ el }}    
-            {% if el.label == "SHA3 of the key" %}
-                <a href="#" class="fsp-popover btn btn-info" id="hash_help" rel="popover" data-trigger="hover" data-original-title="What is it ?" data-html="true" data-content="
+                <b>Important.</b> This key is never sent to freespeech server. Thus, this field is not required. Nevertheless, you must provide the SHA3 hash of your key,
+                because this will be used by the server to ensure a person can post on your comptoir (more info in <a href='#'>About</a> page).
+            ">?</a>
+    </div>
+    {% else %}
+    {{ el }}
+    {% if el.label == "SHA3 of the key" %}
+    <div class="private-part invisible">
+        <a href="#" class="fsp-popover btn btn-info" id="hash_help" rel="popover" data-trigger="hover"
+           data-original-title="What is it ?" data-html="true" data-content="
                     This is the fingerprint of the secret key used to decipher the messages that will be posted on the
                     comptoir. The key will be needed to access the comptoir clear texts, and you need to share
                     it with people you want to speak with.<br />
                     More info in <a href='#'>About</a> page.<br /><br />
                     <b>Note.</b> You don't need to remember it, it will be displayed on the comptoir once created.
                 ">?</a>
-            {% endif %}
-        {% endif %}
-        {% endfor %}
-        <input class="btn btn-default submit-button" type="submit" id="submit-comptoir" value="Let's talk !">
-        {% endif %}
-    </form>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    <input class="btn btn-default submit-button" type="submit" id="submit-comptoir" value="Let's talk !">
+    {% endif %}
+</form>
 
 {% load staticfiles %}
 <script type="text/javascript">

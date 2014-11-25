@@ -25,6 +25,9 @@ $('#menu-button').on('click', function() {
     $('aside').toggleClass('visible');
 });
 
+$('input[name=public]').on('change', function() {
+    $("#comptoir-form .private-part").toggleClass('invisible');
+});
 
 /* Initialisation of the slimscroll */
 /*
