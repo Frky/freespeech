@@ -174,11 +174,11 @@ $(document).ready(function() {
     particlesJS('particle', {
         particles: {
             color: '#fff',
-            shape: 'triangle', // "circle", "edge" or "triangle"
+            shape: 'circle', // "circle", "edge" or "triangle"
             opacity: 0.5,
             size: 2,
             size_random: true,
-            nb: 150,
+            nb: 50,
             line_linked: {
                 enable_auto: true,
                 distance: 250,

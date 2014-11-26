@@ -56,7 +56,35 @@
         </nav>
     </header>
 
-    <aside></aside>
+    <aside>
+        {% for c,n in user.comptoirs reversed %}
+        <tr id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}>
+            <td class="td-ciph">
+                {% if c.public  %}
+                {% else %}
+                <span class="glyphicon glyphicon-lock"></span>
+                {% endif %}
+            </td>
+            <td class="td-name">
+                <span class="txt">{{ c.title }}</span>
+                {% if n != 0 %}
+                <span class="badge active">{{ n }}</span>
+                {% endif %}
+            </td>
+            <td class="td-addr">
+                <a class="cmptr-link" value="{{ c.id }}"
+                    {% url "join_comptoir" c.id %}
+                    {% if c.last_message.owner != None %}
+                    class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
+                    {% endif %}
+                    >{{ c.id }}</a>
+            </td>
+            <td class="td-users"></td>
+            <td class="td-sound"><span class="toggle-sound glyphicon glyphicon-volume-up"></span></td>
+        </tr>
+        {# <!--</p> Hack to remove whitespace between p elements (note HTML5 compliancy)--> #}
+        {% endfor %}
+    </aside>
 
     <section id="content">
     {% block content %}
@@ -91,8 +119,10 @@
     {% endif %}
 
     <div id="particle" class="background">
-        <!--<div id="particle" class="triangle-left"></div>
-        <div class="triangle-right"></div>-->
+        <div class="triangle-1"></div>
+        <div class="triangle-2"></div>
+        <div class="triangle-3"></div>
+        <div class="triangle-4"></div>
     </div>
 
     <script>

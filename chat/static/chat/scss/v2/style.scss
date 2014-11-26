@@ -9,8 +9,8 @@ body, html {padding: 0; margin: 0; height: 100%; max-height: 100%;}
 
 body {
     background-color: $white;
-    background: url('../../../images/black.jpg') no-repeat center center;
-    background-size: 270% auto;
+    //background: url('../../../images/black.jpg') no-repeat center center;
+    //background-size: 270% auto;
 }
 
 a {
@@ -137,30 +137,60 @@ aside {
     width: 100%;
     overflow: hidden;
 
-    .triangle-left {
+    .triangle-1 {
         z-index: -1;
         position: absolute;
-        top: 0;
         display: block;
+        top: -105%;
+        background-color: $grey;
         width: 200%;
-        height: 110%;
-        background-color: $black;
-        transform-origin: 0 110%;
-        transform: rotate(-30deg);
+        height: 150%;
+
+        transform-origin: 0 0;
+        transform: rotate(20deg);
     }
 
-    .triangle-right {
+    .triangle-2 {
+        z-index: -2;
+        position: absolute;
+        display: block;
+        top: 0;
+        left: -10%;
+        background-color: #EEE;
+        width: 150%;
+        height: 80%;
+
+        transform-origin: 0 0;
+        transform: rotate(-4deg);
+    }
+
+    .triangle-3 {
+        z-index: -3;
+        position: absolute;
+        display: block;
+        top: 1%;
+        left: -20%;
+        background-color: #CCC;
+        width: 110%;
+        height: 83%;
+
+        transform-origin: 0 0;
+        transform: rotate(-6deg);
+    }
+
+    .triangle-4 {
         z-index: -1;
         position: absolute;
-        top: $header-size;
-        left: 0;
         display: block;
-        width: 200%;
-        height: 200%;
-        opacity: 0.5;
-        background-color: $grey2;
-        transform-origin: 0 0;
-        transform: rotate(-50deg);
+        top: $header-size;
+        right: 0;
+        background-color: #333;
+        width: 150%;
+        height: 83%;
+        opacity: 0.3;
+
+        transform-origin: 100% 0;
+        transform: rotate(-45deg);
     }
 }
 
