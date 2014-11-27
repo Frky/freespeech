@@ -15,6 +15,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'chat/css/jquery.fs.tipper.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
 
     <!-- SCRIPTS -->
     <script src="{% static 'chat/js/ajax.js' %}"></script>
@@ -57,33 +58,10 @@
     </header>
 
     <aside>
-        {% for c,n in user.comptoirs reversed %}
-        <tr id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}>
-            <td class="td-ciph">
-                {% if c.public  %}
-                {% else %}
-                <span class="glyphicon glyphicon-lock"></span>
-                {% endif %}
-            </td>
-            <td class="td-name">
-                <span class="txt">{{ c.title }}</span>
-                {% if n != 0 %}
-                <span class="badge active">{{ n }}</span>
-                {% endif %}
-            </td>
-            <td class="td-addr">
-                <a class="cmptr-link" value="{{ c.id }}"
-                    {% url "join_comptoir" c.id %}
-                    {% if c.last_message.owner != None %}
-                    class="fsp-tooltip" data-toggle="tooltip" data-original-title="Last message by {{ c.last_message.owner }}<br />({{ c.last_message.date }})" data-html="true" data-placement="left"
-                    {% endif %}
-                    >{{ c.id }}</a>
-            </td>
-            <td class="td-users"></td>
-            <td class="td-sound"><span class="toggle-sound glyphicon glyphicon-volume-up"></span></td>
-        </tr>
-        {# <!--</p> Hack to remove whitespace between p elements (note HTML5 compliancy)--> #}
-        {% endfor %}
+        <section id="comptoir-list">
+            <h3>Comptoir list</h3>
+            <ul></ul>
+        </section>
     </aside>
 
     <section id="content">

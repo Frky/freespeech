@@ -124,6 +124,8 @@ aside {
     }
 }
 
+#comptoir-list
+
 .hidden, .invisible {
     display: none;
 }
@@ -195,7 +197,7 @@ aside {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: Helvetica, sans-serif;
+    font-family: PT Sans Narrow, sans-serif;
     font-weight: 100;
     text-transform: uppercase;
     color: $light-grey;
