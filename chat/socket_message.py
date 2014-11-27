@@ -24,11 +24,10 @@ class SocketMessage(object):
         return json(data)
 
     def save(self):
-        comptoir = Comptoir.objects.get(id=self.cid)
-        msg = Message(owner=self.user, comptoir=comptoir, content=self.content, me_message=False)
+        msg = Message(owner=self.user, comptoir=self.cmptr, content=self.content, me_message=False)
         msg.save()
-        comptoir.last_message = msg
-        comptoir.save()
+        self.cmptr.last_message = msg
+        self.cmptr.save()
         msg_date = msg.date.astimezone(timezone_local)
         self.date = date_to_tooltip(msg_date)
         self.mid = msg.id
@@ -36,10 +35,10 @@ class SocketMessage(object):
 
 class NewMessage(SocketMessage):
 
-    def __init__(self, user, cid, content):
+    def __init__(self, user, cmptr, content):
         self.typ = "new-msg"
         self.user = user
-        self.cid = cid
+        self.cmptr = cmptr
         self.content = content
         self.mid = -1
         self.date = ""
@@ -49,7 +48,7 @@ class NewMessage(SocketMessage):
        data = dict()
        data["type"] = self.typ
        data["user"] = self.user.username
-       data["cid"] = self.cid
+       data["cid"] = self.cmptr.id
        data["content"] = self.content
        data["msgdate"] = self.date
        data["mid"] = self.mid

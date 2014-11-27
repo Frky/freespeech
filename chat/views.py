@@ -539,9 +539,10 @@ def ws_msg(request):
     try:
         msg = request.POST["msg"]
         cid = request.POST["cid"]
+        chash = request.POST["hash"]
     except KeyError:
         return HttpResponse("err")
-    Chat.message(request.user, cid, msg)
+    Chat.message(request.user, cid, chash, msg)
     return HttpResponse("ack")
 
 

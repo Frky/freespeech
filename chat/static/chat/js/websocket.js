@@ -34,6 +34,8 @@ var receiveData = function(data) {
     data = JSON.parse(data)
     if (data.type == "new-msg") {
         new_msg(data);
+    } else if (data.type == "error") {
+         pop_alert("danger", data.error_msg);
     }
 }
 
