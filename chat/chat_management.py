@@ -6,7 +6,7 @@ from ws4redis.redis_store import RedisMessage
 
 from chat.models import Comptoir
 from chat.middlewares.comptoir_list import ComptoirListRequest
-from chat.socket_message import NewMessage
+from chat.socket_message import ConnectionMessage, NewMessage
 from chat.chat_errors import hash_error
 
 class Chat(object):
@@ -23,11 +23,10 @@ class Chat(object):
         for cmptr in user_cmptrs:
             if cmptr.id not in cls.audience.keys():
                 cls.audience[cmptr.id] = list()
-            users_to_notify += cls.audience[cmptr.id]
-            online_users[cmptr.id] = cls.audience[cmptr.id]
+            publisher = RedisPublisher(facility="fsp", users=cls.audience[cmptr.id])
+            notif_msg = ConnectionMessage(user.username, cmptr.id)
+            publisher.publish_message(notif_msg.redis())
             cls.audience[cmptr.id].append(user)
-        publisher = RedisPublisher(facility="fsp", users=set(users_to_notify))
-#        publisher.publish_message(RedisMessage(
         return
 
 

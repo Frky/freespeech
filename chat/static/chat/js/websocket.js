@@ -36,6 +36,8 @@ var receiveData = function(data) {
         new_msg(data);
     } else if (data.type == "error") {
          pop_alert("danger", data.error_msg);
+    } else if (data.type == "joined") {
+        add_user_online(data.user, data.cid);
     }
 }
 

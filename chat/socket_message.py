@@ -32,6 +32,27 @@ class SocketMessage(object):
         self.date = date_to_tooltip(msg_date)
         self.mid = msg.id
 
+    def json(self):
+        raise NotImplemented
+
+    def redis(self):
+       return RedisMessage(self.json())
+    
+
+class ConnectionMessage(SocketMessage):
+
+    def __init__(self, username, cid):
+        self.typ = "joined"
+        self.username = username
+        self.cid = cid
+
+    def json(self):
+        data = dict()
+        data["type"] = self.typ
+        data["user"] = self.username
+        data["cid"] = self.cid
+        return json.dumps(data)
+
 
 class NewMessage(SocketMessage):
 
@@ -54,5 +75,3 @@ class NewMessage(SocketMessage):
        data["mid"] = self.mid
        return json.dumps(data)
 
-    def redis(self):
-       return RedisMessage(self.json())
