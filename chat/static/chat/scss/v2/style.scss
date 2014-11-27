@@ -124,7 +124,26 @@ aside {
     }
 }
 
-#comptoir-list
+#comptoir-list {
+    h2 {
+        font-size: 2em;
+        text-transform: none;
+        margin-left: 20px;
+    }
+    ul {
+        padding: 15px 0;
+        margin-left: 20px; 
+        border-left: 1px solid $light-grey;
+        list-style: none;
+    }
+    li {
+        display: inline-block;
+        padding-left: 20px;
+        height: 35px;
+        font-family: Santor, sans-serif;
+        line-height: 35px;
+    }
+}
 
 .hidden, .invisible {
     display: none;
