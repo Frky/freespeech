@@ -81,6 +81,7 @@ var generateTmpKeyId = function() {
    from a tmp register to a permanent register */
 var keyFound = function(id, isTmp) {
     var private_key = localStorage.getItem(id);
+    console.log("Key found: " + private_key);
     if (isTmp) {
         localStorage.setItem(key_id, private_key);
         localStorage.removeItem(id);
@@ -218,11 +219,13 @@ var tryNextTmpKey = function() {
     }
 
     hash = CryptoJS.SHA3(localStorage.getItem(key_id_tmp + tmp_id.toString())); 
+    console.log("Trying: " + localStorage.getItem(key_id_tmp + tmp_id.toString()));
     checkHash(checkHashCallback, hash, $("#cid").val());
 }
 
 var findKey = function() {
     if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") {
+        console.log("Key already known.");
         keyFound(key_id, false);
     } else {
         localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
