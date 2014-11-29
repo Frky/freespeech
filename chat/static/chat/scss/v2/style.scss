@@ -28,6 +28,7 @@ header {
     height: $header-size;
     background-color: $grey;
     border-bottom: 1px solid $white;
+    z-index: 32;
 
     font-family: Santor, serif;
     color: $white;
@@ -113,6 +114,8 @@ aside {
     position: fixed;
     background-color: $white;
     width: 250px;
+    top: 0;
+    z-index: 16;
     height: 100%;
     margin-right: -250px;
     right: 0;
@@ -122,9 +125,19 @@ aside {
     &.visible {
         margin-right: 0;
     }
+    #menu-bottom {
+        position: absolute;
+        bottom: 0;
+
+        a {
+            color: black;
+        }
+    }
 }
 
 #comptoir-list {
+    margin-top: $header-size + 30px;
+
     h2 {
         font-size: 2em;
         text-transform: none;
