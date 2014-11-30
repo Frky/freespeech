@@ -546,3 +546,12 @@ def ws_msg(request):
     return HttpResponse("ack")
 
 
+@csrf_exempt
+def ws_wizz(request):
+    try:
+        cid = request.POST["cid"]
+        chash = request.POST["hash"]
+    except KeyError:
+        return HttpResponse("err")
+    print "Wizz received"
+    return HttpResponse("ack")
