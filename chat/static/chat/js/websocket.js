@@ -41,15 +41,24 @@ var receiveData = function(data) {
     }
 }
 
-// attach this function to an event handler on your site
 sendData = function() {
     var msg = $("#new-msg").val();
-    data = {
+    switch (msg) {
+    case "/wizz":
+        data = {
+                cid: $("#cid").val(), 
+                hash: $("#comptoir-key-hash").val(), 
+            };
+            jQuery.post(ws_wizz_url, data, acknowledged);
+        break;
+    default:
+        data = {
                 cid: $("#cid").val(), 
                 msg: Encrypt_Text(msg, localStorage.getItem(key_id)), 
                 hash: $("#comptoir-key-hash").val(), 
             };
-    jQuery.post(ws_msg_url, data, acknowledged);
+            jQuery.post(ws_msg_url, data, acknowledged);
+    }
 }
 
 
