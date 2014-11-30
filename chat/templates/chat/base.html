@@ -67,7 +67,10 @@
         </section>
         <section id="menu-bottom">
             {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Logout</a>
+                <div class="duo">
+                    <a href="{% url 'logout' %}">Logout</a><!--
+                    --><a href="#">Profile</a>
+                </div>
             {% endif %}
         </section>
     </aside>

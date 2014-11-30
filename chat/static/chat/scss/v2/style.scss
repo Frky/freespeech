@@ -126,11 +126,27 @@ aside {
         margin-right: 0;
     }
     #menu-bottom {
+        width: 100%;
         position: absolute;
         bottom: 0;
 
+        .duo {
+            background-color: $light-grey;
+            width: 100%;
+            height: 50px;
+            font-family: PT Sans Narrow, sans-serif;
+        }
         a {
+            display: inline-block;
+            width: 50%;
+            line-height: 50px;
+            font-size: 1.1em;
+            text-align: center;
+            height: 100%;
             color: black;
+
+            &:hover {
+            }
         }
     }
 }
