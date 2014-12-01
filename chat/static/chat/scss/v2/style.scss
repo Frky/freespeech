@@ -110,17 +110,32 @@ header {
     }
 }
 
+$aside-width: 250px;
+#main-content-wrapper {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    right: 0;
+
+    &.wrap {
+        right: $aside-width;
+    }
+
+    transition: right 400ms ease;
+}
+
 aside {
     position: fixed;
     background-color: $white;
-    width: 250px;
+    width: $aside-width;
     top: 0;
     z-index: 16;
     height: 100%;
-    margin-right: -250px;
+    margin-right: -$aside-width;
     right: 0;
+    box-shadow: inset 4px 0px 12px 0px #9b9b9b;
 
-    transition: margin 350ms ease;
+    transition: margin 400ms ease;
 
     &.visible {
         margin-right: 0;
@@ -152,8 +167,6 @@ aside {
 }
 
 #comptoir-list {
-    margin-top: $header-size + 30px;
-
     h2 {
         font-size: 2em;
         text-transform: none;
@@ -186,6 +199,8 @@ aside {
     height: 100%;
     width: 100%;
     overflow: hidden;
+
+    transition: width 400ms ease;
 
     .triangle-1 {
         z-index: -1;

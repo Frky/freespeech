@@ -23,6 +23,7 @@ $(".td-sound").click(function() {
 
 $('#menu-button').on('click', function() {
     $('aside').toggleClass('visible');
+    $('#main-content-wrapper').toggleClass('wrap');
 });
 
 $('input[name=public]').on('change', function() {

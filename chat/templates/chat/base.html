@@ -43,21 +43,63 @@
 </head>
 
 <body>
-    <header>
-        <h1><a href="{% url 'home' %}">FreeSpeech</a></h1>
+    <div id="main-content-wrapper">
+        <header>
+            <h1><a href="{% url 'home' %}">FreeSpeech</a></h1>
 
-        <blockquote>« Whereof one cannot speak, thereof one must be silent. »</blockquote>
+            <blockquote>« Whereof one cannot speak, thereof one must be silent. »</blockquote>
 
-        <nav>
-            {% if not user.is_authenticated %}
-                <a id="login-button">Log in</a> | <a id="register-button">Register</a>
-            {% else %}
-            <span id="user-name">{{ user|truncatechars:20 }}</span><span id="menu-button"><span></span></span>
-            {% endif %}
-        </nav>
-    </header>
+            <nav>
+                {% if not user.is_authenticated %}
+                    <a id="login-button">Log in</a> | <a id="register-button">Register</a>
+                {% else %}
+                <span id="user-name">{{ user|truncatechars:20 }}</span><span id="menu-button"><span></span></span>
+                {% endif %}
+            </nav>
+        </header>
+
+        <section id="content">
+            {% block content %}
+            {% endblock %}
+        </section>
+
+        {% if not user.is_authenticated %}
+            <div id="login-panel">
+                <form id="login-form" action="{% url 'login' %}" method="post">
+                    <h3 class="title">Login</h3>
+                    {% csrf_token %}
+                    <input name="username" type="login" class="form-control" placeholder="username">
+                    <input name="password" type="password" class="form-control" placeholder="password">
+                    <input type="submit" class="btn btn-default" value="Log in &#8594;">
+                </form>
+            </div>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+            <div id="register-panel">
+                <form class="formContainer" method="post" action="{% url 'register' %}" id="register-form">
+                    <h3 class="title">Register</h3>
+                    {% csrf_token %}
+                        {% for field in registerForm %}
+                                {{ field }}
+                        {% endfor %}
+                        <input class="form-control" id="beta_key" name="beta_key" placeholder="beta key" type="text" />
+                        <p class="hint betakey">This site is still under development. For now, you need to have an inscription key to be able to register. If you don't have one, you can ask for it at fsp@udtq.fr.</p>
+                        <input class="btn btn-default" type="submit" value="Register &#8594;">
+                </form>
+            </div>
+        {% endif %}
+
+        <div id="particle" class="background">
+            <div class="triangle-1"></div>
+            <div class="triangle-2"></div>
+            <div class="triangle-3"></div>
+            <div class="triangle-4"></div>
+        </div>
+    </div>
 
     <aside>
+        <!--
         <section id="comptoir-list">
             <h2>Comptoir list</h2>
             <ul>
@@ -69,50 +111,11 @@
             {% if user.is_authenticated %}
                 <div class="duo">
                     <a href="{% url 'logout' %}">Logout</a><!--
-                    --><a href="#">Profile</a>
+                    --><!--<a href="#">Profile</a>
                 </div>
             {% endif %}
-        </section>
+        </section>-->
     </aside>
-
-    <section id="content">
-    {% block content %}
-    {% endblock %}
-    </section>
-
-    {% if not user.is_authenticated %}
-        <div class="content" id="login-panel">
-            <form id="login-form" action="{% url 'login' %}" method="post">
-                <h3 class="title">Login</h3>
-                {% csrf_token %}
-                <input name="username" type="login" class="form-control" placeholder="username">
-                <input name="password" type="password" class="form-control" placeholder="password">
-                <input type="submit" class="btn btn-default" value="Log in &#8594;">
-            </form>
-        </div>
-    {% endif %}
-
-    {% if not user.is_authenticated %}
-        <div class="content" id="register-panel">
-            <form class="formContainer" method="post" action="{% url 'register' %}" id="register-form">
-                <h3 class="title">Register</h3>
-                {% csrf_token %}
-                    {% for field in registerForm %}
-                            {{ field }}
-                    {% endfor %}
-                    <input class="form-control" id="beta_key" name="beta_key" placeholder="beta key" type="text" />
-                    <p class="hint betakey">This site is still under development. For now, you need to have an inscription key to be able to register. If you don't have one, you can ask for it at fsp@udtq.fr.</p>
-                    <input class="btn btn-default" type="submit" value="Register &#8594;">
-            </form>
-        </div>
-    {% endif %}
-
-    <div id="particle" class="background">
-        <div class="triangle-1"></div>
-        <div class="triangle-2"></div>
-        <div class="triangle-3"></div>
-        <div class="triangle-4"></div>
-    </div>
 
     <script>
         var glyphicon_options = '<span class="glyphicon-options invisible">'
