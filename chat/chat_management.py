@@ -33,9 +33,13 @@ class Chat(object):
     @classmethod
     def disconnect(cls, user):
         cls.connected_users.remove(user)
-        for aud in cls.audience.values():
+        for cid, aud in cls.audience.items():
             if user in aud:
                 aud.remove(user)
+                publisher = RedisPublisher(facility="fsp", users=cls.audience[aud])
+                notif_msg = DisconnectionMessage(user.username, cid)
+                publisher.publish_message(notif_msg.redis())
+
 
 
     @classmethod

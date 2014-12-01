@@ -54,6 +54,21 @@ class ConnectionMessage(SocketMessage):
         return json.dumps(data)
 
 
+class DisconnectionMessage(SocketMessage):
+
+    def __init__(self, username, cid):
+        self.typ = "left"
+        self.username = username
+        self.cid = cid
+
+    def json(self):
+        data = dict()
+        data["type"] = self.typ
+        data["user"] = self.username
+        data["cid"] = self.cid
+        return json.dumps(data)
+
+
 class NewMessage(SocketMessage):
 
     def __init__(self, user, cmptr, content):
