@@ -38,6 +38,8 @@ var receiveData = function(data) {
          pop_alert("danger", data.error_msg);
     } else if (data.type == "joined") {
         add_user_online(data.user, data.cid);
+    } else if (data.type == "wizz") {
+        wizz(data.user, data.cid);
     }
 }
 

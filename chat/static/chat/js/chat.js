@@ -544,6 +544,19 @@ var reconnect = function() {
 //     }
 // }
 
+var wizz = function(user, cid) {
+    /* Notification to the sound alert manager */
+    sound_notification("wizz", cid);
+    /* Shaking the chatbox */
+    $("#chatbox").velocity("callout.shake", "500ms", "true");
+    /* Add message on chatbox if current comptoir */
+    if (cid = $("#cid").val()) {
+        $("#chatbox table tbody").append("<tr><td colspan=\"3\" class=\"central-msg wizz\">" + user + " sent a wizz.</td></tr>");
+        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+    }
+    return;
+}
+
 
 var closed = function() {
     console.log("Oups.");
@@ -557,7 +570,7 @@ var socket = new io.Socket();
 /* Mapping the two handlers */
 socket.on('connect', connected);
 // socket.on('message', messaged);
-socket.on('disconnect', closed);
+// socket.on('disconnect', closed);
 
 
 var decipher_cmptr_info = function(key) {

@@ -90,3 +90,19 @@ class NewMessage(SocketMessage):
        data["mid"] = self.mid
        return json.dumps(data)
 
+
+class Wizz(SocketMessage):
+
+    def __init__(self, user, cmptr):
+        self.typ = "wizz"
+        self.user = user
+        self.cmptr = cmptr
+
+    def json(self):
+       data = dict()
+       data["type"] = self.typ
+       data["user"] = self.user.username
+       data["cid"] = self.cmptr.id
+       return json.dumps(data)
+
+

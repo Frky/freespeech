@@ -6,7 +6,7 @@ from ws4redis.redis_store import RedisMessage
 
 from chat.models import Comptoir
 from chat.middlewares.comptoir_list import ComptoirListRequest
-from chat.socket_message import ConnectionMessage, NewMessage
+from chat.socket_message import ConnectionMessage, NewMessage, Wizz
 from chat.chat_errors import hash_error
 
 class Chat(object):
@@ -41,7 +41,6 @@ class Chat(object):
                 publisher.publish_message(notif_msg.redis())
 
 
-
     @classmethod
     def message(cls, user, cid, chash, msg):
         ## TODO:
@@ -53,7 +52,7 @@ class Chat(object):
         # If the hash of the comptoir key does not match with the db
         if (cmptr.key_hash != chash):
             # We reject the message
-            publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
+            publisher = RedisPublisher(facility="fsp", users=user)
             publisher.publish_message(RedisMessage(hash_error))
         else:    
             try:
@@ -62,3 +61,23 @@ class Chat(object):
                 print cls.audience
             msg = NewMessage(user, cmptr, msg)
             publisher.publish_message(msg.redis())
+
+
+    @classmethod
+    def wizz(cls, user, cid, chash):
+        ## TODO:
+        #   - Check hash
+        ##
+        cmptr = Comptoir.objects.get(id=cid)
+        if (cmptr.key_hash != chash):
+            # We reject the message
+            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher.publish_message(RedisMessage(hash_error))
+        else:    
+            try:
+                publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
+            except KeyError:
+                print cls.audience
+            wizz_msg = Wizz(user, cmptr)
+            publisher.publish_message(wizz_msg.redis())
+
