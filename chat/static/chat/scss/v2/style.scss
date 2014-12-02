@@ -126,14 +126,13 @@ $aside-width: 250px;
 
 aside {
     position: fixed;
-    background-color: $white;
+    background-color: #3B3B3B;
     width: $aside-width;
     top: 0;
     z-index: 16;
     height: 100%;
     margin-right: -$aside-width;
     right: 0;
-    box-shadow: inset 4px 0px 12px 0px #9b9b9b;
 
     transition: margin 400ms ease;
 
@@ -167,23 +166,36 @@ aside {
 }
 
 #comptoir-list {
+    margin-top: $header-size + 20px;
+
     h2 {
-        font-size: 2em;
-        text-transform: none;
-        margin-left: 20px;
+        font-size: 1.9em;
+        text-transform: uppercase;
+        margin-left: 40px;
+        font-weight: 100;
+        color: #767676;
     }
     ul {
-        padding: 15px 0;
-        margin-left: 20px; 
-        border-left: 1px solid $light-grey;
+        color: #EAEAEA;
+        padding: 0;
         list-style: none;
     }
     li {
         display: inline-block;
-        padding-left: 20px;
-        height: 35px;
-        font-family: Santor, sans-serif;
-        line-height: 35px;
+        padding-left: 40px;
+        width: 100%;
+        height: 50px;
+        font-family: PT Sans Narrow, sans-serif;
+        line-height: 50px;
+        font-size: 1.2em;
+        cursor: pointer;
+        background-color: transparent;
+
+        transition: background 450ms ease;
+
+        &:hover {
+            background-color: $orange;
+        }
     }
 }
 
