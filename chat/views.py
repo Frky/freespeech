@@ -525,9 +525,6 @@ def welcome(request):
 #    """
 
 
-connected_users = list()
-audience = dict()
-
 @csrf_exempt
 def ws_identicate(request):
     Chat.connect(request.user)
@@ -549,9 +546,11 @@ def ws_msg(request):
 @csrf_exempt
 def ws_wizz(request):
     try:
+        msg = request.POST["msg"]
         cid = request.POST["cid"]
         chash = request.POST["hash"]
     except KeyError:
         return HttpResponse("err")
     print "Wizz received"
+    Chat.wizz(request.user, cid, chash, msg)
     return HttpResponse("ack")

@@ -16,6 +16,7 @@ class Chat(object):
 
     @classmethod
     def connect(cls, user):
+        print "Connected"
         cls.connected_users.append(user)
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
         users_to_notify = list()
@@ -32,6 +33,7 @@ class Chat(object):
 
     @classmethod
     def disconnect(cls, user):
+        print "Disconnected"
         cls.connected_users.remove(user)
         for cid, aud in cls.audience.items():
             if user in aud:
@@ -64,7 +66,7 @@ class Chat(object):
 
 
     @classmethod
-    def wizz(cls, user, cid, chash):
+    def wizz(cls, user, cid, chash, content):
         ## TODO:
         #   - Check hash
         ##
@@ -78,6 +80,6 @@ class Chat(object):
                 publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
             except KeyError:
                 print cls.audience
-            wizz_msg = Wizz(user, cmptr)
+            wizz_msg = Wizz(user, cmptr, content)
             publisher.publish_message(wizz_msg.redis())
 

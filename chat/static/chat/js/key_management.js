@@ -178,10 +178,16 @@ var Decrypt_all = function() {
         var ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {
             var clear = Decrypt_Text(ciph, localStorage.getItem(key_id));
-            $( this ).find(".clear").text(clear);
-            $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
-            if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
-                $(this).append(glyphicon_options);
+            if (clear == "/wizz") {
+                var author = $( this ).parent().data("author");
+                $( this ).parent().html("<td colspan=\"3\" class=\"central-msg wizz\">" + author + " sent a wizz.</td>");
+
+            } else {
+                $( this ).find(".clear").text(clear);
+                $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
+                if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
+                    $(this).append(glyphicon_options);
+                }
             }
             /*
             if (clear.substring(0, 3) == "/me") {

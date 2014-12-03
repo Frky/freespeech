@@ -45,21 +45,17 @@ var receiveData = function(data) {
 
 sendData = function() {
     var msg = $("#new-msg").val();
+    data = {
+            cid: $("#cid").val(), 
+            msg: Encrypt_Text(msg, localStorage.getItem(key_id)), 
+            hash: $("#comptoir-key-hash").val(), 
+        };
     switch (msg) {
     case "/wizz":
-        data = {
-                cid: $("#cid").val(), 
-                hash: $("#comptoir-key-hash").val(), 
-            };
-            jQuery.post(ws_wizz_url, data, acknowledged);
+        jQuery.post(ws_wizz_url, data, acknowledged);
         break;
     default:
-        data = {
-                cid: $("#cid").val(), 
-                msg: Encrypt_Text(msg, localStorage.getItem(key_id)), 
-                hash: $("#comptoir-key-hash").val(), 
-            };
-            jQuery.post(ws_msg_url, data, acknowledged);
+        jQuery.post(ws_msg_url, data, acknowledged);
     }
 }
 

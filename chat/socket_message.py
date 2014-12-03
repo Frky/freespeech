@@ -76,7 +76,9 @@ class NewMessage(SocketMessage):
         self.user = user
         self.cmptr = cmptr
         self.content = content
+        #TODO
         self.mid = -1
+        #TODO
         self.date = ""
         self.save()
 
@@ -93,10 +95,12 @@ class NewMessage(SocketMessage):
 
 class Wizz(SocketMessage):
 
-    def __init__(self, user, cmptr):
+    def __init__(self, user, cmptr, content):
         self.typ = "wizz"
         self.user = user
         self.cmptr = cmptr
+        self.content = content
+        self.save()
 
     def json(self):
        data = dict()
