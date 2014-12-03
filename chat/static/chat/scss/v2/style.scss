@@ -196,7 +196,23 @@ aside {
         &:hover {
             background-color: $orange;
         }
+
+        &:after {
+            content: "+";
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+        }
     }
+}
+
+.badge {
+    background-color: #565656;
+    font-size: 0.8em;
+    padding: 5px;
+    margin-left: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
 }
 
 .hidden, .invisible {
