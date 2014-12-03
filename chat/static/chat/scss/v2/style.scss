@@ -197,11 +197,14 @@ aside {
             background-color: $orange;
         }
 
-        &:after {
+        &:not(.detail):after {
             content: "+";
             position: absolute;
             right: 10px;
             cursor: pointer;
+        }
+        &.detail {
+            display: none;
         }
     }
 }
