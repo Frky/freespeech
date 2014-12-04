@@ -13,10 +13,6 @@ class SocketMessage(object):
 
     def __init__(self, *args, **kwargs):
         self.typ = "generic"
-        self.typ = [kwargs["type"] if "type" in kwargs.keys() else ""]
-        self.typ = [kwargs["type"] if "type" in kwargs.keys() else ""]
-        self.typ = [kwargs["type"] if "type" in kwargs.keys() else ""]
-        self.typ = [kwargs["type"] if "type" in kwargs.keys() else ""]
 
     def json(self):
         data = dict()
@@ -24,7 +20,7 @@ class SocketMessage(object):
         return json(data)
 
     def save(self):
-        msg = Message(owner=self.user, comptoir=self.cmptr, content=self.content, me_message=False)
+        msg = Message(owner=self.user, comptoir=self.cmptr, content=self.content, me_message=self.me_msg)
         msg.save()
         self.cmptr.last_message = msg
         self.cmptr.save()
@@ -71,14 +67,13 @@ class DisconnectionMessage(SocketMessage):
 
 class NewMessage(SocketMessage):
 
-    def __init__(self, user, cmptr, content):
+    def __init__(self, user, cmptr, content, me_msg):
         self.typ = "new-msg"
         self.user = user
         self.cmptr = cmptr
         self.content = content
-        #TODO
+        self.me_msg = me_msg
         self.mid = -1
-        #TODO
         self.date = ""
         self.save()
 
@@ -90,6 +85,7 @@ class NewMessage(SocketMessage):
        data["content"] = self.content
        data["msgdate"] = self.date
        data["mid"] = self.mid
+       data["me_msg"] = self.me_msg
        return json.dumps(data)
 
 

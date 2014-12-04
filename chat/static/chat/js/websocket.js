@@ -11,11 +11,14 @@ var new_msg = function(data) {
         return;
     }
     /* Testing if this is a '/me' message */
-//    if (data.me_msg) {
-//        addMeMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
-//    } else {
+    console.log(data.me_msg);
+    if (data.me_msg) {
+        console.log("ME MESSAGE");
+        addMeMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
+    } else {
+        console.log("MESSAGE");
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
-//    }
+    }
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 } 
 
@@ -45,10 +48,19 @@ var receiveData = function(data) {
 
 sendData = function() {
     var msg = $("#new-msg").val();
+    var me_msg = false
+    /* Looking for '/me' substring */
+    if (msg.substring(0, 4) == "/me ") {
+        /* In this case, updating the boolean */
+        me_msg = true;
+        /* Removing the substring '/me ' */
+        msg = msg.slice(4);
+    }
     data = {
             cid: $("#cid").val(), 
             msg: Encrypt_Text(msg, localStorage.getItem(key_id)), 
             hash: $("#comptoir-key-hash").val(), 
+            me_msg: me_msg,
         };
     switch (msg) {
     case "/wizz":

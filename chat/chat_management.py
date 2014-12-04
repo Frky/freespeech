@@ -44,7 +44,7 @@ class Chat(object):
 
 
     @classmethod
-    def message(cls, user, cid, chash, msg):
+    def message(cls, user, cid, chash, msg, me_msg):
         ## TODO:
         #   - Check hash
         #   - Check if content is empty
@@ -61,7 +61,7 @@ class Chat(object):
                 publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
             except KeyError:
                 print cls.audience
-            msg = NewMessage(user, cmptr, msg)
+            msg = NewMessage(user, cmptr, msg, me_msg)
             publisher.publish_message(msg.redis())
 
 
