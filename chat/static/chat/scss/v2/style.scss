@@ -213,11 +213,15 @@ aside {
 
 .badge {
     background-color: #565656;
-    font-size: 0.8em;
-    padding: 5px;
+    font-size: 0.7em;
+    width: 25px;
     margin-left: 10px;
     border-radius: 50%;
     vertical-align: middle;
+    height: 25px;
+    display: inline-block;
+    line-height: 25px;
+    text-align: center;
 }
 
 .hidden, .invisible {
