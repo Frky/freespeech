@@ -30,7 +30,7 @@ $('input[name=public]').on('change', function() {
     $("#comptoir-form .private-part").toggleClass('invisible');
 });
 $('#comptoir-list li').on('click', function() {
-    $(this).next('.detail').show();
+    $(this).next('.detail').toggleClass('hidden');
 })
 
 /* Initialisation of the slimscroll */
