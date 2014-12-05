@@ -102,11 +102,28 @@ header {
         width: 100%;
         background-color: $white;
         top: 8px;
+
+        transition: all 250ms ease;
     }
 
     span:before {
         top: 0;
         margin-top: -8px;
+    }
+    &.active {
+        span:after {
+            transform: rotate3d(0, 0, 1, -45deg);
+            margin-top: -8px;
+        }
+        span:before {
+            top: 8px;
+            margin-top: -8px;
+            transform: rotate3d(0, 0, 1, 45deg);
+        }
+        span {
+            background-color: transparent;
+        }
+
     }
 }
 

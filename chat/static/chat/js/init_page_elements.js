@@ -22,6 +22,7 @@ $(".td-sound").click(function() {
 });
 
 $('#menu-button').on('click', function() {
+    $(this).toggleClass('active');
     $('aside').toggleClass('visible');
     $('#main-content-wrapper').toggleClass('wrap');
 });
