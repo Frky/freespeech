@@ -17,7 +17,7 @@ var checkComptoirForm = function(form) {
         $("#id_title").parent().removeClass("has-error");
     }
 
-    if ($("#public-btn").val() == 1) {
+    if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
         $("#comptoir-key-hash").val(CryptoJS.SHA3("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
     } else if ($("#comptoir-key-hash", form).val() === "") {
         $("#comptoir-key-hash").parent().addClass("has-error");
@@ -38,13 +38,13 @@ $("#comptoir-form").submit(function() {
     }
     clear_title = $("#id_title", this).val();
     clear_desc = $("#id_description", this).val();
-    if ($("#public-btn").val() == 1) {
+    if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
         key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     } else {
         key = $("#comptoir-key").val();
     }
     ciphered_title = Encrypt_Text(clear_title, key);
-    if ($("#public-btn").val() == 1) {
+    if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
         key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     } else {
         key = $("#comptoir-key").val();
