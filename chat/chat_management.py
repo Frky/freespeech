@@ -67,9 +67,6 @@ class Chat(object):
 
     @classmethod
     def wizz(cls, user, cid, chash, content):
-        ## TODO:
-        #   - Check hash
-        ##
         cmptr = Comptoir.objects.get(id=cid)
         if (cmptr.key_hash != chash):
             # We reject the message
@@ -82,4 +79,31 @@ class Chat(object):
                 print cls.audience
             wizz_msg = Wizz(user, cmptr, content)
             publisher.publish_message(wizz_msg.redis())
+
+    @classmethod
+    def edit(cls, user, cid, chash, old_content, new_content):
+        cmptr = Comptoir.objects.get(id=cid)
+        # Check hash
+        if cmptr.key_hash != chash:
+            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher.publish_message(RedisMessage(hash_error))
+            return
+        msg = Message.objects().get(id=mid)
+        # Check owner
+        if msg.owner != user:
+            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher.publish_message(RedisMessage(owner_error))
+            return
+        # Check old content
+        if msg.content != old_content:
+            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher.publish_message(RedisMessage(old_content_error))
+            return
+        # Editing content
+        msg.content = new_content
+        msg.edited = True
+        msg.save()
+        publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
+        edit_msg = Edition(cmptr, msg)
+        publisher.publish_message(edit_msg.redis())
 

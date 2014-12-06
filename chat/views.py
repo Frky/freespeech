@@ -512,7 +512,7 @@ def welcome(request):
 
 
 
-## WEBSOCKET RELTIVE VIEWS
+## WEBSOCKET RELATIVE VIEWS
 
 
 #@csrf_exempt
@@ -556,6 +556,20 @@ def ws_wizz(request):
         chash = request.POST["hash"]
     except KeyError:
         return HttpResponse("err")
-    print "Wizz received"
     Chat.wizz(request.user, cid, chash, msg)
     return HttpResponse("ack")
+
+
+@csrf_exempt
+def ws_edit(request):
+    try:
+        msg = request.POST["cid"]
+        cid = request.POST["mid"]
+        chash = request.POST["oldmsg"]
+        chash = request.POST["newmsg"]
+        chash = request.POST["hash"]
+    except KeyError:
+        return HttpResponse("err")
+    Chat.edit(request.user, cid, chash, mid, oldmsg, newmsg) 
+    return HttpResponse("ok")
+

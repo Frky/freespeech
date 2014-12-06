@@ -106,3 +106,18 @@ class Wizz(SocketMessage):
        return json.dumps(data)
 
 
+class Edition(SocketMessage):
+
+    def __init__(self, cmptr, msg):
+        self.typ = "edit-msg"
+        self.cmptr = cmptr
+        self.msg = msg
+
+    def json(self):
+       data = dict()
+       data["type"] = self.typ
+       data["cid"] = self.cmptr.id
+       data["mid"] = self.msg.id
+       data["content"] = self.msg.content
+       return json.dumps(data)
+
