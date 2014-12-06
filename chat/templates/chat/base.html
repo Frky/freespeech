@@ -99,15 +99,14 @@
     </div>
 
     <aside>
-        <section id="comptoir-list">
+        <section id="my-comptoirs">
             <h2>Comptoirs</h2>
             <ul>
                 {% for c, n in user.comptoirs reversed %}
-                    <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}>{{ c.title }}</li>
+                     <a class="cmptr-link" value="{{ c.id }}" href="{% url "join_comptoir" c.id %}">
+                        <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}><span class="txt">{{ c.title }}</span></li>
+                    </a>
                 {% endfor %}
-                <li>My first comptoir <span class="badge">5</span></li>
-                <li class="detail hidden">3 users connected / <a href="#">mute</a></li>
-                <li>Franche rigolade <span class="badge">13</span></li>
             </ul>
         </section>
         <section id="menu-bottom">
