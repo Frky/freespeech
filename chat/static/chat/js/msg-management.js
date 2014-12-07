@@ -91,11 +91,6 @@ var edit_message = function(mid) {
     oldcipher = $(".ciphered", ".message#" + mid).text();
     newclear = $("#edit-msg-box").val();
     newcipher = Encrypt_Text(newclear, localStorage.getItem(key_id));
-    /*
-    $(".ciphered", ".message#" + mid).html(newcipher);
-    $(".message#" + mid).prepend(glyph_edited);
-    $(".clear", ".message#" + mid).html(newclear);
-    */
     edit_msg_server(mid, oldcipher, newcipher);
 }
 

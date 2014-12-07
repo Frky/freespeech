@@ -11,12 +11,9 @@ var new_msg = function(data) {
         return;
     }
     /* Testing if this is a '/me' message */
-    console.log(data.me_msg);
     if (data.me_msg) {
-        console.log("ME MESSAGE");
         addMeMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
     } else {
-        console.log("MESSAGE");
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
     }
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
@@ -43,10 +40,19 @@ var receiveData = function(data) {
         add_user_online(data.user, data.cid);
     } else if (data.type == "wizz") {
         wizz(data.user, data.cid);
+    } else if (data.type == "edit-msg") {
+        newclear = Decrypt_Text(data.content, localStorage.getItem(key_id));
+        replace_message(data.mid, data.content, newclear);
     }
 }
 
-sendData = function() {
+
+editMessage = function() {
+
+}
+
+
+sendMessage = function() {
     var msg = $("#new-msg").val();
     var me_msg = false
     /* Looking for '/me' substring */

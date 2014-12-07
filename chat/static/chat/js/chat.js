@@ -353,7 +353,7 @@ var bind_keys = function() {
         if (e.which == 13 && !e.ctrlKey){
             if (!e.crtlKey) {
                 e.preventDefault();
-                sendData();
+                sendMessage();
             }
         }
     });
