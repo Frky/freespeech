@@ -47,6 +47,9 @@ var receiveData = function(data) {
 }
 
 
+/*
+    This function sends edition relative data to the server and handle the response
+*/
 editMessage = function() {
 
 }
