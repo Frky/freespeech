@@ -96,6 +96,7 @@ class Wizz(SocketMessage):
         self.user = user
         self.cmptr = cmptr
         self.content = content
+        self.me_msg = False
         self.save()
 
     def json(self):
