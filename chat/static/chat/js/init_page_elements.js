@@ -83,7 +83,8 @@ $(document).ready(function() {
 
     /* Resize micro picture if too large */
     max_micro_height = $("body").height() - 200;
-    $("#aside-bg").css({"background-size": "auto " + max_micro_height + "px"});
+    max_charlie_width = 550;
+    $("#aside-bg").css({"background-size": max_charlie_width + "px auto"});
     $("#aside-bg").removeClass("invisible");
 
     /* Depending on the location */
