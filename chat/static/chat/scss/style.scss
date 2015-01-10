@@ -603,7 +603,10 @@ a:hover {
                 // background-position: 11px 0px;
     
                 &.point {
-                    background-color: black;
+                    background-image: url('../../images/vert-line-80b.png');
+                    background-size: 22px;
+                    background-repeat: no-repeat;
+                    background-position: top;
                 }
             }
             td:first-child {
