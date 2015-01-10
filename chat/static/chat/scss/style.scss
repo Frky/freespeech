@@ -24,7 +24,7 @@ html, body {
     max-height: 100%;
     margin: 0;
     padding: 0;
-
+    background-color: black;
     color: $wetasphalt;
 }
 
@@ -526,6 +526,9 @@ a:hover {
 
     #chatbox {
 
+        background-color: black;
+        color: white;
+
         position: absolute;
         top: 0px;
         bottom: 150px;
@@ -594,10 +597,7 @@ a:hover {
                 // background-position: 11px 0px;
     
                 &.point {
-                    background-image: url('../../images/vert-line-80w.png');
-                    background-size: 22px;
-                    background-repeat: no-repeat;
-                    background-position: top;
+                    background-color: black;
                 }
             }
             td:first-child {
@@ -625,7 +625,7 @@ a:hover {
                 width: 100%;
                 text-align: center;
                 color: #428bca; 
-                background-color: rgba(255, 255, 255, 1);
+                background-color: black;
             }
         }
     }
