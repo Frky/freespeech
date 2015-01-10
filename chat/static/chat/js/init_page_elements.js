@@ -89,6 +89,7 @@ $(document).ready(function() {
     /* Depending on the location */
     if (window.location.pathname == "/") {
     
+        $("body").addClass("charlie");
         $("#plus a").click(function() {
             $("#comptoir-form").toggleClass("hidden");
             $('#plus').toggleClass("toggle");
