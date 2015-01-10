@@ -85,10 +85,10 @@ $(document).ready(function() {
     max_micro_height = $("body").height() - 200;
     max_charlie_width = 550;
     $("#aside-bg").css({"background-size": max_charlie_width + "px auto"});
-    $("#aside-bg").removeClass("invisible");
 
     /* Depending on the location */
     if (window.location.pathname == "/") {
+    
         $("#plus a").click(function() {
             $("#comptoir-form").toggleClass("hidden");
             $('#plus').toggleClass("toggle");
@@ -110,6 +110,8 @@ $(document).ready(function() {
         });
         $("aside").addClass("micro");
     } else if ($("#chatbox").length > 0) {
+
+        $("#aside-bg").removeClass("invisible");
 
         $("#content").addClass("cmptr-page");
 
