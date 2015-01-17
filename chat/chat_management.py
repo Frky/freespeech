@@ -4,9 +4,9 @@ import json
 from ws4redis.publisher import RedisPublisher
 from ws4redis.redis_store import RedisMessage
 
-from chat.models import Comptoir
+from chat.models import Comptoir, Message
 from chat.middlewares.comptoir_list import ComptoirListRequest
-from chat.socket_message import ConnectionMessage, NewMessage, Wizz
+from chat.socket_message import ConnectionMessage, NewMessage, Wizz, Edition
 from chat.chat_errors import hash_error
 
 class Chat(object):
@@ -81,14 +81,14 @@ class Chat(object):
             publisher.publish_message(wizz_msg.redis())
 
     @classmethod
-    def edit(cls, user, cid, chash, old_content, new_content):
+    def edit(cls, user, cid, chash, mid, old_content, new_content):
         cmptr = Comptoir.objects.get(id=cid)
         # Check hash
         if cmptr.key_hash != chash:
             publisher = RedisPublisher(facility="fsp", users=user)
             publisher.publish_message(RedisMessage(hash_error))
             return
-        msg = Message.objects().get(id=mid)
+        msg = Message.objects.get(id=mid)
         # Check owner
         if msg.owner != user:
             publisher = RedisPublisher(facility="fsp", users=user)

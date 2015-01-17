@@ -331,11 +331,10 @@
 	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
 
     {% if user.is_authenticated %}
-    {% load socketio_tags %}
-    {% socketio %}
     <script type="text/javascript">
         var ws_msg_url = "{% url "ws_msg" %}";
         var ws_wizz_url = "{% url "ws_wizz" %}";
+        var ws_edit_url = "{% url "ws_edit" %}";
         var ws_identicate_url = "{% url "ws_identicate" %}";
         var ws_uri = "{{ WEBSOCKET_URI }}";
         var ws_heartbeat = {{ WS4REDIS_HEARTBEAT }};

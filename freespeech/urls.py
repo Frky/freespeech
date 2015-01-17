@@ -29,6 +29,7 @@ if not UNDER_WORK:
 
         url(r'^ws_msg$', 'chat.views.ws_msg', name='ws_msg'),
         url(r'^ws_wizz$', 'chat.views.ws_wizz', name='ws_wizz'),
+        url(r'^ws_edit$', 'chat.views.ws_edit', name='ws_edit'),
         url(r'^ws_identicate$', 'chat.views.ws_identicate', name='ws_identicate'),
 
         url(r'^ajax-(?P<cid>[-A-Za-z0-9_]+)$', 'chat.views.ajax_comptoir', name="ajax_comptoir"),

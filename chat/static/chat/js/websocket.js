@@ -50,8 +50,15 @@ var receiveData = function(data) {
 /*
     This function sends edition relative data to the server and handle the response
 */
-editMessage = function() {
-
+editMessage = function(mid, oldcipher, newcipher) {
+    var data = {
+                cid: $("#cid").val(), 
+                hash: $("#comptoir-key-hash").val(), 
+                mid: mid, 
+                oldmsg: oldcipher, 
+                newmsg: newcipher, 
+            };
+    jQuery.post(ws_edit_url, data, acknowledged);
 }
 
 

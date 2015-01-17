@@ -563,10 +563,10 @@ def ws_wizz(request):
 @csrf_exempt
 def ws_edit(request):
     try:
-        msg = request.POST["cid"]
-        cid = request.POST["mid"]
-        chash = request.POST["oldmsg"]
-        chash = request.POST["newmsg"]
+        cid = request.POST["cid"]
+        mid = request.POST["mid"]
+        oldmsg = request.POST["oldmsg"]
+        newmsg = request.POST["newmsg"]
         chash = request.POST["hash"]
     except KeyError:
         return HttpResponse("err")

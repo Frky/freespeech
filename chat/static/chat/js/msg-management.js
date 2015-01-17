@@ -35,11 +35,13 @@ var del_msg_client = function(element) {
         $('#confirm-del-msg').modal();
 }
 
+/*
 var edit_msg_server = function(msgid, oldcipher, newcipher) {
 //    data = {action: "edit", hash: $("#comptoir-key-hash").val(), mid: msgid, oldmsg: oldcipher, newmsg: newcipher, session_key: $(".cipher", ".message#" + msgid)};
     data = {action: "edit-msg", cid: $("#cid").val(), hash: $("#comptoir-key-hash").val(), mid: msgid, oldmsg: oldcipher, newmsg: newcipher, session_key: $('#session_key').val()};
     socket.send(data);
 }
+*/
 
 
 var edit_msg_client = function(element) {
@@ -87,25 +89,25 @@ var msg_management_init = function(msg_el) {
 }
 
 
-var edit_message = function(mid) {
-    oldcipher = $(".ciphered", ".message#" + mid).text();
-    newclear = $("#edit-msg-box").val();
-    newcipher = Encrypt_Text(newclear, localStorage.getItem(key_id));
-    edit_msg_server(mid, oldcipher, newcipher);
-}
-
-
 var remove_message = function(mid) {
     cid = $("#cid").val();
     chash = hash_field.val();
     delete_message_on_server(cid, mid, chash, delete_msg_on_server_callback);
 }
 
-$("#confirm-edit-msg-btn").click(function() {
+
+var pre_edition = function() {
     $("#edit-msg").modal('hide');
     mid = $("#msg-to-edit").val();
-    edit_message(mid);
-});
+    oldcipher = $(".ciphered", ".message#" + mid).text();
+    newclear = $("#edit-msg-box").val();
+    newcipher = Encrypt_Text(newclear, localStorage.getItem(key_id));
+    editMessage(mid, oldcipher, newcipher);
+}
+
+
+$("#confirm-edit-msg-btn").click(pre_edition);
+
 
 $("#confirm-del-msg-btn").click(function() {
     $("#confirm-del-msg").modal('hide');

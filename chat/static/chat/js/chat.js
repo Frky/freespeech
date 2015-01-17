@@ -64,8 +64,6 @@ var sound_notification = function(type, cid) {
 }
 
 
-/* Creation of a socket instance */
-var socket = new io.Socket();
 var online = new Array();
 
 
@@ -362,9 +360,7 @@ var bind_keys = function() {
         if (e.which == 13 && !e.ctrlKey){
             if (!e.crtlKey) {
                 e.preventDefault();
-                $("#edit-msg").modal('hide');
-                mid = $("#msg-to-edit").val();
-                edit_message(mid);
+                pre_edition();
             }
         }
     });
@@ -563,14 +559,6 @@ var closed = function() {
     pop_alert("danger", "Connection closed !");
 }
 
-
-/* Creation of a socket instance */
-var socket = new io.Socket();
-
-/* Mapping the two handlers */
-socket.on('connect', connected);
-// socket.on('message', messaged);
-// socket.on('disconnect', closed);
 
 
 var decipher_cmptr_info = function(key) {
