@@ -533,6 +533,8 @@ a:hover {
 
     #chatbox {
 
+	overflow: -moz-scrollbars-none;
+
         color: white;
 
         position: absolute;
@@ -788,3 +790,7 @@ div#aside-bg {
     background-position: center;
     background-repeat: no-repeat;
  }
+
+::webkit-scrollbar {
+	display: none;
+}
