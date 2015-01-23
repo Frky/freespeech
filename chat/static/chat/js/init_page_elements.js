@@ -124,6 +124,7 @@ $(document).ready(function() {
     }
 
         /* Deciphering all comptoir names in panel */
+        var cmptr_key = key_id;
         $("tr.ciphered", "#my-comptoirs").each(function() {
             cmptr_id = $(".cmptr-link", this).text().trim();
             cmptr_name = $(".td-name .txt", this).text();
@@ -138,6 +139,8 @@ $(document).ready(function() {
             console.log(clear_title);
             $(".td-name .txt", this).text(clear_title);
         });
+        
+        key_id = cmptr_key;
 
         $(".panel-tabs .tab-area").each(function() {
             $(this).click(function() {
