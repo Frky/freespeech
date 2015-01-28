@@ -762,3 +762,12 @@ div#aside-bg {
     background-position: bottom;
     background-repeat: no-repeat;
 }
+
+
+div {
+    overflow: -moz-scrollbars-none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
