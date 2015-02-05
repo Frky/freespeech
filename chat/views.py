@@ -32,7 +32,12 @@ from django.utils.timezone import utc
 
 from chat.utils import date_to_tooltip
 
-VERSION = "0.932"
+from chat.chat_management import Chat
+
+import json
+
+VERSION = "0.94"
+
 timezone_local = pytz.timezone(TIME_ZONE)
 
 @register.filter
@@ -41,7 +46,6 @@ def unquote_new(value):
 
 
 comptoir_created = False
-
 
 
 def index(request):
@@ -503,3 +507,69 @@ def welcome(request):
             return render(request, "chat/welcome.html", {"request_sent": True})
     else:
         return render(request, "chat/welcome.html")
+
+
+
+
+
+## WEBSOCKET RELATIVE VIEWS
+
+
+#@csrf_exempt
+#def ws_connect(request):
+#    """
+#        This function is used to maintain a consistent list
+#        of connected users. Each user has to connect its socket to 
+#        be able to receive messages.
+#
+#    """
+
+
+@csrf_exempt
+def ws_identicate(request):
+    Chat.connect(request.user)
+    return HttpResponse("ok")
+    
+
+@csrf_exempt
+def ws_msg(request):
+    try:
+        msg = request.POST["msg"]
+        cid = request.POST["cid"]
+        chash = request.POST["hash"]
+        me_msg = request.POST["me_msg"]
+        if me_msg == "true":
+            me_msg = True
+        else:
+            me_msg = False
+    except KeyError:
+        return HttpResponse("err")
+    Chat.message(request.user, cid, chash, msg, me_msg)
+    return HttpResponse("ack")
+
+
+@csrf_exempt
+def ws_wizz(request):
+    try:
+        msg = request.POST["msg"]
+        cid = request.POST["cid"]
+        chash = request.POST["hash"]
+    except KeyError:
+        return HttpResponse("err")
+    Chat.wizz(request.user, cid, chash, msg)
+    return HttpResponse("ack")
+
+
+@csrf_exempt
+def ws_edit(request):
+    try:
+        cid = request.POST["cid"]
+        mid = request.POST["mid"]
+        oldmsg = request.POST["oldmsg"]
+        newmsg = request.POST["newmsg"]
+        chash = request.POST["hash"]
+    except KeyError:
+        return HttpResponse("err")
+    Chat.edit(request.user, cid, chash, mid, oldmsg, newmsg) 
+    return HttpResponse("ok")
+

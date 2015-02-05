@@ -142,14 +142,14 @@ $(document).ready(function() {
         $(".ciphered", "#my-comptoirs").each(function() {
             cmptr_id = $(".cmptr-link", this).text().trim();
             cmptr_name = $("span.txt", this).text();
-            key_id = "comptoir_key_" + cmptr_id;
-            if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") { 
-                key = localStorage.getItem(key_id);
+            ckey_id = "comptoir_key_" + cmptr_id;
+            if (localStorage.getItem(ckey_id) != null && localStorage.getItem(ckey_id) != "") { 
+                ckey = localStorage.getItem(key_id);
             } else {
-                key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+                ckey = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
             }
             console.log("Deciphering: " + cmptr_name + " | " + key);
-            clear_title = Decrypt_Text(cmptr_name, key);
+            clear_title = Decrypt_Text(cmptr_name, ckey);
             console.log(clear_title);
             $("span.txt", this).text(clear_title);
         });

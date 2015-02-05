@@ -5,3 +5,5 @@
 freespeech/settings.py
 freespeech_db.sqlite
 *.DS_Store
+beta_keys
+chat/migrations

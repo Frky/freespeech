@@ -81,6 +81,7 @@ var generateTmpKeyId = function() {
    from a tmp register to a permanent register */
 var keyFound = function(id, isTmp) {
     var private_key = localStorage.getItem(id);
+    console.log("Key found: " + private_key);
     if (isTmp) {
         localStorage.setItem(key_id, private_key);
         localStorage.removeItem(id);
@@ -177,10 +178,16 @@ var Decrypt_all = function() {
         var ciph = $( this ).find(".ciphered").text();
         if (ciph != "") {
             var clear = Decrypt_Text(ciph, localStorage.getItem(key_id));
-            $( this ).find(".clear").text(clear);
-            $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
-            if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
-                $(this).append(glyphicon_options);
+            if (clear == "/wizz") {
+                var author = $( this ).parent().data("author");
+                $( this ).parent().html("<td colspan=\"3\" class=\"central-msg wizz\">" + author + " sent a wizz.</td>");
+
+            } else {
+                $( this ).find(".clear").text(clear);
+                $( this ).find(".clear").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
+                if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
+                    $(this).append(glyphicon_options);
+                }
             }
             /*
             if (clear.substring(0, 3) == "/me") {
@@ -218,11 +225,13 @@ var tryNextTmpKey = function() {
     }
 
     hash = CryptoJS.SHA3(localStorage.getItem(key_id_tmp + tmp_id.toString())); 
+    console.log("Trying: " + localStorage.getItem(key_id_tmp + tmp_id.toString()));
     checkHash(checkHashCallback, hash, $("#cid").val());
 }
 
 var findKey = function() {
     if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") {
+        console.log("Key already known.");
         keyFound(key_id, false);
     } else {
         localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
