@@ -32,25 +32,28 @@ var checkComptoirForm = function(form) {
     return valid;
 }
 
-$("#comptoir-form").submit(function() {
+
+var submit_cform = function (form) {
+    var key;
     if (!checkComptoirForm($( this ))) {
-        event.preventDefault();
+        return;
     }
-    clear_title = $("#id_title", this).val();
-    clear_desc = $("#id_description", this).val();
+    clear_title = $("#id_title", form).val();
+    clear_desc = $("#id_description", form).val();
     if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
+        console.log("Public cmptr");
         key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     } else {
+        console.log("Private cmptr");
         key = $("#comptoir-key").val();
     }
+    console.log("Clear: " + clear_title + " | key: " + key);
     ciphered_title = Encrypt_Text(clear_title, key);
-    if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
-        key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-    } else {
-        key = $("#comptoir-key").val();
-    }
+    console.log("Clear: " + clear_desc + " | key: " + key);
     ciphered_desc = Encrypt_Text(clear_desc, key);
-    $("#id_title", this).val(ciphered_title);
-    $("#id_description", this).val(ciphered_desc);
-});
+    $("#id_title", form).val(ciphered_title);
+    $("#id_description", form).val(ciphered_desc);
+    // To change
+    form.submit();
+}
 

@@ -18,27 +18,33 @@
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
 
     <!-- SCRIPTS -->
+    <!-- UI libraries -->
+    <script src="{% static 'chat/js/lib/jquery.min.js' %}"></script>
+	<script src="{% static 'chat/js/lib/bootstrap.min.js' %}"></script>
+	<script src="{% static 'chat/js/lib/particles.js' %}"></script>
+    <!-- Cryptographic libraries -->
+	<script src="{% static 'chat/js/lib/crypto/aes.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/jscrypt.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/aesprng.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/entropy.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/md5.js' %}"></script>
+    <script src="{% static 'chat/js/lib/crypto/sha3.js' %}"></script>
+    <!-- 
+    <script src="{% static 'chat/js/lib/jquery.velocity.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/velocity.ui.js' %}"></script>
+    <script src="{% static 'chat/js/lib/jquery.fs.tipper.js' %}"></script>
     <script src="{% static 'chat/js/ajax.js' %}"></script>
-    <script src="{% static 'chat/js/jquery.min.js' %}"></script>
-    <script src="{% static 'chat/js/libs/jquery.fs.tipper.js' %}"></script>
-    <!-- script src="{% static 'chat/js/jquery-ui-custom.min.js' %}"></script -->
-    <script src="{% static 'chat/js/jquery.velocity.min.js' %}"></script>
-    <script src="{% static 'chat/js/velocity.ui.js' %}"></script>
-	<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
     <script src="{% static 'chat/js/alerts.js' %}"></script>
-	<script src="{% static 'chat/js/aes.js' %}"></script>
-	<script src="{% static 'chat/js/jscrypt.js' %}"></script>
-	<script src="{% static 'chat/js/aesprng.js' %}"></script>
-	<script src="{% static 'chat/js/entropy.js' %}"></script>
-	<script src="{% static 'chat/js/md5.js' %}"></script>
-    <script src="{% static 'chat/js/sha3.js' %}"></script>
 	<script src="{% static 'chat/js/crlfy.js' %}"></script>
 	<script src="{% static 'chat/js/linkify.js' %}"></script>
 	<script src="{% static 'chat/js/smilify.js' %}"></script>
 	<script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
-	<script src="{% static 'chat/js/particles.js' %}"></script>
-
+    -->
+    <!-- Other scripts -->
+	<script src="{% static 'chat/js/form_check.js' %}"></script>
+	<script src="{% static 'chat/js/key_management.js' %}"></script>
+	<script src="{% static 'chat/js/init.js' %}"></script>
 	{% endblock %}
 </head>
 
@@ -121,9 +127,9 @@
             + '<span class="glyphicon glyphicon-remove"></span></span>';
     </script>
 
-	<script src="{% static 'chat/js/key_management.js' %}"></script>
-	<script src="{% static 'chat/js/form_check.js' %}"></script>
+    <!-- 
 	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
+    -->
 
     {% if user.is_authenticated %}
     <script type="text/javascript">
@@ -134,15 +140,16 @@
         var ws_uri = "{{ WEBSOCKET_URI }}";
         var ws_heartbeat = {{ WS4REDIS_HEARTBEAT }};
     </script>
+    <!--
     <script type="text/javascript" src="{{ STATIC_URL }}js/ws4redis.js"></script>
     <script src="{% static 'chat/js/msg-management.js' %}"></script>
 	<script src="{% static 'chat/js/chat.js' %}"></script>
     <script src="{% static 'chat/js/websocket.js' %}"></script>
-    <script src="{% static 'chat/js/scroll.js' %}"></script>
     <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
+    <script src="{% static 'chat/js/ui/scroll.js' %}"></script>
+    -->
     {% endif %}
-
-	<script src="{% static 'chat/js/init_page_elements.js' %}"></script>
+    
 
     {% block additionnal_script %}
 
