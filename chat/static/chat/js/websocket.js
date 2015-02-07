@@ -32,6 +32,7 @@ var acknowledged = function() {
 */
 var receiveData = function(data) {
     data = JSON.parse(data)
+    console.log(data);
     if (data.type == "new-msg") {
         new_msg(data);
     } else if (data.type == "error") {
@@ -72,10 +73,12 @@ sendMessage = function() {
         /* Removing the substring '/me ' */
         msg = msg.slice(4);
     }
+    var local_key = get_key($("#cid").val()); //localStorage.getItem(key_id);
+    console.log("LOCAL: " + local_key);
     data = {
             cid: $("#cid").val(), 
-            msg: Encrypt_Text(msg, localStorage.getItem(key_id)), 
-            hash: $("#comptoir-key-hash").val(), 
+            msg: Encrypt_Text(msg, local_key), 
+            hash: CryptoJS.SHA3(local_key),
             me_msg: me_msg,
         };
     switch (msg) {
@@ -83,6 +86,7 @@ sendMessage = function() {
         jQuery.post(ws_wizz_url, data, acknowledged);
         break;
     default:
+        console.log(data);
         jQuery.post(ws_msg_url, data, acknowledged);
     }
 }

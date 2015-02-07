@@ -253,6 +253,12 @@ $("#comptoir-key").change(function() {
      checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
 });
 
+
+var get_key = function(cmptr_id) {
+    var local_key_id = "comptoir_key_" + cmptr_id;
+    return localStorage.getItem(local_key_id);
+}
+
 // $("#generate-key").click(function() {
 //     $("#comptoir-key").val(Generate_key());
 //     update_key();
