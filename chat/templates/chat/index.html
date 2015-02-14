@@ -1,7 +1,15 @@
 {% extends "chat/base.html" %}
+{% load static %}
 
 {% block content %}
 <h2>Create a comptoir</h2>
+    <form action="{% url 'create_comptoir' %}" method="POST" id="comptoir-form">
+        {{ comptoir_form.as_p }}
+        <input type="submit" value="CREATE">
+    </form>
+{% endblock %}
+
+<!--
 <form action="{% url 'create_comptoir' %}" method="POST" id="comptoir-form">
 
 
@@ -18,8 +26,8 @@
             Public<input id="{{ el.name}}_0" name="{{ el.name }}" type="radio" checked value="on"/><span
                 class="fsp-radio-outter"><span class="fsp-radio-inner"></span></span>
 
-        </label><!--
-                    --><label for="{{ el.name}}_1">
+        </label>&lt;!&ndash;
+                    &ndash;&gt;<label for="{{ el.name}}_1">
         <input id="{{ el.name}}_1" name="{{ el.name }}" type="radio" value="off"/><span class="fsp-radio-outter"><span
             class="fsp-radio-inner"></span></span>Private
     </label>
@@ -60,11 +68,4 @@
     <input type="submit" value="Let's talk !">
     {% endif %}
 </form>
-
-{% load staticfiles %}
-<script type="text/javascript">
-</script>
-{% endblock %}
-
-{% block footer_option %}
-{% endblock %}
+-->
