@@ -38,8 +38,21 @@ label {
     }
 }
 
-.radio-duo {
-    margin: 10px 0px;
+#comptoir-public-switch {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+
+    li {
+        width: 50%;
+        display: inline-block;
+    }
+    li:nth-child(2) {
+        text-align: right;
+        margin-left: -5px;
+    }
+
+
     & > label {
         display: inline-block;
         width: 50%;
@@ -50,7 +63,7 @@ label {
             width: 20px;
         }
     }
-    label:first-child {
+/*    label:first-child {
         text-align: left;
     }
     label:last-child {
@@ -62,7 +75,7 @@ label {
         margin: 0;
         padding: 0;
         font-size: 1em;
-        opacity: 0;
+        opacity: 1;
         position: absolute;
     }
 
@@ -89,5 +102,5 @@ label {
             vertical-align: text-top;
             margin: 1px;
         }
-    }
+    }*/
 }

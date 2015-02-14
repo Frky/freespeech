@@ -106,8 +106,9 @@ var createKey = function() {
 
     updateKey(global_key_storage, true);
 }   
- 
-$("#generate-key").click(function() {
+
+$("#generate-key").on('click', function() {
+    console.log('yo');
     createKey();
 });
 

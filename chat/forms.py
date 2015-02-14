@@ -18,9 +18,9 @@ class ComptoirForm(forms.ModelForm):
         model = Comptoir
         fields = ('title', 'description', 'public', 'key_hash')
         labels = {
-            'title': 'Name',
-            'description': 'Description',
-            'public': 'Public?',
+            'title': '',
+            'description': '',
+            'public': '',
             'key_hash': 'SHA3',
         }
         widgets = {

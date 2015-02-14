@@ -6,6 +6,10 @@
     <form action="{% url 'create_comptoir' %}" method="POST" id="comptoir-form">
         {% csrf_token %}
         {{ comptoir_form }}
+        <br/>
+        <!-- Find a méthod to clean this -->
+        <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key"/>
+        <input class="input form-control" id="comptoir-key">
         <input type="submit" value="CREATE">
 
     </form>
