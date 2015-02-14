@@ -107,9 +107,15 @@ $(document).ready(function() {
         submit_cform(this);
     });
 
+    /* Init key management UI elements */
+    init_key_management_fields();
+
     /* Depending on the location */
     if (window.location.pathname == "/") {
     }
+        /* Button to generate new key */
+        $("#generate-key").click(create_key);
+
         /* OBSOLETE WITH NEW DESIGN ?
         $("#plus a").click(function() {
             $("#comptoir-form").toggleClass("hidden");

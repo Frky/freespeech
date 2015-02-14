@@ -10,19 +10,38 @@
   ***/
 
 /* Key id to be use to index the localStorage */
-var key_id = "comptoir_key_" + $("#cid").val();
+var key_id;
 /* Key temporary register template */
-var key_id_tmp = "comptoir_tmp_key_";
+var key_id_tmp;
 /* Id for the temporary registers */
-var tmp_id = -1;
+var tmp_id;
 
 /* Field of the key */
-var key_field = $("#comptoir-key");
+var key_field;
 /* Field of the hash */
-var hash_field = $("#comptoir-key-hash");
-var copy_key_btn = $("#copy-key-button");
+var hash_field;
+var copy_key_btn;
 
-var global_key_storage = "";
+var global_key_storage;
+
+
+var init_key_management_fields = function() {
+    /* Key id to be use to index the localStorage */
+    key_id = "comptoir_key_" + $("#cid").val();
+    /* Key temporary register template */
+    key_id_tmp = "comptoir_tmp_key_";
+    /* Id for the temporary registers */
+    tmp_id = -1;
+    
+    /* Field of the key */
+    key_field = $("#comptoir-key");
+    /* Field of the hash */
+    hash_field = $("#comptoir-key-hash");
+    copy_key_btn = $("#copy-key-button");
+    
+    global_key_storage = "";
+}
+
 
 /***
         Generation of a new key
@@ -95,8 +114,8 @@ var keyFound = function(id, isTmp) {
     }
 }
 
-var createKey = function() {
-    $("#comptoir-key").val(Generate_key());
+var create_key = function() {
+    key_field.val(Generate_key());
 
     /* If no key storage was previously defined, 
        get a new one */
@@ -106,11 +125,6 @@ var createKey = function() {
 
     updateKey(global_key_storage, true);
 }   
-
-$("#generate-key").on('click', function() {
-    console.log('yo');
-    createKey();
-});
 
 /* CHECKING HASH IN AJAX */
 
