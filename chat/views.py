@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
 from chat.models import IndependantMessage, Message, BetaKey, BugReport, ChatUser, LastVisit
 from chat.forms import *
@@ -49,24 +50,24 @@ comptoir_created = False
 
 
 def index(request):
-    context = RequestContext(request)
-    context['registerForm'] = RegisterForm()
-    context['version'] = VERSION
     """
-	Home view
-
+    Home view
     """
-
     global comptoir_created
 
-    template_name = "chat/index.html"
+    context = RequestContext(request)
+    context.update({
+        'registerForm': RegisterForm(),
+        'version': VERSION,
+        'title': '',
+        'description': '',
+        'comptoir_form': ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm(initial={'public': 'public'}),
 
-    context["title"] = ""
-    context["description"] = ""
-    context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm()
+    })
 
     comptoir_created = False
 
+    template_name = "chat/index.html"
     return render(request, template_name, context)
 
 
@@ -187,9 +188,8 @@ def sign_out(request):
 
     return redirect("home")
 
-
+@login_required(login_url='/', redirect_field_name=None)
 def create_comptoir(request):
-
     global comptoir_created
 
     context = RequestContext(request)
@@ -201,7 +201,7 @@ def create_comptoir(request):
         data = form.cleaned_data
 
         if request.user.is_authenticated and str(request.user) != "AnonymousUser":
-            user = request.user 
+            user = request.user
         else:
             user = None
 
@@ -211,11 +211,11 @@ def create_comptoir(request):
             return index(request)
 
         new_comptoir = Comptoir(owner=user,
-                              title=data['title'],
-                              description=data['description'],
-                              public= not data['public'],
-                              key_hash=data['key_hash'],
-                              title_is_ciphered= True)
+                                title=data['title'],
+                                description=data['description'],
+                                public=not data['public'],
+                                key_hash=data['key_hash'],
+                                title_is_ciphered=True)
 
         new_comptoir.save()
 
@@ -224,18 +224,19 @@ def create_comptoir(request):
         request.user.chatuser.last_visits.add(lv)
         request.user.comptoirs.append((new_comptoir, 0))
 
-        messages.success(request, "The comptoir has been created successfully. You can access your comptoirs by clicking on your nickname.")
+        messages.success(request,
+                         "The comptoir has been created successfully. You can access your comptoirs by clicking on your nickname.")
 
         # Global variable set to True to distinguish between form with error
         # (that will be filled by index) and form treated that as to be cleaned up
         comptoir_created = True
-        
-        return redirect("join_comptoir", new_comptoir.id);
+
+        return redirect("join_comptoir", new_comptoir.id)
 
     else:
         messages.warning(request, "Comptoir not created: some errors in the form.")
-    
-        return index(request);
+
+        return index(request)
 
 
 def check_hash(request):

@@ -1,0 +1,3 @@
+#-*- coding: utf8 -*-
+
+SHA3_HINT = "This is the fingerprint of the secret key used to decipher the messages that will be posted on the comptoir. The key will be needed to access the comptoir clear texts, and you need to share it with people you want to speak with.<br /> More info in <a href='#'>About</a> page.<br /><br /><b>Note.</b> You don't need to remember it, it will be displayed on the comptoir once created."

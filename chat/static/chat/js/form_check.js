@@ -38,9 +38,9 @@ var submit_cform = function (form) {
     if (!checkComptoirForm($( this ))) {
         return;
     }
-    clear_title = $("#id_title", form).val();
-    clear_desc = $("#id_description", form).val();
-    if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
+    var clear_title = $("#id_title", form).val();
+    var clear_desc = $("#id_description", form).val();
+    if ($('#comptoir-public-switch input:checked').val() == 'public') {
         console.log("Public cmptr");
         key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     } else {
@@ -48,9 +48,9 @@ var submit_cform = function (form) {
         key = $("#comptoir-key").val();
     }
     console.log("Clear: " + clear_title + " | key: " + key);
-    ciphered_title = Encrypt_Text(clear_title, key);
+    var ciphered_title = Encrypt_Text(clear_title, key);
     console.log("Clear: " + clear_desc + " | key: " + key);
-    ciphered_desc = Encrypt_Text(clear_desc, key);
+    var ciphered_desc = Encrypt_Text(clear_desc, key);
     $("#id_title", form).val(ciphered_title);
     $("#id_description", form).val(ciphered_desc);
     // To change

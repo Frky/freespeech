@@ -4,15 +4,11 @@ from django.db import models
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 from chat.models import Comptoir, BugReport
-
+from chat.labels import SHA3_HINT
 
 class ComptoirForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        self.base_fields['title'].widget = forms.TextInput(attrs={'placeholder': "name", 'class': "input form-control"})
-        self.base_fields['description'].widget = forms.TextInput(attrs={'placeholder': "description", 'class': "input form-control"})
-        self.base_fields['key_hash'].widget = forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "input form-control", 'placeholder': "SHA3 of the key (you may generate a key)"})
-
         self.base_fields['key_hash'].validators = [v for v in self.base_fields['key_hash'].validators if not isinstance(v, MinLengthValidator)]
         self.base_fields['key_hash'].validators.append(MinLengthValidator(128))
 
@@ -27,6 +23,16 @@ class ComptoirForm(forms.ModelForm):
             'public': 'Public?',
             'key_hash': 'SHA3',
         }
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': "name", 'class': ""}),
+            'description': forms.TextInput(attrs={'placeholder': "description", 'class': ""}),
+            'key_hash': forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "", 'placeholder': "SHA3 of the key (you may generate a key)"}),
+            'public': forms.RadioSelect(attrs={'id': "comptoir-public-switch"}, choices=[('public', 'Public'), ('private', 'Private')]),
+        }
+        help_texts = {
+            'key_hash': SHA3_HINT,
+        }
+
 
 
 class RegisterForm(UserCreationForm):
