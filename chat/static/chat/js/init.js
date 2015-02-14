@@ -160,7 +160,7 @@ $(document).ready(function() {
 
     /* Deciphering all comptoir names in panel */
     $(".ciphered", "#my-comptoirs").each(function() {
-        cid = $(".cmptr-link", this).text().trim();
+        cid = $(this).attr("id").substring(3); // $(".cmptr-link", this).text().trim();
         cname = $("span.txt", this).text();
         ckey = get_key(cid);
         if (ckey === null || ckey == "" || ckey == "undefined") { 

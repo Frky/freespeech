@@ -188,6 +188,7 @@ def sign_out(request):
 
     return redirect("home")
 
+
 @login_required(login_url='/', redirect_field_name=None)
 def create_comptoir(request):
     global comptoir_created
@@ -231,7 +232,8 @@ def create_comptoir(request):
         # (that will be filled by index) and form treated that as to be cleaned up
         comptoir_created = True
 
-        return redirect("join_comptoir", new_comptoir.id)
+        return HttpResponse("cid_" + str(new_comptoir.id))
+        # return redirect("join_comptoir", new_comptoir.id)
 
     else:
         messages.warning(request, "Comptoir not created: some errors in the form.")

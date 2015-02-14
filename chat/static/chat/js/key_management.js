@@ -126,8 +126,13 @@ var create_key = function() {
     updateKey(global_key_storage, true);
 }   
 
+var set_key = function(cid, key) {
+    localStorage.setItem("comptoir_key_" + cid, key); 
+}
+
 /* CHECKING HASH IN AJAX */
 
+/*
 var checkHash = function(callback, hash, cid) {
 
     // Creation of an object
@@ -180,6 +185,8 @@ var checkHashCallback = function(data) {
         checkHashUICallback(data);
     }
 }
+
+*/
 
 var Decrypt_all = function() {
 
@@ -297,11 +304,13 @@ var key_init = function() {
     key_field.parent().removeClass("has-success");
     key_field.parent().removeClass("has-error");
 
-    findKey();
+    // findKey();
 
+    /*
     setTimeout(function() {
         checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
     }, 500);
+    */
 
     $("#comptoir-key").val(localStorage.getItem(key_id));
     updateKey(key_id, true);

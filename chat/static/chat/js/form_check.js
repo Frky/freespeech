@@ -33,6 +33,13 @@ var checkComptoirForm = function(form) {
 }
 
 
+var created = function(cid, key) {
+    console.log("Setting key for " + cid + ": " + key);
+    set_key(cid,  key); 
+    window.location.href = cid;
+
+}
+
 var submit_cform = function (form) {
     var key;
     if (!checkComptoirForm($( this ))) {
@@ -54,6 +61,13 @@ var submit_cform = function (form) {
     $("#id_title", form).val(ciphered_title);
     $("#id_description", form).val(ciphered_desc);
     // To change
-    form.submit();
+//    form.submit();
+    $.post("create_comptoir", $("#comptoir-form").serialize(), function(data) {
+        /* TODO change case of error */
+        if (data.substring(0, 4) == "cid_")
+            created(data.substring(4), key);
+        else
+            console.log("Error creating form");
+    });
 }
 
