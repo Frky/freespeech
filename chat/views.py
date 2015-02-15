@@ -28,6 +28,7 @@ from django.forms.util import ErrorList
 from freespeech.settings import CONTACT_EMAIL 
 
 import datetime, pytz
+import hashlib, sha3
 from freespeech.settings import TIME_ZONE
 from django.utils.timezone import utc
 
@@ -210,7 +211,11 @@ def create_comptoir(request):
             form._errors['key_hash'] = ErrorList("This field is requested to create a private comptoir.")
             messages.warning(request, "Comptoir not created: no hash given.")
             return index(request)
-
+        if data['public']:
+            key = "ff" * 32
+            sha = hashlib.sha3_512()
+            sha.update(key)
+            data['key_hash'] = sha.hexdigest()
         new_comptoir = Comptoir(owner=user,
                                 title=data['title'],
                                 description=data['description'],

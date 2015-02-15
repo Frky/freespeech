@@ -29,21 +29,25 @@
 	<script src="{% static 'chat/js/lib/crypto/entropy.js' %}"></script>
 	<script src="{% static 'chat/js/lib/crypto/md5.js' %}"></script>
     <script src="{% static 'chat/js/lib/crypto/sha3.js' %}"></script>
+    <!-- Other libraries -->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ws4redis.js"></script>
     <!-- 
     <script src="{% static 'chat/js/lib/jquery.velocity.min.js' %}"></script>
     <script src="{% static 'chat/js/lib/velocity.ui.js' %}"></script>
     <script src="{% static 'chat/js/lib/jquery.fs.tipper.js' %}"></script>
     <script src="{% static 'chat/js/ajax.js' %}"></script>
     <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
-    <script src="{% static 'chat/js/alerts.js' %}"></script>
-	<script src="{% static 'chat/js/crlfy.js' %}"></script>
-	<script src="{% static 'chat/js/linkify.js' %}"></script>
-	<script src="{% static 'chat/js/smilify.js' %}"></script>
 	<script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
     -->
     <!-- Other scripts -->
+    <!-- Utils -->
+    <script src="{% static 'chat/js/utils/alerts.js' %}"></script>
+    <!-- General -->
+	<script src="{% static 'chat/js/utils/msg.js' %}"></script>
 	<script src="{% static 'chat/js/form_check.js' %}"></script>
 	<script src="{% static 'chat/js/key_management.js' %}"></script>
+    <script src="{% static 'chat/js/websocket.js' %}"></script>
+	<script src="{% static 'chat/js/chat.js' %}"></script>
 	<script src="{% static 'chat/js/init.js' %}"></script>
 	{% endblock %}
 </head>
@@ -141,10 +145,7 @@
         var ws_heartbeat = "{{ WS4REDIS_HEARTBEAT }}";
     </script>
     <!--
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ws4redis.js"></script>
     <script src="{% static 'chat/js/msg-management.js' %}"></script>
-	<script src="{% static 'chat/js/chat.js' %}"></script>
-    <script src="{% static 'chat/js/websocket.js' %}"></script>
     <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
     <script src="{% static 'chat/js/ui/scroll.js' %}"></script>
     -->

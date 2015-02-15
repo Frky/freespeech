@@ -110,11 +110,30 @@ $(document).ready(function() {
     /* Init key management UI elements */
     init_key_management_fields();
 
+    /* Deciphering all comptoir names in panel */
+    $(".ciphered", "#my-comptoirs").each(function() {
+        cid = $(this).attr("id").substring(3); // $(".cmptr-link", this).text().trim();
+        cname = $("span.txt", this).text();
+        ckey = get_key(cid);
+        if (ckey === null || ckey == "" || ckey == "undefined") { 
+            ckey = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        }
+        clear_title = Decrypt_Text(cname, ckey);
+        $("span.txt", this).text(clear_title);
+    });
+
     /* Depending on the location */
     if (window.location.pathname == "/") {
-    }
         /* Button to generate new key */
         $("#generate-key").click(create_key);
+    }
+
+    /* UI relative to comptoir page */
+    if ($("#chatbox").length > 0) {
+        $("#send-form").removeClass("hidden");
+        key_init();
+        init_cmptr();
+    }
 
         /* OBSOLETE WITH NEW DESIGN ?
         $("#plus a").click(function() {
@@ -152,24 +171,9 @@ $(document).ready(function() {
 
         $("#option-panel").removeClass("hidden");
         $("#option-panel-tab").removeClass("hidden");
-        $("#send-form").removeClass("hidden");
-        key_init();
-        init_cmptr();
     }
     */
 
-    /* Deciphering all comptoir names in panel */
-    $(".ciphered", "#my-comptoirs").each(function() {
-        cid = $(this).attr("id").substring(3); // $(".cmptr-link", this).text().trim();
-        cname = $("span.txt", this).text();
-        ckey = get_key(cid);
-        if (ckey === null || ckey == "" || ckey == "undefined") { 
-            ckey = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        }
-        console.log("cid: " + cid + " | key: " + ckey + " | cname: " + cname);
-        clear_title = Decrypt_Text(cname, ckey);
-        $("span.txt", this).text(clear_title);
-    });
 
     /*
     $(".panel-tabs .tab-area").each(function() {

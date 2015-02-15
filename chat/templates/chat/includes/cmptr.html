@@ -82,7 +82,7 @@
                 </td>
                 <td class="nopoint"></td>
                 <td>
-                    <form method="post" id="send-form" class="hidden">
+                    <form method="post" id="send-form" class="">
                         {% csrf_token %}
                         <input data-cid="{{ id }}" type="hidden" id="cid" name="cid" value="{{ id }}">
                         {% if user.is_authenticated %}
@@ -101,4 +101,7 @@
         -->
 
         </table>
+
+        <input id="comptoir-key" value="">
+        <input id="comptoir-key-hash" value="" disabled="true">
 

@@ -110,9 +110,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
 
-    clear = crlfy(clear);
-    clear = linkify(clear);
-    clear = smilify(clear);
+    clear = msgify(clear);
 
     /* Tooltip for the date of the msg. For the client, 
        displayed in left ; for others in right */
@@ -166,7 +164,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
         new_message += '<td></td>';
     } else {
         new_message += '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span>';
-        new_message = add_glyphicons(new_message);
+//        new_message = add_glyphicons(new_message);
         new_message += "</td>";
     }
 
@@ -346,24 +344,6 @@ var ctrl_pressed = false;
 
 var bind_keys = function() {
 
-    /* Submission with "Enter" key ; line feed if CTRL */
-    $('#new-msg').keydown(function(e){
-        if (e.which == 13 && !e.ctrlKey){
-            if (!e.crtlKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-    });
-
-    $("#edit-msg-box").keydown(function(e){
-        if (e.which == 13 && !e.ctrlKey){
-            if (!e.crtlKey) {
-                e.preventDefault();
-                pre_edition();
-            }
-        }
-    });
 }
 
 
@@ -608,18 +588,39 @@ var init_cmptr = function() {
         $("#chatbox").slimScroll({scrollTo: (parseInt($("#chatbox")[0].scrollHeight) - 150).toString() + "px"});
         */
 
+        /* TODO reinsert
         $(window).focus(function() {
             unread = 0;
             update_title();
         });
 
+        console.log("Init comptoir");
         msg_alert = $("#msgAlert")[0];
         wizz_alert = $("#wizzAlert")[0];
         left_alert = $("#leftAlert")[0];
         joined_alert = $("#joinedAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        bind_keys();
+        */
 
+
+        /* Submission with "Enter" key ; line feed if CTRL */
+        $('#new-msg').keydown(function(e){
+            if (e.which == 13 && !e.ctrlKey){
+                if (!e.crtlKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            }
+        }); 
+
+        $("#edit-msg-box").keydown(function(e){
+            if (e.which == 13 && !e.ctrlKey){
+                if (!e.crtlKey) {
+                    e.preventDefault();
+                    pre_edition();
+                }
+            }
+        });
         /*
         var init_sound_plop = false;
         sound_alert.parent().click(function() {
@@ -638,6 +639,6 @@ var init_cmptr = function() {
 
         $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 
-        msg_management_init_all();
+        // msg_management_init_all();
 }
 

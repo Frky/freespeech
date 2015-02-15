@@ -54,7 +54,7 @@ class Chat(object):
         # If the hash of the comptoir key does not match with the db
         if (cmptr.key_hash != chash):
             # We reject the message
-            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher = RedisPublisher(facility="fsp", users=[user])
             publisher.publish_message(RedisMessage(hash_error))
         else:    
             try:

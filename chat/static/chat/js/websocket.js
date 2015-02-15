@@ -74,11 +74,12 @@ sendMessage = function() {
         msg = msg.slice(4);
     }
     var local_key = get_key($("#cid").val()); //localStorage.getItem(key_id);
-    console.log("LOCAL: " + local_key);
+    console.log("Key: " + local_key);
+    var local_hash = get_hash($("#cid").val()); //localStorage.getItem(key_id);
     data = {
             cid: $("#cid").val(), 
             msg: Encrypt_Text(msg, local_key), 
-            hash: CryptoJS.SHA3(local_key),
+            hash: local_hash.toString(),
             me_msg: me_msg,
         };
     switch (msg) {
