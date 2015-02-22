@@ -6,6 +6,7 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator
 from chat.models import Comptoir, BugReport
 from chat.labels import SHA3_HINT
 
+
 class ComptoirForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -13,6 +14,20 @@ class ComptoirForm(forms.ModelForm):
         self.base_fields['key_hash'].validators.append(MinLengthValidator(128))
 
         super(ComptoirForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        data_ = self.data.copy()
+        tmp = False
+        if self.data['public'] == 'private':
+            del data_['public']
+            tmp = True
+        self.data = data_.copy()
+
+        cleaned_data = super(ComptoirForm, self).clean()
+
+        if tmp:
+            cleaned_data['public'] = False
+        return cleaned_data
 
     class Meta:
         model = Comptoir
