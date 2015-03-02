@@ -125,8 +125,9 @@ $(document).ready(function() {
             cmptr_id = $(".cmptr-link", this).text().trim();
             cmptr_name = $(".td-name .txt", this).text();
             ckey_id = "comptoir_key_" + cmptr_id;
-            if (localStorage.getItem(ckey_id) != null && localStorage.getItem(ckey_id) != "") { 
-                ckey = localStorage.getItem(key_id);
+            if (localStorage.getItem(ckey_id) != null && localStorage.getItem(ckey_id) != "" && localStorage.getItem(ckey_id) != "undefined") { 
+                ckey = localStorage.getItem(ckey_id);
+                console.log(ckey);
             } else {
                 ckey = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
             }
