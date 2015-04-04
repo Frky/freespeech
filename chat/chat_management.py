@@ -6,7 +6,7 @@ from ws4redis.redis_store import RedisMessage
 
 from chat.models import Comptoir, Message
 from chat.middlewares.comptoir_list import ComptoirListRequest
-from chat.socket_message import ConnectionMessage, NewMessage, Wizz, Edition
+from chat.socket_message import DisconnectionMessage, ConnectionMessage, NewMessage, Wizz, Edition
 from chat.chat_errors import hash_error
 
 class Chat(object):
@@ -16,7 +16,7 @@ class Chat(object):
 
     @classmethod
     def connect(cls, user):
-        print "Connected"
+        print "Connected " + str(user)
         cls.connected_users.append(user)
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
         users_to_notify = list()
@@ -33,14 +33,20 @@ class Chat(object):
 
     @classmethod
     def disconnect(cls, user):
-        print "Disconnected"
-        cls.connected_users.remove(user)
-        for cid, aud in cls.audience.items():
-            if user in aud:
-                aud.remove(user)
-                publisher = RedisPublisher(facility="fsp", users=cls.audience[aud])
-                notif_msg = DisconnectionMessage(user.username, cid)
-                publisher.publish_message(notif_msg.redis())
+        print "Disconnected: " + str(user)
+        if user in cls.connected_users:
+            cls.connected_users.remove(user)
+        user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
+        for cmptr in user_cmptrs:
+            if cmptr.id not in cls.audience.keys():
+                continue
+            if user not in cls.audience[cmptr.id]:
+                continue
+            cls.audience[cmptr.id].remove(user)
+            publisher = RedisPublisher(facility="fsp", users=cls.audience[cmptr.id])
+            notif_msg = DisconnectionMessage(user.username, cmptr.id)
+            publisher.publish_message(notif_msg.redis())
+        return
 
 
     @classmethod
@@ -54,7 +60,7 @@ class Chat(object):
         # If the hash of the comptoir key does not match with the db
         if (cmptr.key_hash != chash):
             # We reject the message
-            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher = RedisPublisher(facility="fsp", users=[user])
             publisher.publish_message(RedisMessage(hash_error))
         else:    
             try:

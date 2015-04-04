@@ -32,12 +32,15 @@ var acknowledged = function() {
 */
 var receiveData = function(data) {
     data = JSON.parse(data)
+    console.log(data)
     if (data.type == "new-msg") {
         new_msg(data);
     } else if (data.type == "error") {
          pop_alert("danger", data.error_msg);
     } else if (data.type == "joined") {
         add_user_online(data.user, data.cid);
+    } else if (data.type == "left") {
+        remove_user_online(data.user, data.cid);
     } else if (data.type == "wizz") {
         wizz(data.user, data.cid);
     } else if (data.type == "edit-msg") {
@@ -88,15 +91,15 @@ sendMessage = function() {
 }
 
 
-$(document).ready(function() {
+var init_socket = function() {
     ws4redis = WS4Redis({
         uri: ws_uri + 'fsp?subscribe-user',
         receive_message: receiveData,
-        heartbeat_msg: ws_heartbeat,
+        // heartbeat_msg: "--heartbeat--", //ws_heartbeat,
     });
     data = {
                 session_key: $('#session_key').val(), 
             };
     jQuery.post(ws_identicate_url);
-});
+}
 

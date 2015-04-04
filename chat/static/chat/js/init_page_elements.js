@@ -110,6 +110,7 @@ $(document).ready(function() {
         $("aside").addClass("micro");
     } else if ($("#chatbox").length > 0) {
 
+        init_socket();
         $("#content").addClass("cmptr-page");
 
         $("#option-panel").removeClass("hidden");
