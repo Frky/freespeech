@@ -392,6 +392,24 @@ var add_user_online = function(username, comptoir) {
     }
 }
 
+var remove_user_online = function(username, comptoir) {
+    if (comptoir == $("#cid").val()) {
+        online = online_div.text().split(", ");
+        if (online.indexOf(username) != -1) {
+            online.splice(online.indexOf(username), 1);
+        }
+        online_div.text(online_to_string(online));
+    }
+
+    if (username != $("#user-name").text()) {
+        online = $(".td-users", "#my-" + comptoir).text().split(", ");
+        if (online.indexOf(username) != -1) {
+            online.splice(online.indexOf(username), 1);
+        }
+        $(".td-users", "#my-" + comptoir).text(online_to_string(online));
+    }
+}
+
 var reconnect = function() {
     pop_alert("info", "Trying to reconnect ...");
 
