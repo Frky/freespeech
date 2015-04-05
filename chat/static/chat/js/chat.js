@@ -65,13 +65,13 @@ var addMeMessage = function(user, cipher, clear, msgdate, mid, insert) {
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
 
-    var new_message = "<tr data-author=\"" + user + "\">";
-    new_message += "<td colspan=\"3\" class=\"message central-msg me\">";
+    var new_message = "<div data-author=\"" + user + "\">";
+    new_message += "<div colspan=\"3\" class=\"message central-msg me\">";
     new_message += "<span class=\"author\">" + user + "</span>\n";
     new_message += "<span class=\"clear\">" + clear + "</span>";
     new_message += "<span class=\"ciphered hidden\">" + cipher + "</span>";
-    new_message += "</td>";
-    new_message += "</tr>";
+    new_message += "</div>";
+    new_message += "</div>";
 
     if (insert) {
         /* Append the new message to the chatbox */
@@ -124,46 +124,46 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
        we need to display the nickname of the new user */
     if (last_user != user) {
         new_user = true;
-        new_message += '<tr class="author"><td>';
+        new_message += '<div class="author"><div>';
         if (user != $("#user-name").html()) {
             new_message += '<span class="user">' + user + '</span>';
         }
-        new_message += '</td><td class="nopoint"></td><td>';
+        new_message += '</div><div class="nopoint"></div><div>';
         if (user === $("#user-name").html()) {
             new_message += '<span class="user">' + user + '</span>';
         }
-        new_message += '</td></tr>';
+        new_message += '</div></div>';
     }
 
-    new_message += '<tr>';
+    new_message += '<div>';
 
     if (user != $("#user-name").html()) {
-        new_message +=  '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></td>';
+        new_message +=  '<div class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></div>';
     } else {
-        new_message +=  '<td></td>'; 
+        new_message +=  '<div></div>';
     }
 
     /* If the message is from the same user and the date is the same, we do not include a tooltip */
     if (!new_user && last_date === msgdate) {
-        new_message += '<td class="nopoint"></td>';
+        new_message += '<div class="nopoint"></div>';
     /* Otherwise, we need to add the date of the message */
     } else {
-        new_message += '<td class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="' + tooltip_placement(user) + '" rel="tooltip"> • </a></td>';
+        new_message += '<div class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="' + tooltip_placement(user) + '" rel="tooltip"> • </a></div>';
     }
 
     if (user != $("#user-name").html()) {
-        new_message += '<td></td>';
+        new_message += '<div></div>';
     } else {
         new_message += '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span>';
 //        new_message = add_glyphicons(new_message);
-        new_message += "</td>";
+        new_message += "</div>";
     }
 
-    new_message += '</tr>';
+    new_message += '</div>';
     
     if (insert) {
         /* Append the new message to the chatbox */
-        $("#chatbox table tbody").append(new_message)
+        $("#chatbox .content").append(new_message)
         /* TODO réactiver ceci */      
 //        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
 
