@@ -29,12 +29,15 @@ var update_title = function() {
 
 var sound_notification = function(type, cid) {
     /* If the global control of the sound is off, we return */
+    /*
+       TODO
     if (sound_alert.val() == 0) {
         return;
     }
+    */
     /* If this is a comptoir notification and the sound of this comptoir 
        is off, then we return */
-    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up"))) {
+    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).is(':checked'))) {
         return;
     }
     if (type == "msg" && !document.hasFocus()) {
@@ -413,7 +416,8 @@ var wizz = function(user, cid) {
     /* Notification to the sound alert manager */
     sound_notification("wizz", cid);
     /* Shaking the chatbox */
-    $("#chatbox").velocity("callout.shake", "500ms", "true");
+    // TODO
+    // $("#chatbox").velocity("callout.shake", "500ms", "true");
     /* Add message on chatbox if current comptoir */
     if (cid = $("#cid").val()) {
         $("#chatbox table tbody").append("<tr><td colspan=\"3\" class=\"central-msg wizz\">" + user + " sent a wizz.</td></tr>");
@@ -452,19 +456,16 @@ var decipher_cmptr_info = function(key) {
 }
 
 var init_cmptr = function() {
-        /* TODO reinsert
         $(window).focus(function() {
             unread = 0;
             update_title();
         });
 
-        console.log("Init comptoir");
         msg_alert = $("#msgAlert")[0];
-        wizz_alert = $("#wizzAlert")[0];
         left_alert = $("#leftAlert")[0];
         joined_alert = $("#joinedAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        */
+        wizz_alert = $("#wizzAlert")[0];
 
         /* Submission with "Enter" key ; line feed if CTRL */
         $('#new-msg').keydown(function(e){
