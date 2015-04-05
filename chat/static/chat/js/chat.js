@@ -363,41 +363,49 @@ var online_to_string = function(online) {
     return str;
 }
 
-online_div = $("#users-connected");
+var conline_div = ".online_users";
 
-var add_user_online = function(username, comptoir) {
+var add_user_online = function(username, cid) {
+    var comptoir = "#my-" + cid;
+    /*
     if (comptoir == $("#cid").val()) {
-        online = online_div.text().split(", ");
+        // online = online_div.text().split(", ");
         if (online.indexOf(username) == -1) {
             online.push(username);
         }
         online_div.text(online_to_string(online));
     }
+    */
 
     if (username != $("#user-name").text()) {
-        online = $(".td-users", "#my-" + comptoir).text().split(", ");
+        console.log("Adding user " + username + " at comptoir " + comptoir);
+        online = $(conline_div, comptoir).text().split(", ");
         if (online.indexOf(username) == -1) {
             online.push(username);
         }
-        $(".td-users", "#my-" + comptoir).text(online_to_string(online));
+        $(conline_div, comptoir).text(online_to_string(online));
     }
 }
 
-var remove_user_online = function(username, comptoir) {
+var remove_user_online = function(username, cid) {
+    var comptoir = "#my-" + cid;
+    /*
     if (comptoir == $("#cid").val()) {
-        online = online_div.text().split(", ");
+        // online = online_div.text().split(", ");
         if (online.indexOf(username) != -1) {
             online.splice(online.indexOf(username), 1);
         }
         online_div.text(online_to_string(online));
     }
+    */
 
     if (username != $("#user-name").text()) {
-        online = $(".td-users", "#my-" + comptoir).text().split(", ");
+        console.log("Removing user " + username + " at comptoir " + comptoir);
+        online = $(conline_div, comptoir).text().split(", ");
         if (online.indexOf(username) != -1) {
             online.splice(online.indexOf(username), 1);
         }
-        $(".td-users", "#my-" + comptoir).text(online_to_string(online));
+        $(conline_div, comptoir).text(online_to_string(online));
     }
 }
 
