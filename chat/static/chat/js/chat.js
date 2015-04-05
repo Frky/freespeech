@@ -340,7 +340,7 @@ var bind_keys = function() {
 
 var update_badge = function(cid, user, date) {
     if ($(".badge", "#my-" + cid).length == 0) {
-        $("td.td-name", "#my-" + cid).append("<span class=\"badge active\">1</span>");
+        $("#my-" + cid).append("<span class=\"badge\">1</span>");
     } else {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);

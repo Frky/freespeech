@@ -123,8 +123,6 @@
                 {% for c, n in user.comptoirs reversed %}
                      <a class="cmptr-link" value="{{ c.id }}" href="{% url "join_comptoir" c.id %}">
                          <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}><span class="txt">{{ c.title }}</span>
-                        <!-- todo update badges -->
-                        ({{ n }})
                         <!-- Users currently connected -->
                         <span class="online_users"></span>
                          </li>
