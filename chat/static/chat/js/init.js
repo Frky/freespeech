@@ -128,6 +128,9 @@ $(document).ready(function() {
         $("#generate-key").click(create_key);
     }
 
+    /* Connecting web socket */
+    init_socket();
+
     /* UI relative to comptoir page */
     if ($("#chatbox").length > 0) {
         $("#send-form").removeClass("hidden");
