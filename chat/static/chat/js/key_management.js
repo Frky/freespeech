@@ -16,6 +16,7 @@ var hash_field;
 
 var copy_key_btn;
 
+var test_default_key = false;
 
 /***
         Generation of a new key
@@ -54,7 +55,9 @@ var key_found = function(key) {
 }
 
 var key_unknown = function() {
-    console.log("Key is unknown for this comptoir");
+    if (test_default_key == true)
+        key_field.val("");
+    test_default_key = false;
 }
 
 /*
@@ -203,11 +206,12 @@ var key_init = function() {
     var cid = $("#cid").val();
     var key = get_key(cid); 
     if (key === "" || key === null || key === "undefined") {
-        key_unknown();
-    } else {
-        key_field.val(key);
-        check_hash(cid, key);
+        test_default_key = true;
+        key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     }
+
+    key_field.val(key);
+    check_hash(cid, key);
 }
 
 
