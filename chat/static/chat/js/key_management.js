@@ -57,17 +57,16 @@ var key_unknown = function() {
     console.log("Key is unknown for this comptoir");
 }
 
-
+/*
+ *  Creation of a new AES random key
+ *  This function is used at comptoir creation, 
+ *  and updates key and hash field on creation field
+ */
 var create_key = function() {
-    key_field.val(Generate_key());
-
-    /* If no key storage was previously defined, 
-       get a new one */
-    if (global_key_storage === "") {
-        global_key_storage = generateTmpKeyId();
-    }
-
-    update_key(global_key_storage, true);
+    var new_key = Generate_key();
+    key_field.val(new_key);
+    var hash = CryptoJS.SHA3(new_key);
+    hash_field.val(hash);
 }   
 
 var set_key = function(cid, key) {
@@ -94,7 +93,6 @@ var check_hash = function(cid, key) {
 }
 
 var checkHashUICallback = function(data) {
-
     // If the server returns False, it means that the username is already used
     if (data === "False") {
         return false;
@@ -103,19 +101,14 @@ var checkHashUICallback = function(data) {
         key_field.parent().addClass("has-error");
         hash_field.parent().removeClass("has-success");
         hash_field.parent().addClass("has-error");
-        //$("#" + field + "> div.help-block").html("* Ce pseudo est déjà utilisé.");
     } else {
         return true;
         key_field.parent().removeClass("has-error");
         key_field.parent().addClass("has-success");
         hash_field.parent().removeClass("has-error");
         hash_field.parent().addClass("has-success");
-        //$("#" + field + "> div.help-block").html("Ce pseudo est disponible.");
     }
 }
-
-
-
 
 var Decrypt_all = function() {
 
@@ -161,43 +154,6 @@ var Decrypt_all = function() {
         }
     });
 }
-
-
-var tryNextTmpKey = function() {
-    
-    do {
-        tmp_id++;
-    } while (localStorage.getItem(key_id_tmp + tmp_id.toString()) == null && tmp_id < 100);
-
-    if (tmp_id == 100) {
-        key_field.parent().parent().removeClass("hidden");
-        copy_key_btn.removeClass("hidden");
-        return;
-    }
-
-    hash = CryptoJS.SHA3(localStorage.getItem(key_id_tmp + tmp_id.toString())); 
-    console.log("Trying: " + localStorage.getItem(key_id_tmp + tmp_id.toString()));
-    checkHash(checkHashCallback, hash, $("#cid").val());
-}
-
-var findKey = function() {
-    if (localStorage.getItem(key_id) != null && localStorage.getItem(key_id) != "") {
-        console.log("Key already known.");
-        keyFound(key_id, false);
-    } else {
-        localStorage.setItem(key_id_tmp + "0", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        tryNextTmpKey();
-    }
-}
-//  var update_key = function() {
-//      localStorage.setItem(key_id, $("#comptoir-key").val());
-//      var comptoir_key_hash = CryptoJS.SHA3(localStorage.getItem(key_id));
-//      $("#comptoir-key-hash").val(comptoir_key_hash);
-//      Decrypt_all();
-//      $("#comptoir-key-container").addClass("form-group");
-//      checkHash(checkHashUICallback, hash_field.val(), $("#cid").val());
-//  }
- 
 
 var get_key = function(cid) {
     var local_key_id = "comptoir_key_" + cid;
