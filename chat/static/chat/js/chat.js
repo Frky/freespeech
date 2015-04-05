@@ -29,12 +29,15 @@ var update_title = function() {
 
 var sound_notification = function(type, cid) {
     /* If the global control of the sound is off, we return */
+    /*
+       TODO
     if (sound_alert.val() == 0) {
         return;
     }
+    */
     /* If this is a comptoir notification and the sound of this comptoir 
        is off, then we return */
-    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up"))) {
+    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).is(':checked'))) {
         return;
     }
     if (type == "msg" && !document.hasFocus()) {
@@ -340,7 +343,7 @@ var bind_keys = function() {
 
 var update_badge = function(cid, user, date) {
     if ($(".badge", "#my-" + cid).length == 0) {
-        $("td.td-name", "#my-" + cid).append("<span class=\"badge active\">1</span>");
+        $("#my-" + cid).append("<span class=\"badge\">1</span>");
     } else {
         var val = parseInt($(".badge", "#my-" + cid).text());
         $(".badge", "#my-" + cid).text(val + 1);
@@ -363,41 +366,49 @@ var online_to_string = function(online) {
     return str;
 }
 
-online_div = $("#users-connected");
+var conline_div = ".online_users";
 
-var add_user_online = function(username, comptoir) {
+var add_user_online = function(username, cid) {
+    var comptoir = "#my-" + cid;
+    /*
     if (comptoir == $("#cid").val()) {
-        online = online_div.text().split(", ");
+        // online = online_div.text().split(", ");
         if (online.indexOf(username) == -1) {
             online.push(username);
         }
         online_div.text(online_to_string(online));
     }
+    */
 
     if (username != $("#user-name").text()) {
-        online = $(".td-users", "#my-" + comptoir).text().split(", ");
+        console.log("Adding user " + username + " at comptoir " + comptoir);
+        online = $(conline_div, comptoir).text().split(", ");
         if (online.indexOf(username) == -1) {
             online.push(username);
         }
-        $(".td-users", "#my-" + comptoir).text(online_to_string(online));
+        $(conline_div, comptoir).text(online_to_string(online));
     }
 }
 
-var remove_user_online = function(username, comptoir) {
+var remove_user_online = function(username, cid) {
+    var comptoir = "#my-" + cid;
+    /*
     if (comptoir == $("#cid").val()) {
-        online = online_div.text().split(", ");
+        // online = online_div.text().split(", ");
         if (online.indexOf(username) != -1) {
             online.splice(online.indexOf(username), 1);
         }
         online_div.text(online_to_string(online));
     }
+    */
 
     if (username != $("#user-name").text()) {
-        online = $(".td-users", "#my-" + comptoir).text().split(", ");
+        console.log("Removing user " + username + " at comptoir " + comptoir);
+        online = $(conline_div, comptoir).text().split(", ");
         if (online.indexOf(username) != -1) {
             online.splice(online.indexOf(username), 1);
         }
-        $(".td-users", "#my-" + comptoir).text(online_to_string(online));
+        $(conline_div, comptoir).text(online_to_string(online));
     }
 }
 
@@ -405,7 +416,8 @@ var wizz = function(user, cid) {
     /* Notification to the sound alert manager */
     sound_notification("wizz", cid);
     /* Shaking the chatbox */
-    $("#chatbox").velocity("callout.shake", "500ms", "true");
+    // TODO
+    // $("#chatbox").velocity("callout.shake", "500ms", "true");
     /* Add message on chatbox if current comptoir */
     if (cid = $("#cid").val()) {
         $("#chatbox table tbody").append("<tr><td colspan=\"3\" class=\"central-msg wizz\">" + user + " sent a wizz.</td></tr>");
@@ -444,19 +456,16 @@ var decipher_cmptr_info = function(key) {
 }
 
 var init_cmptr = function() {
-        /* TODO reinsert
         $(window).focus(function() {
             unread = 0;
             update_title();
         });
 
-        console.log("Init comptoir");
         msg_alert = $("#msgAlert")[0];
-        wizz_alert = $("#wizzAlert")[0];
         left_alert = $("#leftAlert")[0];
         joined_alert = $("#joinedAlert")[0];
         sound_alert = $("#sound-alert-btn");
-        */
+        wizz_alert = $("#wizzAlert")[0];
 
         /* Submission with "Enter" key ; line feed if CTRL */
         $('#new-msg').keydown(function(e){

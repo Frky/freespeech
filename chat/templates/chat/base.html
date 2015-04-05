@@ -122,9 +122,19 @@
             <ul>
                 {% for c, n in user.comptoirs reversed %}
                      <a class="cmptr-link" value="{{ c.id }}" href="{% url "join_comptoir" c.id %}">
-                        <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}><span class="txt">{{ c.title }}</span></li>
-                    </a> ({{ n }})
+                         <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}><span class="txt">{{ c.title }}</span>
+                        <!-- Users currently connected -->
+                        <span class="online_users"></span>
+                        <!-- Sound ? -->
+                        <input type="checkbox" class="toggle-sound" checked/>
+                         </li>
+                    </a> 
                 {% endfor %}
+            </ul>
+            <h2>Parameters of current comptoir</h2>
+            <ul>
+                <input id="comptoir-key" value="">
+                <input id="comptoir-key-hash" value="" disabled="true">
             </ul>
         </section>
         <section id="menu-bottom">
