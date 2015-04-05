@@ -16,11 +16,12 @@ var delayed_sound = function(type, cid) {
     }
 }
 
-
 var update_title = function() {
     if (unread == 0) {
+        $("#favicon").attr("href","static/chat/images/favicon.png");
         document.title = page_title;
     } else {
+        $("#favicon").attr("href","/static/chat/images/favicon_new.png");
         document.title = "(" + unread + ") " + page_title;
     }
 }

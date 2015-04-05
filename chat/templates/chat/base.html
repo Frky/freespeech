@@ -10,7 +10,7 @@
 	{% load staticfiles %}
 
     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
+    <link id="favicon" rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
 
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'chat/css/jquery.fs.tipper.css' %}" />
@@ -123,7 +123,7 @@
                 {% for c, n in user.comptoirs reversed %}
                      <a class="cmptr-link" value="{{ c.id }}" href="{% url "join_comptoir" c.id %}">
                         <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}><span class="txt">{{ c.title }}</span></li>
-                    </a>
+                    </a> ({{ n }})
                 {% endfor %}
             </ul>
         </section>
