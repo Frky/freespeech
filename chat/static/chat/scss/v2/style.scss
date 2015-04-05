@@ -322,7 +322,6 @@ h1, h2, h3, h4, h5, h6 {
     &.title {
         font-family: Santor, serif;
         text-transform: lowercase;
-        font-size: 1.4em;
     }
 }
 
@@ -403,4 +402,60 @@ section#content {
     &.visible {
         margin-left: 0;
     }
+}
+
+$comptoir-width: 1380px;
+.cmptr__left {
+    position: fixed;
+    top: $header-size;
+    left: 0;
+    bottom: 0;
+    width: $comptoir-width;
+    background-color: #FFFFFF;
+
+    .panel__top {
+        position: absolute;
+        background-color: $grey;
+        width: 100%;
+        text-align: left;
+        box-shadow: -6px 0px 4px 1px #CCCCCC;
+        height: 125px;
+
+        .title {
+            text-transform: none;
+            margin: 40px 0 0 $left-margin;
+        }
+        .desc {
+            color: $light-grey;
+            margin: 0 0 20px $left-margin;
+        }
+    }
+    .panel__center {
+        position: fixed;
+        margin-top: $header-size + 125px;
+        color: #FFFFFF;
+    }
+    .panel__bottom {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        #new-msg {
+            display: block;
+            height: 100px;
+            width: $comptoir-width - 2 * $left-margin;
+            margin: $left-margin;
+            font-size: 1.2em;
+            resize: none;
+        }
+    }
+}
+
+.cmptr__right {
+    position: fixed;
+    top: $header-size;
+    left: $comptoir-width;
+    right: 0;
+    bottom: 0;
+    background-color: blue;
 }
