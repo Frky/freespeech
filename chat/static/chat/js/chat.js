@@ -173,8 +173,8 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
     if (insert) {
         /* Append the new message to the chatbox */
         $("#chatbox table tbody").append(new_message)
-        
-        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
+        /* TODO réactiver ceci */      
+//        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
 
         $('.fsp-tooltip').tooltip('destroy').tooltip();
 
