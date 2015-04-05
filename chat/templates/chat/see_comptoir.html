@@ -7,23 +7,36 @@
             <h2 class="title">
                 {% if title_is_ciphered %}
                     <span class="ciphered hidden" >{{ title }}</span>
-                    <span class="clear">
-                    </span>
+                    <span class="clear"></span>
                 {% else %}
                     {{ title }}
                 {% endif %}
             </h2>
             <div class="desc">
                 {% if title_is_ciphered %}
-                    ~ <span class="ciphered hidden">{{ description }}</span>
-                    <span class="clear"></span> ~
+                    <span class="ciphered hidden">{{ description }}</span>
+                    <span class="clear"></span>
                 {% else %}
                     {{ description }}
                 {% endif %}
             </div>
         </div>
-        <div class="panel__center cmptr-page">
-            {% for msg in msgs %}
+        <div id="chatbox" class="panel__center cmptr-page">
+            <div class="content">
+                {% for msg in msgs %}
+                    {% if msg.me_message %}
+                        <div data-author="{{ msg.owner }}">
+                            <div class="message central-msg me">
+                                <span class="author">{{ msg.owner }}</span>
+                                <span class="clear"></span>
+                                <span class="ciphered hidden">{{ msg.content }}</span>
+                            </div>
+                        </div>
+                    {% else %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% comment %}{% for msg in msgs %}
                 {% if msg.me_message %}
                     <tr data-author="{{ msg.owner }}">
                         <td colspan="3" class="message central-msg me">
@@ -71,7 +84,7 @@
                         </td>
                     </tr>
                 {% endif %}
-            {% endfor %}
+            {% endfor %}{% endcomment %}
         </div>
         <div class="panel__bottom">
             <form method="post" id="send-form" class="">
@@ -87,6 +100,8 @@
     <div class="cmptr__right">
     panel right
     </div>
+    <input id="comptoir-key" value="">
+        <input id="comptoir-key-hash" value="" disabled="true">
 
     {# {% include "chat/includes/cmptr.html" %} #}
 
