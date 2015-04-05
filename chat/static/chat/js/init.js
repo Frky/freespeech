@@ -195,7 +195,7 @@ $(document).ready(function() {
     */
 
 
-    particlesJS('particle', {
+    /*particlesJS('particle', {
         particles: {
             color: '#fff',
             shape: 'circle', // "circle", "edge" or "triangle"
@@ -228,7 +228,6 @@ $(document).ready(function() {
             detect_on: 'canvas', // "canvas" or "window"
             mode: 'grab'
         },
-        /* Retina Display Support */
         retina_detect: false
-    });
+    });*/
 });

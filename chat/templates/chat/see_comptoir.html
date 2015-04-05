@@ -33,6 +33,43 @@
                             </div>
                         </div>
                     {% else %}
+                        {% ifchanged %}
+                            <span class="author">
+                                <span>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
+                                <span class="nopoint"></span>
+                                <span>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
+                            </span>
+                        {% endifchanged %}
+                        <div data-author="{{ msg.owner }}">
+                            {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
+                            <div {% if msg.owner != user %}class="message" id="{{ msg.id }}"{% endif %}>
+                                <span class="clear"></span>
+                                <span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span>
+
+                                {% if msg.owner != user and msg.edited %}
+                                    <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="right" rel="tooltip">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                            {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
+                            <span class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></span>
+                            {% else %}
+                            <span class="nopoint"></span>
+                            {% endifchanged %}
+
+                            <div {% if msg.owner == user %}class="message" id="{{ msg.id }}" {% endif %}>
+                                {% if msg.owner == user and msg.edited %}
+                                    <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="left" rel="tooltip">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                {% endif %}
+
+                                <span class="clear"></span>
+                                <span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -101,7 +138,7 @@
     panel right
     </div>
     <input id="comptoir-key" value="">
-        <input id="comptoir-key-hash" value="" disabled="true">
+    <input id="comptoir-key-hash" value="" disabled="true">
 
     {# {% include "chat/includes/cmptr.html" %} #}
 
