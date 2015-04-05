@@ -116,9 +116,9 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
     var new_message = ""
 
     /* Getting the last user to post a message */
-    var last_date = $("#chatbox table tbody td.point:last a").attr("data-original-title");
+    var last_date = $("#chatbox .content .point:last a").attr("data-original-title");
 
-    var last_user = $("#chatbox table tbody td span.user:last").text()
+    var last_user = $("#chatbox .content span.user:last").text()
 
     /* Boolean to indicate if the last message was from a new user */
     var new_user = false;
