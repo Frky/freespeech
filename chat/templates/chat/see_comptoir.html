@@ -1,5 +1,7 @@
 {% extends "chat/base.html" %}
 
+{% load chat_tags %}
+
 {% block content %}
 
     <div class="cmptr__left">
@@ -34,13 +36,16 @@
                         </div>
                     {% else %}
                         {% ifchanged %}
-                            <span class="author">
+                            <div class="author {{ msg.owner|ownership:user }}">
+                                <span class="user">{{ msg.owner }}</span>
+                            </div>
+                                <!-- 
                                 <span>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
                                 <span class="nopoint"></span>
                                 <span>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
-                            </span>
+                                -->
                         {% endifchanged %}
-                        <div data-author="{{ msg.owner }}">
+                        <div data-author="{{ msg.owner }}" class="{{ msg.owner|ownership:user }}">
                             {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
                             <div {% if msg.owner != user %}class="message" id="{{ msg.id }}"{% endif %}>
                                 <span class="clear"></span>
