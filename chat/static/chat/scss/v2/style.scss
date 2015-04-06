@@ -486,9 +486,22 @@ $bottom-size: 120px;
         .myself, .other {
             width: 100%;
             margin-bottom: 20px;
+
+
+            &.author {
+                margin-bottom: 0px;
+            }
         }
 
         .myself {
+            &.author .user {
+                margin-top: 10px;
+                width: 46%;
+                margin-left: 54%;
+                text-align: left;
+                font-style: italic;
+            }
+
             .message {
                 width: 42%;
                 margin-left: 54%;
@@ -518,6 +531,12 @@ $bottom-size: 120px;
             }
         }
         .other {
+            &.author .user {
+                margin-top: 10px;
+                width: 46%;
+                text-align: right;
+                font-style: italic;
+            }
             .message {
                 width: 42%;
                 margin-left: 0%;

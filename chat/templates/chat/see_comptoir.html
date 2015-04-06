@@ -37,7 +37,7 @@
                     {% else %}
                         {% ifchanged %}
                             <div class="author {{ msg.owner|ownership:user }}">
-                                <span class="user">{{ msg.owner }}</span>
+                                <div class="user">{{ msg.owner }}</div>
                             </div>
                                 <!-- 
                                 <span>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
@@ -59,7 +59,7 @@
                             </div>
 
                             {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
-                            <span class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></span>
+{#                            <span class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></span>#}
                             {% else %}
                             <span class="nopoint"></span>
                             {% endifchanged %}
