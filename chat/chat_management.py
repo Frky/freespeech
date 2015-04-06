@@ -50,7 +50,7 @@ class Chat(object):
 
 
     @classmethod
-    def message(cls, user, cid, chash, msg, me_msg):
+    def message(cls, user, cid, chash, msg, me_msg, keep):
         ## TODO:
         #   - Check hash
         #   - Check if content is empty
@@ -67,12 +67,13 @@ class Chat(object):
                 publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
             except KeyError:
                 print cls.audience
-            msg = NewMessage(user, cmptr, msg, me_msg)
+            print keep
+            msg = NewMessage(user, cmptr, msg, me_msg, keep)
             publisher.publish_message(msg.redis())
 
 
     @classmethod
-    def wizz(cls, user, cid, chash, content):
+    def wizz(cls, user, cid, chash, content, keep):
         cmptr = Comptoir.objects.get(id=cid)
         if (cmptr.key_hash != chash):
             # We reject the message
@@ -83,7 +84,7 @@ class Chat(object):
                 publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
             except KeyError:
                 print cls.audience
-            wizz_msg = Wizz(user, cmptr, content)
+            wizz_msg = Wizz(user, cmptr, content, keep)
             publisher.publish_message(wizz_msg.redis())
 
     @classmethod

@@ -66,7 +66,19 @@ editMessage = function(mid, oldcipher, newcipher) {
 
 sendMessage = function() {
     var msg = $("#new-msg").val();
+    var cid = $("#cid").val();
     var me_msg = false
+
+    /* Does this message contain a link ? */
+    /* to be used in the future to keep trace of links */
+    if (contains_link(msg))
+        console.log("LINK DETECTED");
+    else
+        console.log("No link.");
+
+    /* Do we keep history for this comptoir ? */
+    var keep = keep_history(cid);
+
     /* Looking for '/me' substring */
     if (msg.substring(0, 4) == "/me ") {
         /* In this case, updating the boolean */
@@ -74,14 +86,15 @@ sendMessage = function() {
         /* Removing the substring '/me ' */
         msg = msg.slice(4);
     }
-    var local_key = get_key($("#cid").val()); //localStorage.getItem(key_id);
+    var local_key = get_key(cid); //localStorage.getItem(key_id);
     console.log("Key: " + local_key);
-    var local_hash = get_hash($("#cid").val()); //localStorage.getItem(key_id);
+    var local_hash = get_hash(cid); //localStorage.getItem(key_id);
     data = {
-            cid: $("#cid").val(), 
+            cid: cid, 
             msg: Encrypt_Text(msg, local_key), 
             hash: local_hash.toString(),
             me_msg: me_msg,
+            keep: keep,
         };
     switch (msg) {
     case "/wizz":

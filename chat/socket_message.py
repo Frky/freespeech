@@ -20,6 +20,7 @@ class SocketMessage(object):
         return json(data)
 
     def save(self):
+        print "SAVING"
         msg = Message(owner=self.user, comptoir=self.cmptr, content=self.content, me_message=self.me_msg)
         msg.save()
         self.cmptr.last_message = msg
@@ -67,7 +68,7 @@ class DisconnectionMessage(SocketMessage):
 
 class NewMessage(SocketMessage):
 
-    def __init__(self, user, cmptr, content, me_msg):
+    def __init__(self, user, cmptr, content, me_msg, keep):
         self.typ = "new-msg"
         self.user = user
         self.cmptr = cmptr
@@ -75,7 +76,8 @@ class NewMessage(SocketMessage):
         self.me_msg = me_msg
         self.mid = -1
         self.date = ""
-        self.save()
+        if keep:
+            self.save()
 
     def json(self):
        data = dict()
@@ -91,13 +93,14 @@ class NewMessage(SocketMessage):
 
 class Wizz(SocketMessage):
 
-    def __init__(self, user, cmptr, content):
+    def __init__(self, user, cmptr, content, keep):
         self.typ = "wizz"
         self.user = user
         self.cmptr = cmptr
         self.content = content
         self.me_msg = False
-        self.save()
+        if keep:
+            self.save()
 
     def json(self):
        data = dict()

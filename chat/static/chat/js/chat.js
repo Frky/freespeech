@@ -324,21 +324,13 @@ var submit_msg = function() {
 
 }
 
-/* Handler for the submission of the form */
-$("#send-form").submit(function(event) {
-    event.preventDefault();
-    submit_msg();
-});
-
-
+var keep_history = function(cid) {
+    return $(".keep-history", "#my-" + cid).is(':checked');
+}
 
 /* Remember ctrl pressed to distinguish 
    Enter for submission and Enter for a line feed */
 var ctrl_pressed = false;
-
-var bind_keys = function() {
-
-}
 
 
 var update_badge = function(cid, user, date) {
