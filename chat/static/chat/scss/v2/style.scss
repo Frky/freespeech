@@ -471,9 +471,76 @@ $bottom-size: 120px;
 
 #chatbox {
     .content {
+        position: relative;
         height: 100%;
-        width: 100%;
+        width: 94%;
+        padding: 0 3%;
         color: #000000;
         overflow-y: scroll;
+
+        .myself, .other {
+            width: 100%;
+            min-height: 70px;
+            margin-bottom: 20px;
+        }
+
+        .myself {
+            .message {
+                width: 42%;
+                margin-left: 54%;
+                text-align: left;
+
+                position: relative;
+                padding: 2%;
+                background: #000000;
+                color: #FFFFFF;
+                font-size: 0.9em;
+                -webkit-border-radius: 2px;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    border-style: solid;
+                    border-width: 12px 8px 0;
+                    border-color: #000000 transparent;
+                    display: block;
+                    width: 0;
+                    z-index: 1;
+                    bottom: -12px;
+                    left: 9px;
+                }
+            }
+        }
+        .other {
+            .message {
+                width: 42%;
+                margin-left: 0%;
+                text-align: right;
+
+                position: relative;
+                padding: 2%;
+                background: #cccccc;
+                color: #000000;
+                font-size: 0.9em;
+                -webkit-border-radius: 2px;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    border-style: solid;
+                    border-width: 12px 8px 0;
+                    border-color: #cccccc transparent;
+                    display: block;
+                    width: 0;
+                    z-index: 1;
+                    bottom: -12px;
+                    right: 9px;
+                }
+            }
+        }
     }
 }
