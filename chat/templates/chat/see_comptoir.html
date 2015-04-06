@@ -6,22 +6,22 @@
 
     <div class="cmptr__left">
         <div id="cmptr-info" class="panel__top {% if title_is_ciphered %}ciphered{% endif %}">
-            <h2 class="title">
+            <h3 class="title">
                 {% if title_is_ciphered %}
                     <span class="ciphered hidden" >{{ title }}</span>
                     <span class="clear"></span>
                 {% else %}
                     {{ title }}
                 {% endif %}
-            </h2>
-            <div class="desc">
+            </h3>
+            {% comment %}<div class="desc">
                 {% if title_is_ciphered %}
                     <span class="ciphered hidden">{{ description }}</span>
                     <span class="clear"></span>
                 {% else %}
                     {{ description }}
                 {% endif %}
-            </div>
+            </div>{% endcomment %}
         </div>
         <div id="chatbox" class="panel__center cmptr-page">
             <div class="content">
