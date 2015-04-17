@@ -35,11 +35,13 @@ var sound_notification = function(type, cid) {
         return;
     }
     */
+
     /* If this is a comptoir notification and the sound of this comptoir 
        is off, then we return */
-    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).is(':checked'))) {
+    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up"))) {
         return;
     }
+
     if (type == "msg" && !document.hasFocus()) {
         msg_alert.play();
         return;

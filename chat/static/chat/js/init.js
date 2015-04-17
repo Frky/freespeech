@@ -110,6 +110,8 @@ $(document).ready(function() {
     /* Init key management UI elements */
     init_key_management_fields();
 
+    /* Init panel UI elements */
+    init_ui_panel();
     /* Deciphering all comptoir names in panel */
     $(".ciphered", "#my-comptoirs").each(function() {
         cid = $(this).attr("id").substring(3); // $(".cmptr-link", this).text().trim();

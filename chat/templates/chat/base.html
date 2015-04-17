@@ -13,6 +13,7 @@
     <link id="favicon" rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
 
     <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'chat/css/bootstrap-glyph.min.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/css/jquery.fs.tipper.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
@@ -43,7 +44,6 @@
     <script src="{% static 'chat/js/lib/jquery.velocity.min.js' %}"></script>
     <script src="{% static 'chat/js/lib/velocity.ui.js' %}"></script>
     <script src="{% static 'chat/js/lib/jquery.fs.tipper.js' %}"></script>
-    <script src="{% static 'chat/js/ajax.js' %}"></script>
     <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
 	<script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
     -->
@@ -51,6 +51,8 @@
     <!-- Utils -->
     <script src="{% static 'chat/js/utils/alerts.js' %}"></script>
     <!-- General -->
+    <script src="{% static 'chat/js/ui/panel.js' %}"></script>
+    <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
 	<script src="{% static 'chat/js/utils/msg.js' %}"></script>
 	<script src="{% static 'chat/js/form_check.js' %}"></script>
 	<script src="{% static 'chat/js/key_management.js' %}"></script>
@@ -121,14 +123,17 @@
             <h2>Comptoirs</h2>
             <ul>
                 {% for c, n in user.comptoirs reversed %}
-                     <a class="cmptr-link" value="{{ c.id }}" href="{% url "join_comptoir" c.id %}">
-                         <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}><span class="txt">{{ c.title }}</span>
-                        <!-- Users currently connected -->
-                        <span class="online_users"></span>
-                        <!-- Sound ? -->
-                        <input type="checkbox" class="toggle-sound" checked/>
-                        <!-- Keep history -->
-                        <input type="checkbox" class="keep-history" checked/>
+                    <a class="cmptr-link" value="{{ c.id }}" href="#"> <!-- {% url "join_comptoir" c.id %}"> -->
+                        <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}>
+                            <span class="txt">{{ c.title }}</span>
+                            <!-- Users currently connected -->
+                            <span class="online_users"></span>
+                            <span class="options">
+                                <!-- Sound ? -->
+                                <span class="toggle-sound glyphicon glyphicon-volume-up"></span>
+                                <!-- Keep history -->
+                                <span class="toggle-hist glyphicon glyphicon-floppy-saved"></span>
+                            </span>
                          </li>
                     </a> 
                 {% endfor %}

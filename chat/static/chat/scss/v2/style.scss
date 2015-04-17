@@ -127,7 +127,7 @@ header {
     }
 }
 
-$aside-width: 250px;
+$aside-width: 350px;
 #main-content-wrapper {
     position: absolute;
     height: 100%;
@@ -215,7 +215,6 @@ aside {
         }
 
         &:not(.detail):after {
-            content: "+";
             position: absolute;
             right: 10px;
             cursor: pointer;
@@ -223,6 +222,15 @@ aside {
         &.detail {
             &.hidden {
                 display: none;                
+            }
+        }
+    
+        .options {
+            display: inline-block;
+            float: right;
+
+            span {
+                margin-right: 15px;
             }
         }
     }
@@ -566,4 +574,28 @@ $bottom-size: 120px;
             }
         }
     }
+}
+
+
+/* Glaphicon styles */
+
+input[type=checkbox] {
+    display:none;
+}
+input[type=checkbox] + label
+{
+    background-image: "../../images/glyphicons/png/glyphicons-2-leaf.png";
+    height: 160px;
+    width: 16px;
+    display:inline-block;
+    padding: 0 0 0 0px;
+}
+   
+input[type=checkbox]:checked + label
+{
+    background-image: "../../images/glyphicons/png/glyphicons-2-leaf.png";
+    height: 16px;
+    width: 16px;
+    display:inline-block;
+    padding: 0 0 0 0px;
 }
