@@ -497,6 +497,15 @@ $bottom-size: 120px;
     left: $comptoir-width;
     right: 0;
     bottom: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    #comptoir-key {
+        text-overflow: ellipsis;
+        max-width: 270px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 
 #chatbox {
