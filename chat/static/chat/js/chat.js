@@ -354,7 +354,7 @@ var online_to_string = function(online) {
         if (online[i] == "") continue;
         str += online[i];
         if (online.length > 1 && i < online.length - 1) {
-            str += ", ";
+            str += " ; ";
         }
     }
     return str;
@@ -376,12 +376,13 @@ var add_user_online = function(username, cid) {
 
     if (username != $("#user-name").text()) {
         console.log("Adding user " + username + " at comptoir " + comptoir);
-        online = $(conline_div, comptoir).text().split(", ");
+        online = $(conline_div, comptoir).text().split(" ; ");
         if (online.indexOf(username) == -1) {
             online.push(username);
         }
         $(conline_div, comptoir).text(online_to_string(online));
     }
+    $(conline_div, comptoir).addClass("not-empty");
 }
 
 var remove_user_online = function(username, cid) {
@@ -398,11 +399,13 @@ var remove_user_online = function(username, cid) {
 
     if (username != $("#user-name").text()) {
         console.log("Removing user " + username + " at comptoir " + comptoir);
-        online = $(conline_div, comptoir).text().split(", ");
+        online = $(conline_div, comptoir).text().split(" ; ");
         if (online.indexOf(username) != -1) {
             online.splice(online.indexOf(username), 1);
         }
         $(conline_div, comptoir).text(online_to_string(online));
+        if (online.length == 0)
+            $(conline_div, comptoir).removeClass("not-empty");
     }
 }
 

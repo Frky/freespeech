@@ -210,10 +210,6 @@ aside {
 
         transition: background 450ms ease;
 
-        &:hover {
-            background-color: $orange;
-        }
-
         &:not(.detail):after {
             position: absolute;
             right: 10px;
@@ -225,12 +221,33 @@ aside {
             }
         }
     
+        .online_users {
+            &.not-empty:before {
+                content: "[";
+                color: $orange;
+            }
+            &.not-empty:after {
+                content: "]";
+                color: $orange;
+            }
+        }
+
         .options {
             display: inline-block;
             float: right;
 
             span {
                 margin-right: 15px;
+                &:hover {
+                    color: $grey2;
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $orange;
+                .txt, .online_users:after, .online_users:before {
+                color: $grey2;
             }
         }
     }
@@ -577,25 +594,3 @@ $bottom-size: 120px;
 }
 
 
-/* Glaphicon styles */
-
-input[type=checkbox] {
-    display:none;
-}
-input[type=checkbox] + label
-{
-    background-image: "../../images/glyphicons/png/glyphicons-2-leaf.png";
-    height: 160px;
-    width: 16px;
-    display:inline-block;
-    padding: 0 0 0 0px;
-}
-   
-input[type=checkbox]:checked + label
-{
-    background-image: "../../images/glyphicons/png/glyphicons-2-leaf.png";
-    height: 16px;
-    width: 16px;
-    display:inline-block;
-    padding: 0 0 0 0px;
-}
