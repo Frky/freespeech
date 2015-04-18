@@ -238,6 +238,7 @@ aside {
 
             span {
                 margin-right: 15px;
+                font-size: 0.8em;
                 &:hover {
                     color: $grey2;
                 }
@@ -434,7 +435,7 @@ $bottom-size: 120px;
     left: 0;
     bottom: 0;
     width: $comptoir-width;
-    background-color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.97);
 
     .panel__top {
         position: absolute;
@@ -496,7 +497,6 @@ $bottom-size: 120px;
     left: $comptoir-width;
     right: 0;
     bottom: 0;
-    background-color: blue;
 }
 
 #chatbox {
