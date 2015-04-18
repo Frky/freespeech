@@ -9,4 +9,17 @@ var init_ui_panel = function() {
         $(this).toggleClass("glyphicon-floppy-saved");
         $(this).toggleClass("glyphicon-floppy-remove");
     });
+
+    $(".cmptr-link").click(function () {
+        /* Get the comptoir id we need to load */
+        var cid =  $(this).attr("value");
+        /* If we already are on a comptoir page */
+        if ($("#chatbox").length > 0) {
+            /* We get the new comptoir asynchronously */
+            jQuery.get("ajax-" + cid, ajax_cmptr_callback);
+        } else {
+            /* Else we get it with a get request */
+            window.location.href = cid;
+        }
+    });
 }

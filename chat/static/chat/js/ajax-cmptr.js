@@ -30,7 +30,7 @@ var getComptoirInfosCallback = function(data) {
 }
 
 
-var getComptoirContentCallback = function(data, cid) {
+var ajax_cmptr_callback = function(data, cid) {
     var old_location = window.location.pathname;
     $("#cid").val(cid);
     $("#content").html(data);
@@ -82,16 +82,3 @@ var getComptoirContentCallback = function(data, cid) {
 }
 
 
-$(".cmptr-link").click(function () {
-    /* Get the comptoir id we need to load */
-    var cid =  $(this).text();
-    /* If we already are on a comptoir page */
-    if ($("#chatbox").length > 0) {
-        /* We get the new comptoir asynchronously */
-        getComptoirContent(getComptoirContentCallback, cid);
-        //$.getJSON("cmptrinfo-" + cid, getComptoirInfosCallback);
-    } else {
-        /* Else we get it with a get request */
-        window.location.href = cid;
-    }
-});
