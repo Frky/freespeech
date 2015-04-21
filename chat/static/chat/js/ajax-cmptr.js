@@ -1,34 +1,9 @@
 
-
-var getComptoirContent = function(callback, cid) {
-
-    // Creation of an object
-    var xhr = getXMLHttpRequest(); 
-
-    // AJAX function on change    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            // Callback for results
-            callback(xhr.responseText, cid);
-        } else if (xhr.readyState < 4) {
-            // The request is in treatment, displaying loader image
-            //document.getElementById("loader").style.display = "inline";
-        }
-    };
-
-    // Initialisation
-    xhr.open("GET", "ajax-" + cid, true);
-    // Sending request
-    xhr.send();
-}
-
-
 var getComptoirInfosCallback = function(data) {
     $(".title", "#cmptr-info").text(data.title);
     $(".desc", "#cmptr-info").text(data.description);
 
 }
-
 
 var ajax_cmptr_callback = function(data, cid) {
     var old_location = window.location.pathname;
@@ -51,7 +26,8 @@ var ajax_cmptr_callback = function(data, cid) {
     */
     if ($("#chatbox").length != 0) {
         key_init();
-        msg_management_init_all();
+        // TODO restore
+        // msg_management_init_all();
     }
 
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
