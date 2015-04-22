@@ -8,7 +8,7 @@ var getComptoirInfosCallback = function(data) {
 var ajax_cmptr_callback = function(data, cid) {
     var old_location = window.location.pathname;
     $("#cid").val(cid);
-    $("#content").html(data);
+    $("#chatbox .content").html(data);
     /*
     $('#chatbox').slimScroll({
         height: 'auto',
@@ -30,7 +30,7 @@ var ajax_cmptr_callback = function(data, cid) {
         // msg_management_init_all();
     }
 
-    $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+    $("#chatbox .content").scrollTop($("#chatbox .content")[0].scrollHeight);
 
     if (old_location == "/") {
         $("#options-container").removeClass("hidden");
@@ -49,12 +49,13 @@ var ajax_cmptr_callback = function(data, cid) {
     $("#users-connected").text(online);
 
     window.history.replaceState({}, cid, cid);
-    join_comptoir();
+    // join_comptoir();
 
+    $(".badge", "#my-" + $("#cid").val()).remove();
     // decipher_cmptr_info();
 
     $("#send-form").removeClass("hidden");
-    bind_keys();
+    // bind_keys();
 }
 
 

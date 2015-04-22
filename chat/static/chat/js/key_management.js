@@ -209,7 +209,6 @@ var key_init = function() {
         test_default_key = true;
         key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     }
-
     key_field.val(key);
     check_hash(cid, key);
 }

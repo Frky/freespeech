@@ -599,6 +599,10 @@ $bottom-size: 120px;
                 }
             }
         }
+
+        &:has( > .central-msg) {
+            float: center;
+        }
     }
 }
 

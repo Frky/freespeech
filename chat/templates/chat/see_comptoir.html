@@ -5,139 +5,9 @@
 {% block content %}
 
     <div class="cmptr__left">
-        <div id="cmptr-info" class="panel__top {% if title_is_ciphered %}ciphered{% endif %}">
-            <h3 class="title">
-                {% if title_is_ciphered %}
-                    <span class="ciphered hidden" >{{ title }}</span>
-                    <span class="clear"></span>
-                {% else %}
-                    {{ title }}
-                {% endif %}
-            </h3>
-            {% comment %}<div class="desc">
-                {% if title_is_ciphered %}
-                    <span class="ciphered hidden">{{ description }}</span>
-                    <span class="clear"></span>
-                {% else %}
-                    {{ description }}
-                {% endif %}
-            </div>{% endcomment %}
-        </div>
-        <div id="chatbox" class="panel__center cmptr-page">
-            <div class="content">
-                {% for msg in msgs %}
-                    {% if msg.me_message %}
-                        <div data-author="{{ msg.owner }}">
-                            <div class="message central-msg me">
-                                <span class="author">{{ msg.owner }}</span>
-                                <span class="clear"></span>
-                                <span class="ciphered hidden">{{ msg.content }}</span>
-                            </div>
-                        </div>
-                    {% else %}
-                        {% ifchanged %}
-                            <div class="author {{ msg.owner|ownership:user }}">
-                                <div class="user">{{ msg.owner }}</div>
-                            </div>
-                                <!-- 
-                                <span>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
-                                <span class="nopoint"></span>
-                                <span>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</span>
-                                -->
-                        {% endifchanged %}
-                        <div data-author="{{ msg.owner }}" class="{{ msg.owner|ownership:user }}">
-                            {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
-                            <div {% if msg.owner != user %}class="message" id="{{ msg.id }}"{% endif %}>
-                                <span class="clear"></span>
-                                <span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span>
+        
+        {% include "chat/includes/cmptr.html" %}
 
-                                {% if msg.owner != user and msg.edited %}
-                                    <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="right" rel="tooltip">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </a>
-                                {% endif %}
-                            </div>
-
-                            {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
-{#                            <span class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></span>#}
-                            {% else %}
-                            <span class="nopoint"></span>
-                            {% endifchanged %}
-
-                            <div {% if msg.owner == user %}class="message" id="{{ msg.id }}" {% endif %}>
-                                {% if msg.owner == user and msg.edited %}
-                                    <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="left" rel="tooltip">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </a>
-                                {% endif %}
-
-                                <span class="clear"></span>
-                                <span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            {% comment %}{% for msg in msgs %}
-                {% if msg.me_message %}
-                    <tr data-author="{{ msg.owner }}">
-                        <td colspan="3" class="message central-msg me">
-                            <span class="author">{{ msg.owner }}</span>
-                            <span class="clear"></span>
-                            <span class="ciphered hidden">{{ msg.content }}</span>
-                        </td>
-                    </tr>
-                {% else %}
-                    {% ifchanged %}
-                        <tr class="author">
-                            <td>{% if msg.owner != user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
-                            <td class="nopoint"></td>
-                            <td>{% if msg.owner == user %}<span class="user">{{ msg.owner }}</span>{% endif %}</td>
-                        </tr>
-                    {% endifchanged %}
-                    <tr data-author="{{ msg.owner }}">
-                        {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
-                        <td {% if msg.owner != user %}class="message" id="{{ msg.id }}"{% endif %}>
-                            <span class="clear"></span>
-                            <span class="ciphered hidden" >{% if msg.owner != user %}{{ msg.content|unquote_new }}{% endif %}</span>
-
-                            {% if msg.owner != user and msg.edited %}
-                                <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="right" rel="tooltip">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </a>
-                            {% endif %}
-                        </td>
-
-                        {% ifchanged msg.date.day or msg.date.hour or msg.date.minute %}
-                        <td class="point"><a href="#" class="fsp-tooltip" data-original-title="{{ msg.date }}" data-placement="{% if msg.owner != user %}right{% else %}left{% endif %}" rel="tooltip"> • </a></td>
-                        {% else %}
-                        <td class="nopoint"></td>
-                        {% endifchanged %}
-
-                        <td {% if msg.owner == user %}class="message" id="{{ msg.id }}" {% endif %}>
-                            {% if msg.owner == user and msg.edited %}
-                                <a href="#" class="fsp-tooltip" data-original-title="{{ msg.last_edit }}" data-placement="left" rel="tooltip">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </a>
-                            {% endif %}
-
-                            <span class="clear"></span>
-                            <span class="ciphered hidden">{% if msg.owner == user %}{{ msg.content|unquote_new }}{% endif %}</span>
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}{% endcomment %}
-        </div>
-        <div class="panel__bottom">
-            <form method="post" id="send-form" class="">
-                {% csrf_token %}
-                <input data-cid="{{ id }}" type="hidden" id="cid" name="cid" value="{{ id }}">
-                {% if user.is_authenticated %}
-                    <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
-                    <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="" autofocus></textarea>
-                {% endif %}
-            </form>
-        </div>
     </div>
     <div class="cmptr__right">
         <h2>Parameters of current comptoir</h2>
@@ -150,6 +20,5 @@
             </ul>
     </div>
 
-    {# {% include "chat/includes/cmptr.html" %} #}
-
 {% endblock %}
+

@@ -10,9 +10,12 @@ var new_msg = function(data) {
         sound_notification("msg", data.cid);
         return;
     }
+    /* Decrypt message */
+    var msg = Decrypt_Text(data.content, get_key($("#cid").val()));
     /* Testing if this is a '/me' message */
-    if (data.me_msg) {
-        addMeMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
+    if (msg.substring(0, 4) == "/me ") {
+        msg.slice(4);
+        addMeMessage(data.user, data.content, msg, data.msgdate, data.mid, true);
     } else {
         addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
     }
@@ -69,6 +72,7 @@ sendMessage = function() {
     var cid = $("#cid").val();
     var me_msg = false
 
+    console.log(msg, cid);
     /* Does this message contain a link ? */
     /* to be used in the future to keep trace of links */
     if (contains_link(msg))
@@ -80,12 +84,12 @@ sendMessage = function() {
     var keep = keep_history(cid);
 
     /* Looking for '/me' substring */
-    if (msg.substring(0, 4) == "/me ") {
-        /* In this case, updating the boolean */
-        me_msg = true;
-        /* Removing the substring '/me ' */
-        msg = msg.slice(4);
-    }
+//    if (msg.substring(0, 4) == "/me ") {
+//        /* In this case, updating the boolean */
+//        me_msg = true;
+//        /* Removing the substring '/me ' */
+//        msg = msg.slice(4);
+//    }
     var local_key = get_key(cid); //localStorage.getItem(key_id);
     console.log("Key: " + local_key);
     var local_hash = get_hash(cid); //localStorage.getItem(key_id);

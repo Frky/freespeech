@@ -108,25 +108,23 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
 
     clear = msgify(clear);
 
-    /* Tooltip for the date of the msg. For the client, 
-       displayed in left ; for others in right */
-    var tooltip_placement = function(user) {
-        if (user != $("#user-name").html()) return "right";
-        else return "left";
+    var template = $(".msg-div", "#tpl-msg-myself").clone();
+    $(template).removeClass("msg-div");
+    $(template).attr("data-author", user);
+    $(".message", template).attr("id", mid);
+    $(".clear", template).html(clear);
+    $(".ciphered", template).text(cipher);
+    if (user == $("#user-name").html()) {
+        $(template).addClass("myself");
+    } else {
+        $(template).addClass("other");
     }
-
-    var new_message = ""
-
-    /* Getting the last user to post a message */
-    var last_date = $("#chatbox .content .point:last a").attr("data-original-title");
-
+        
     var last_user = $("#chatbox .content span.user:last").text()
-
-    /* Boolean to indicate if the last message was from a new user */
-    var new_user = false;
 
     /* If the new message is NOT from the same user as the previous one, 
        we need to display the nickname of the new user */
+        /*
     if (last_user != user) {
         new_user = true;
         new_message += '<div class="author"><div>';
@@ -139,40 +137,15 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
         }
         new_message += '</div></div>';
     }
+        */
 
-    new_message += '<div>';
-
-    if (user != $("#user-name").html()) {
-        new_message +=  '<div class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">"' + cipher + '</span></div>';
-    } else {
-        new_message +=  '<div></div>';
-    }
-
-    /* If the message is from the same user and the date is the same, we do not include a tooltip */
-    if (!new_user && last_date === msgdate) {
-        new_message += '<div class="nopoint"></div>';
-    /* Otherwise, we need to add the date of the message */
-    } else {
-        new_message += '<div class="point"><a href="#" class="fsp-tooltip" data-original-title="' + msgdate + '" data-placement="' + tooltip_placement(user) + '" rel="tooltip"> • </a></div>';
-    }
-
-    if (user != $("#user-name").html()) {
-        new_message += '<div></div>';
-    } else {
-        new_message += '<td class="message" id="' + mid + '"><span class="clear">' + clear + '</span><span class="ciphered hidden">' + cipher + '</span>';
-//        new_message = add_glyphicons(new_message);
-        new_message += "</div>";
-    }
-
-    new_message += '</div>';
-    
     if (insert) {
         /* Append the new message to the chatbox */
-        $("#chatbox .content").append(new_message)
+        $("#chatbox .content").append($(template));
+        /* Scroll down */
+        $(".message:last", "#chatbox .content").velocity("scroll", { duration: 1000, container: $("#chatbox .content")});
         /* TODO réactiver ceci */      
 //        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
-
-        $('.fsp-tooltip').tooltip('destroy').tooltip();
 
         /* Notification to the sound alert manager and update window title */
         if (user != $("#user-name").html()) {
@@ -185,7 +158,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
         }
 
     } else {
-        return new_message;
+        return template;
     }
 
 }
@@ -193,7 +166,6 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
 var join_comptoir = function() {
     data = {action: "join", cid: $("#cid").val(), session_key: $('#session_key').val()};
     socket.send(data);
-    $(".badge", "#my-" + $("#cid").val()).remove();
     return;
 }
 
