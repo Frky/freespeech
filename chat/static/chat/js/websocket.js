@@ -13,11 +13,13 @@ var new_msg = function(data) {
     /* Decrypt message */
     var msg = Decrypt_Text(data.content, get_key($("#cid").val()));
     /* Testing if this is a '/me' message */
+    // todo: factoriser
     if (msg.substring(0, 4) == "/me ") {
-        msg.slice(4);
-        addMeMessage(data.user, data.content, msg, data.msgdate, data.mid, true);
+        msg = msg.slice(3);
+        msg = data.user + msg;
+        addMessage(data.user, data.content, msg, data.msgdate, data.mid, true, true);
     } else {
-        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true);
+        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true, false);
     }
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 } 
@@ -35,6 +37,10 @@ var acknowledged = function() {
 */
 var receiveData = function(data) {
     data = JSON.parse(data)
+    /* Perform a verification on mid: avoid multiple reception of same message */
+    var last_mid = $(".message:last", "#chatbox").attr("id");
+    if (last_mid >= data.mid)
+        return;
     if (data.type == "new-msg") {
         new_msg(data);
     } else if (data.type == "error") {

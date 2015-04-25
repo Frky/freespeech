@@ -513,7 +513,7 @@ $bottom-size: 120px;
         position: relative;
         height: 100%;
         width: 94%;
-        padding: 0 3%;
+        margin: 0 3%;
         color: #000000;
         overflow-y: scroll;
 
@@ -573,7 +573,7 @@ $bottom-size: 120px;
             }
             .message {
                 width: 42%;
-                margin-left: 0%;
+                margin-left: 4%;
                 text-align: right;
 
                 position: relative;
@@ -600,8 +600,30 @@ $bottom-size: 120px;
             }
         }
 
-        &:has( > .central-msg) {
+        .central-msg {
             float: center;
+
+/*
+            position: relative;
+            z-index: 1;
+    
+            width: 100%;
+            
+            span {
+                &:before {
+                    border-top: 2px solid #dfdfdf;
+                    content: "";
+                    z-index: -1;
+                    width: 100px;
+                }
+                &:after {
+                    border-top: 2px solid #dfdfdf;
+                    content: "";
+                    z-index: -1;
+                    width: 100px;
+                }
+            } 
+*/
         }
     }
 }

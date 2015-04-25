@@ -8,7 +8,7 @@ var getComptoirInfosCallback = function(data) {
 var ajax_cmptr_callback = function(data, cid) {
     var old_location = window.location.pathname;
     $("#cid").val(cid);
-    $("#chatbox .content").html(data);
+    $(".cmptr__left", "#content").html(data);
     /*
     $('#chatbox').slimScroll({
         height: 'auto',
@@ -30,12 +30,7 @@ var ajax_cmptr_callback = function(data, cid) {
         // msg_management_init_all();
     }
 
-    $("#chatbox .content").scrollTop($("#chatbox .content")[0].scrollHeight);
-
-    if (old_location == "/") {
-        $("#options-container").removeClass("hidden");
-        init_cmptr();
-    }
+    init_cmptr();
 
     /* Updating connected users */
     online = $("#user-name").text();
@@ -56,6 +51,7 @@ var ajax_cmptr_callback = function(data, cid) {
 
     $("#send-form").removeClass("hidden");
     // bind_keys();
+
 }
 
 

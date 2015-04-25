@@ -73,7 +73,6 @@ var create_key = function() {
 }   
 
 var set_key = function(cid, key) {
-    console.log(cid, key);
     localStorage.setItem("comptoir_key_" + cid, key); 
 }
 
@@ -115,32 +114,47 @@ var checkHashUICallback = function(data) {
 
 var Decrypt_all = function() {
 
-    if (!Test_Key(localStorage.getItem(key_id))) return;
+    var key = get_key($("#cid").val());
+
+    if (!Test_Key(key)) return;
     
     /* First let's decrypt the cmptr description */
-    decipher_cmptr_info(localStorage.getItem(key_id));
+    decipher_cmptr_info(key);
     
+    var del_author = null;
+
     /* Then let's decrypt all messages */
     $(".message").each(function() {
         var ciph = $( this ).find(".ciphered").text();
+        var author = $( this ).parent().data("author");
         if (ciph != "") {
-            var clear = Decrypt_Text(ciph, localStorage.getItem(key_id));
+            var clear = Decrypt_Text(ciph, key);
             if (clear == "/wizz") {
-                var author = $( this ).parent().data("author");
-                $( this ).parent().html("<td colspan=\"3\" class=\"central-msg wizz\">" + author + " sent a wizz.</td>");
+                var prev = $(this).parent().prev();
+                if (prev.hasClass("author")) {
+                    del_author = prev.clone();
+                    prev.remove();
+                }
+                $( this ).parent().html("<div class=\"central-msg wizz\"><span>" + author + " sent a wizz.</span></div>");
 
+            } else if (clear.substring(0, 3) == "/me") {
+                var prev = $(this).parent().prev();
+                if (prev.hasClass("author")) {
+                    del_author = prev.clone();
+                    prev.remove();
+                }
+                $( this ).parent().html("<div class=\"central-msg me-msg\"><span>" + author + " " + clear.slice(4) + "</span></div>");
             } else {
+                if (del_author != null && $(".user", del_author).text() == author) {
+                    del_author.insertBefore($( this ).parent());
+                }
+                del_author = null;
                 $( this ).find(".clear").text(clear);
                 $( this ).find(".clear").html(msgify($( this ).find(".clear").html()));
                 if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
                     $(this).append(glyphicon_options);
                 }
             }
-            /*
-            if (clear.substring(0, 3) == "/me") {
-                meify($( this ).parent());
-            }
-            */
             /*
             else {
                 var author = $( this ).parent().data("author");
@@ -155,6 +169,9 @@ var Decrypt_all = function() {
             $( this ).find(".glyphicon-pencil").remove();
 
         }
+        $( this ).ready(function() {
+            scroll_down(false);
+        });
     });
 }
 

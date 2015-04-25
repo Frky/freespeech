@@ -10,6 +10,24 @@ var online = new Array();
 
 var page_title = "Freespeech";
 
+
+var scroll_down = function(animation) {
+    var d = $(".content", "#chatbox");
+    if (animation) {
+        $(".content", "#chatbox").ready(function() {
+                $("div:last", "#chatbox .content").velocity("scroll", 
+                { 
+                    duration: 1000,
+                    container: $("#chatbox .content")
+                });
+        });
+    } else {
+        d.ready(function() {
+           d.scrollTop(d.prop("scrollHeight")); 
+        });
+    }
+}
+
 var delayed_sound = function(type, cid) {
     if (type == "joined") {
         joined_alert.play();
@@ -101,49 +119,57 @@ var addMeMessage = function(user, cipher, clear, msgdate, mid, insert) {
 
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
-var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
+var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
     
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
 
     clear = msgify(clear);
 
-    var template = $(".msg-div", "#tpl-msg-myself").clone();
-    $(template).removeClass("msg-div");
-    $(template).attr("data-author", user);
-    $(".message", template).attr("id", mid);
-    $(".clear", template).html(clear);
-    $(".ciphered", template).text(cipher);
-    if (user == $("#user-name").html()) {
-        $(template).addClass("myself");
-    } else {
-        $(template).addClass("other");
-    }
-        
-    var last_user = $("#chatbox .content span.user:last").text()
-
+    var auth_div, msg_div;
+    
+    var last_user = $("#chatbox .content div.user:last").text()
     /* If the new message is NOT from the same user as the previous one, 
        we need to display the nickname of the new user */
-        /*
-    if (last_user != user) {
-        new_user = true;
-        new_message += '<div class="author"><div>';
-        if (user != $("#user-name").html()) {
-            new_message += '<span class="user">' + user + '</span>';
+    if (last_user != user && !me_msg) {
+        /* Fetch username template */
+        auth_div = $(".author", "#tpl-author").clone();
+        $(".user", auth_div).text(user);
+        if (user == $("#user-name").html()) {
+            $(auth_div).addClass("myself");
+        } else {
+            $(auth_div).addClass("other");
         }
-        new_message += '</div><div class="nopoint"></div><div>';
-        if (user === $("#user-name").html()) {
-            new_message += '<span class="user">' + user + '</span>';
-        }
-        new_message += '</div></div>';
+    } else {
+        auth_div = "";
     }
-        */
 
+    if (me_msg) {
+        msg_div = $(".central-msg", "#tpl-central").clone();
+        $("span", msg_div).html(clear);
+    } else {
+        /* Fetch message template */
+        msg_div = $(".msg-div", "#tpl-msg-myself").clone();
+        $(msg_div).removeClass("msg-div");
+        $(msg_div).attr("data-author", user);
+        $(".message", msg_div).attr("id", mid);
+        $(".clear", msg_div).html(clear);
+        $(".ciphered", msg_div).text(cipher);
+    }
+
+    if (user == $("#user-name").html()) {
+        $(msg_div).addClass("myself");
+    } else {
+        $(msg_div).addClass("other");
+    }
+        
     if (insert) {
+        /* Append the user to the chatbox */
+        $("#chatbox .content").append($(auth_div));
         /* Append the new message to the chatbox */
-        $("#chatbox .content").append($(template));
+        $("#chatbox .content").append($(msg_div));
         /* Scroll down */
-        $(".message:last", "#chatbox .content").velocity("scroll", { duration: 1000, container: $("#chatbox .content")});
+        scroll_down(true);
         /* TODO réactiver ceci */      
 //        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
 
@@ -158,7 +184,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert) {
         }
 
     } else {
-        return template;
+        return auth_div + msg_div;
     }
 
 }
@@ -347,7 +373,6 @@ var add_user_online = function(username, cid) {
     */
 
     if (username != $("#user-name").text()) {
-        console.log("Adding user " + username + " at comptoir " + comptoir);
         online = $(conline_div, comptoir).text().split(" ; ");
         if (online.indexOf(username) == -1) {
             online.push(username);
@@ -370,7 +395,6 @@ var remove_user_online = function(username, cid) {
     */
 
     if (username != $("#user-name").text()) {
-        console.log("Removing user " + username + " at comptoir " + comptoir);
         online = $(conline_div, comptoir).text().split(" ; ");
         if (online.indexOf(username) != -1) {
             online.splice(online.indexOf(username), 1);
@@ -385,13 +409,21 @@ var wizz = function(user, cid) {
     /* Notification to the sound alert manager */
     sound_notification("wizz", cid);
     /* Shaking the chatbox */
-    // TODO
-    // $("#chatbox").velocity("callout.shake", "500ms", "true");
+    $("#chatbox .content").velocity("callout.shake", "500");//, "1500ms", "true");
     /* Add message on chatbox if current comptoir */
     if (cid = $("#cid").val()) {
-        $("#chatbox table tbody").append("<tr><td colspan=\"3\" class=\"central-msg wizz\">" + user + " sent a wizz.</td></tr>");
-        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+        var wizz_div = $(".wizz-div", "#tpl-wizz").clone();
+        $(wizz_div).removeClass("wizz-div");
+        $(wizz_div).attr("data-author", user);
+        if (user == $("#user-name").html()) {
+            $(wizz_div).addClass("myself");
+        } else {
+            $(wizz_div).addClass("other");
+        }
+        $(".wizz span", wizz_div).text(user + " sent a wizz.");
+        $("#chatbox .content").append(wizz_div);
     }
+    scroll_down(true);
     return;
 }
 
@@ -405,8 +437,6 @@ var decipher_cmptr_info = function(key) {
     if ($("#cmptr-info").hasClass("ciphered")) {
         /* Deciphering title */
         ciphered_title = $(".title .ciphered", "#cmptr-info").text();
-        console.log(ciphered_title);
-        console.log(key);
         key_save = key;
         clear_title = Decrypt_Text(ciphered_title, key);
         key = key_save;
@@ -467,7 +497,6 @@ var init_cmptr = function() {
         });
         */
 
-        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
         // msg_management_init_all();
 }
 
