@@ -45,8 +45,8 @@ var receiveData = function(data) {
         new_msg(data);
     } else if (data.type == "error") {
          pop_alert("danger", data.error_msg);
-    } else if (data.type == "joined") {
-        add_user_online(data.user, data.cid);
+    } else if (data.type == "joined" || data.type == "connected") {
+        add_user_online(data.user, data.cid, data.type == "joined");
     } else if (data.type == "left") {
         remove_user_online(data.user, data.cid);
     } else if (data.type == "wizz") {

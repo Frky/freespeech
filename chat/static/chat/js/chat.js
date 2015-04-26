@@ -53,7 +53,7 @@ var sound_notification = function(type, cid) {
 
     /* If this is a comptoir notification and the sound of this comptoir 
        is off, then we return */
-    if (cid != "" && !($(".toggle-sound", "#my-" + data.cid).hasClass("glyphicon-volume-up"))) {
+    if (cid != "" && !($(".toggle-sound", "#my-" + cid).hasClass("glyphicon-volume-up"))) {
         return;
     }
 
@@ -357,7 +357,7 @@ var online_to_string = function(online) {
 
 var conline_div = ".online_users";
 
-var add_user_online = function(username, cid) {
+var add_user_online = function(username, cid, sound) {
     var comptoir = "#my-" + cid;
     /*
     if (comptoir == $("#cid").val()) {
@@ -377,6 +377,11 @@ var add_user_online = function(username, cid) {
         $(conline_div, comptoir).text(online_to_string(online));
     }
     $(conline_div, comptoir).addClass("not-empty");
+    if (sound) {
+        console.log(username);
+        last_joined = username;
+        sound_notification("joined", cid);
+    }
 }
 
 var remove_user_online = function(username, cid) {

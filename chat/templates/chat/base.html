@@ -14,7 +14,8 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'chat/css/bootstrap-glyph.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'chat/css/jquery.fs.tipper.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/css/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/generated/css/v2/switch.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
 
@@ -31,7 +32,10 @@
     <script src="{% static 'chat/js/lib/jquery.min.js' %}"></script>
     <script src="{% static 'chat/js/lib/velocity.min.js' %}"></script>
     <script src="{% static 'chat/js/lib/velocity.ui.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/velocity.ui.min.js' %}"></script>
 	<script src="{% static 'chat/js/lib/bootstrap.min.js' %}"></script>
+	<script src="{% static 'chat/js/lib/jquery.noty.packaged.min.js' %}"></script>
+	<script src="{% static 'chat/js/ui/noty-theme.js' %}"></script>
 	<!--<script src="{% static 'chat/js/lib/particles.js' %}"></script>-->
     <!-- Cryptographic libraries -->
 	<script src="{% static 'chat/js/lib/crypto/aes.js' %}"></script>
@@ -120,7 +124,37 @@
     </div>
 
     <aside>
+        <section id="panel-options">
+            <div class="panel-option">
+                <div class="option-lbl">
+                    SOUND
+                </div>
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="global-sound" checked>
+                    <label class="onoffswitch-label" for="global-sound">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- 
+            <div class="panel-option">
+                <div class="option-lbl">
+                    POP-UPS
+                </div>
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="popups" checked>
+                    <label class="onoffswitch-label" for="popups">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            -->
+        </section>
+
         <section id="my-comptoirs">
+
             <h2>Comptoirs</h2>
             <ul>
                 {% for c, n in user.comptoirs reversed %}

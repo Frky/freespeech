@@ -6,7 +6,7 @@ from ws4redis.redis_store import RedisMessage
 
 from chat.models import Comptoir, Message
 from chat.middlewares.comptoir_list import ComptoirListRequest
-from chat.socket_message import DisconnectionMessage, ConnectionMessage, NewMessage, Wizz, Edition
+from chat.socket_message import DisconnectionMessage, ConnectionMessage, NewMessage, Wizz, Edition, ConnectedMessage
 from chat.chat_errors import hash_error
 
 class Chat(object):
@@ -16,7 +16,6 @@ class Chat(object):
 
     @classmethod
     def connect(cls, user):
-        print "Connected " + str(user)
         cls.connected_users.append(user)
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
         users_to_notify = list()
@@ -27,13 +26,16 @@ class Chat(object):
             publisher = RedisPublisher(facility="fsp", users=cls.audience[cmptr.id])
             notif_msg = ConnectionMessage(user.username, cmptr.id)
             publisher.publish_message(notif_msg.redis())
+            for u in cls.audience[cmptr.id]:
+                publisher = RedisPublisher(facility="fsp", users=[user])
+                notif_msg = ConnectedMessage(u.username, cmptr.id)
+                publisher.publish_message(notif_msg.redis())
             cls.audience[cmptr.id].append(user)
         return
 
 
     @classmethod
     def disconnect(cls, user):
-        print "Disconnected: " + str(user)
         if user in cls.connected_users:
             cls.connected_users.remove(user)
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
