@@ -648,8 +648,13 @@ $bottom-size: 120px;
 */
         }
     }
+
+    img.smiley {
+        height: 1.4em;
+    }
+
+    a {
+        color: $orange;
+    }
 }
 
-img.smiley {
-    height: 1.4em;
-}
