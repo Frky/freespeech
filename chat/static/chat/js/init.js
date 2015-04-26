@@ -232,4 +232,5 @@ $(document).ready(function() {
         },
         retina_detect: false
     });*/
+
 });

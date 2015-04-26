@@ -47,12 +47,9 @@ var update_title = function() {
 
 var sound_notification = function(type, cid) {
     /* If the global control of the sound is off, we return */
-    /*
-       TODO
-    if (sound_alert.val() == 0) {
+    if (!sound_alert.is(":checked")){
         return;
     }
-    */
 
     /* If this is a comptoir notification and the sound of this comptoir 
        is off, then we return */
@@ -458,12 +455,13 @@ var init_cmptr = function() {
         $(window).focus(function() {
             unread = 0;
             update_title();
+            setTimeout(clear_noties, 7000);
         });
 
         msg_alert = $("#msgAlert")[0];
         left_alert = $("#leftAlert")[0];
         joined_alert = $("#joinedAlert")[0];
-        sound_alert = $("#sound-alert-btn");
+        sound_alert = $("#global-sound");
         wizz_alert = $("#wizzAlert")[0];
 
         /* Submission with "Enter" key ; line feed if CTRL */
