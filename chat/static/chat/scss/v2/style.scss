@@ -549,6 +549,8 @@ $bottom-size: 120px;
             }
         }
 
+        $date-margin: 5px;
+
         .myself {
             &.author .user {
                 margin-top: 10px;
@@ -584,6 +586,14 @@ $bottom-size: 120px;
                     bottom: -12px;
                     left: 9px;
                 }
+
+                .date {
+                    display: block;
+                    position: absolute;
+                    bottom: $date-margin;
+                    right: $date-margin;;
+                    font-size: 0.7em;
+                }
             }
         }
         .other {
@@ -618,6 +628,14 @@ $bottom-size: 120px;
                     z-index: 1;
                     bottom: -12px;
                     right: 9px;
+                }
+
+                .date {
+                    display: block;
+                    position: absolute;
+                    bottom: $date-margin;
+                    left: $date-margin;;
+                    font-size: 0.7em;
                 }
             }
         }

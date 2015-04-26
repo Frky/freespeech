@@ -262,6 +262,7 @@ def join_comptoir(request, cid):
     context = RequestContext(request)
     context['registerForm'] = RegisterForm()
     context['version'] = VERSION
+    context['now'] = datetime.datetime.now()
     template_name = "chat/see_comptoir.html"
 
     comptoir = get_object_or_404(Comptoir, id=cid)
@@ -281,7 +282,7 @@ def join_comptoir(request, cid):
     context['public'] = comptoir.public
     context["request"] = request
     context["title_is_ciphered"] = comptoir.title_is_ciphered
-
+    
     count = Message.objects.filter(comptoir=comptoir).count()
     msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
     context["msgs"] = msgs 
