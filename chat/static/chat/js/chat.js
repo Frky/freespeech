@@ -152,6 +152,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
         $(".message", msg_div).attr("id", mid);
         $(".clear", msg_div).html(clear);
         $(".ciphered", msg_div).text(cipher);
+        $(".date", msg_div).text(msgdate);
     }
 
     if (user == $("#user-name").html()) {

@@ -8,4 +8,4 @@ def date_to_tooltip(date):
 
     """
 
-    return date.strftime("%b. %e, %Y, %l:%M ") + ("p.m." if date.strftime("%p") == "PM" else "a.m.")
+    return date.strftime("%l:%M ") + ("p.m." if date.strftime("%p") == "PM" else "a.m.")

@@ -30,6 +30,7 @@
                         <div class="message" id="">
                             <span class="clear"></span>
                             <span class="chiphered hidden"></span>
+                            <span class="date"></span>
                         </div>
                     </div>
                 </div>
@@ -67,11 +68,12 @@
                             <div class="message" id="{{ msg.id }}">
                                 <span class="clear"></span>
                                 <span class="ciphered hidden" >{{ msg.content|unquote_new }}</span>
-                                {% if msg.date.day != now.day %} 
-                                    <span class="date">{{ msg.date.day }}/{{ msg.date.month }}</span>
-                                {% else %}
-                                    <span class="date">{{ msg.date.hour }}:{{ msg.date.minute }}</span>
-                                {% endif %}
+                                <span class="date">
+                                    {% if msg.date.day != now.day %} 
+                                        {{ msg.date|format_day }}
+                                    {% endif %}
+                                    {{ msg.date|format_time }}
+                                </span>
                             </div>
                         </div>
                 {% endfor %}
