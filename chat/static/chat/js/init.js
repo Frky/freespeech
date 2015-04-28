@@ -75,6 +75,7 @@
 //     } );
 // } );
 
+$(window).resize(rearrange);
 $(document).ready(function() {
 
     /* General UI initialisation */
@@ -91,8 +92,23 @@ $(document).ready(function() {
     /* Main panel */
     $('#menu-button').on('click', function() {
         $(this).toggleClass('active');
+        $('#extra-panel-button').removeClass('active');
         $('aside').toggleClass('visible');
-        $('#main-content-wrapper').toggleClass('wrap');
+        $('#extra-panel').removeClass('visible');
+        $('#main-content-wrapper').removeClass('wrap');
+        if ($(this).hasClass('active')) {
+            $('#main-content-wrapper').addClass('wrap');
+        }
+    });
+    $('#extra-panel-button').on('click', function() {
+        $('#menu-button').removeClass('active');
+        $(this).toggleClass('active');
+        $('#extra-panel').toggleClass('visible');
+        $('aside').removeClass('visible');
+        $('#main-content-wrapper').removeClass('wrap');
+        if ($(this).hasClass('active')) {
+            $('#main-content-wrapper').addClass('wrap');
+        }
     });
     /* Hints management */
     $('.hint.betakey').hide()
@@ -136,6 +152,7 @@ $(document).ready(function() {
     /* UI relative to comptoir page */
     if ($("#chatbox").length > 0) {
         $("#send-form").removeClass("hidden");
+        stats_init();
         key_init();
         init_cmptr();
     }
@@ -232,5 +249,7 @@ $(document).ready(function() {
         },
         retina_detect: false
     });*/
+
+    rearrange();
 
 });

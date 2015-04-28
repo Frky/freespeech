@@ -85,7 +85,7 @@ header {
     }
 }
 
-#menu-button {
+#menu-button, #extra-panel-button {
     position: relative;
     display: inline-block;
     height: 19px;
@@ -127,6 +127,16 @@ header {
     }
 }
 
+#extra-panel-button, #extra-panel {
+    @media screen and (min-width:1300px) {
+        display: none;
+    }
+}
+
+#extra-panel-button {
+    transform: rotate(90deg);
+}
+
 $aside-width: 350px;
 #main-content-wrapper {
     position: absolute;
@@ -141,7 +151,7 @@ $aside-width: 350px;
     transition: right 400ms ease;
 }
 
-aside {
+aside, #extra-panel {
     position: fixed;
     background-color: #3B3B3B;
     width: $aside-width;
@@ -457,6 +467,9 @@ $bottom-size: 120px;
     left: 0;
     bottom: 0;
     width: $comptoir-width;
+    @media screen and (max-width:1300px) {
+        width: 100%;;
+    }
     background-color: rgba(255, 255, 255, 0.97);
 
     .panel__top {
@@ -480,8 +493,11 @@ $bottom-size: 120px;
         position: fixed;
         top: $header-size + $title-size;
         bottom: $bottom-size;
-        left: 0;
         width: $comptoir-width;
+        @media screen and (max-width:1300px) {
+            width: 100%;;
+        }
+        left: 0;
         color: #FFFFFF;
     }
     .panel__bottom {
@@ -513,7 +529,12 @@ $bottom-size: 120px;
     }
 }
 
+
 .cmptr__right {
+    @media screen and (max-width:1300px) {
+        display: none;
+    }
+
     position: fixed;
     top: $header-size;
     left: $comptoir-width;
@@ -522,11 +543,69 @@ $bottom-size: 120px;
     padding-left: 20px;
     padding-right: 20px;
 
-    #comptoir-key {
-        text-overflow: ellipsis;
-        max-width: 270px;
-        padding-left: 10px;
-        padding-right: 10px;
+}
+
+.cmptr-options {
+    
+    margin-top: 15%;
+
+    &>div {
+       
+        width: 70%;
+        margin-right: 15%;
+        margin-left: 15%;
+        margin-bottom: 15%;
+
+        .title {
+            width: 100%;
+            text-align: right;
+            display: table;
+            margin-bottom: 20px;
+             
+            &:before {
+              border-top: 2px solid $light-grey;;
+              content: '';
+              display: table-cell;
+              position: relative;
+              bottom: -1em;
+              width: 100%;
+            }
+            &:before { right: 1.5%; }
+            h2 {
+                white-space: nowrap;
+                display: table-cell;
+            }
+        }
+
+        .content {
+            width: 86%;
+            margin: 7%;
+
+            text-align: left;
+            /*
+            border-style: solid;
+            border-color: $light-grey;
+            border-width: 0px 0px 0px 1px;
+            */
+            .stat-nb {
+                display: inline-block;
+                float: right;
+            }
+            p {
+                width: 100%;
+                &.other {
+                }
+                &.myself {
+                    margin-left: 50%;
+                }
+            }
+        }
+        #comptoir-key {
+            text-overflow: ellipsis;
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
     }
 }
 
@@ -670,9 +749,8 @@ $bottom-size: 120px;
     img.smiley {
         height: 1.4em;
     }
-
-    a {
-        color: $orange;
-    }
 }
 
+a {
+    color: $orange;
+}

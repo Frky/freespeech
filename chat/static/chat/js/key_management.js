@@ -127,9 +127,11 @@ var Decrypt_all = function() {
     $(".message").each(function() {
         var ciph = $( this ).find(".ciphered").text();
         var author = $( this ).parent().data("author");
+        add_auth(author);
         if (ciph != "") {
             var clear = Decrypt_Text(ciph, key);
             if (clear == "/wizz") {
+                incr_wizz();
                 var prev = $(this).parent().prev();
                 if (prev.hasClass("author")) {
                     del_author = prev.clone();
@@ -150,7 +152,11 @@ var Decrypt_all = function() {
                 }
                 del_author = null;
                 $( this ).find(".clear").text(clear);
-                $( this ).find(".clear").html(msgify($( this ).find(".clear").html()));
+                clear = msgify($(this).find(".clear").html());
+                $( this ).find(".clear").html(clear);
+                if (contains_link(clear)) {
+                    add_link(clear, author == $("#user-name").text());
+                }
                 if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
                     $(this).append(glyphicon_options);
                 }

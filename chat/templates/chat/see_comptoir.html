@@ -2,6 +2,10 @@
 
 {% load chat_tags %}
 
+{% block extra-button %}
+    <span id="extra-panel-button"><span></span></span>
+{% endblock %}
+
 {% block content %}
 
     <div class="cmptr__left">
@@ -9,15 +13,28 @@
         {% include "chat/includes/cmptr.html" %}
 
     </div>
-    <div class="cmptr__right">
-        <h2>Parameters of current comptoir</h2>
-        <p>
-            Je veux être à gauche: <input type="checkbox" id="me_position" />
-        </p>
-            <ul>
-                <input type="text" id="comptoir-key" value="" placeholder="Please provide the comptoir key">
-                <input type="text" class="hidden" id="comptoir-key-hash" value="" disabled="true">
-            </ul>
+    <div class="cmptr__right enabled">
+        <section class="cmptr-options">
+            <div class="cmptr-key content">
+                <div class="title"><h2>Key of current comptoir</h2></div>
+                <div class="content">
+                    <input type="text" id="comptoir-key" value="" placeholder="Please provide the comptoir key">
+                    <input type="text" class="hidden" id="comptoir-key-hash" value="" disabled="true">
+                </div>
+            </div>
+            <div class="cmptr-links">
+                <div class="title"><h2>Links</h2></div>
+                <div class="content">
+                </div>
+            </div>
+            <div class="cmptr-stats content">
+                <div class="title"><h2>Stats (last 250 messages)</h2></div>
+                <div class="content">
+                    <p><label>Number of participants</label><span class="stat-nb" id="nb-auth">0</span></p>
+                    <p><label>Number of wizz</label><span id="nb-wizz" class="stat-nb">0</span></p>
+                </div>
+            </div>
+        </section>
     </div>
 
 {% endblock %}

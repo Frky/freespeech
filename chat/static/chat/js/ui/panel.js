@@ -29,3 +29,32 @@ var init_ui_panel = function() {
         }
     });
 }
+
+var rearrange = function() {
+    if ($(window).width() < 1300) {
+        var from = $(".cmptr__right");
+        var to = $("#extra-panel");
+    } else {
+        var from = $("#extra-panel");
+        var to = $(".cmptr__right");
+    }
+    if (from.hasClass('enabled')) {
+        from.removeClass("enabled");
+        to.addClass("enabled");
+        to.html($("section", from).clone());
+        from.html("");
+        init_key_management_fields();
+    }
+}
+
+var add_link = function(link, auth_is_me) {
+    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;  
+    link = linkify(urlRegex.exec(link)[1]);
+    var auth_cls;
+    if (auth_is_me) {
+        auth_cls = "myself";
+    } else {
+        auth_cls = "other";
+    }
+    $(".content", ".cmptr-links").append("<p class=\"" + auth_cls + "\">" + link + "</p>");
+}

@@ -282,9 +282,9 @@ def join_comptoir(request, cid):
     context['public'] = comptoir.public
     context["request"] = request
     context["title_is_ciphered"] = comptoir.title_is_ciphered
-    
+
     count = Message.objects.filter(comptoir=comptoir).count()
-    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
+    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 250):]
     context["msgs"] = msgs 
 
     if len(context["msgs"]) > 0:

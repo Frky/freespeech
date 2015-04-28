@@ -123,6 +123,8 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
 
     clear = msgify(clear);
 
+    if (contains_link(clear)) add_link(clear, user == $("#user-name").text());
+
     var auth_div, msg_div;
     
     var last_user = $("#chatbox .content div.user:last").text()
@@ -427,6 +429,7 @@ var wizz = function(user, cid) {
         $("#chatbox .content").append(wizz_div);
     }
     scroll_down(true);
+    incr_wizz();
     return;
 }
 
