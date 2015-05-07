@@ -17,7 +17,7 @@ var checkComptoirForm = function(form) {
         $("#id_title").parent().removeClass("has-error");
     }
 
-    if ($("#public input[type=radio][name=public]:checked").val() == 'on') {
+    if ($("#public input[type=radio][name=public]:checked").val() == 'public') {
         $("#comptoir-key-hash").val(CryptoJS.SHA3("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
     } else if ($("#comptoir-key-hash", form).val() === "") {
         $("#comptoir-key-hash").parent().addClass("has-error");
@@ -26,8 +26,6 @@ var checkComptoirForm = function(form) {
     } else {
         $("#comptoir-key-hash").parent().removeClass("has-error");
     }
-
-    
 
     return valid;
 }
@@ -47,7 +45,7 @@ var submit_cform = function (form) {
     }
     var clear_title = $("#id_title", form).val();
     var clear_desc = $("#id_description", form).val();
-    if ($('#comptoir-public-switch input:checked').val() == 'public') {
+    if ($("#public input[type=radio][name=public]:checked").val() == 'public') {
         console.log("Public cmptr");
         key = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     } else {

@@ -15,7 +15,7 @@ body {
 
 a {
     text-decoration: none;
-    color: $white;
+    color: $light-grey;
 
     &:hover {
         text-decoration: underline;
@@ -33,6 +33,16 @@ header {
     font-family: Santor, serif;
     color: $white;
 
+    a {
+        text-decoration: none;
+        color: $white;
+
+        &:hover {
+            text-decoration: none;
+            color: $white;
+        }
+    }
+
     h1 {
         position: absolute;
         margin: 0;
@@ -44,15 +54,6 @@ header {
         font-weight: 100;
         text-transform: lowercase;
 
-        a {
-            text-decoration: none;
-            color: $white;
-
-            &:hover {
-                text-decoration: none;
-                color: $white;
-            }
-        }
     }
 
     blockquote {
@@ -83,6 +84,11 @@ header {
             cursor: pointer;
         }
     }
+}
+
+#menu-button-div {
+    position: relative;
+    display: inline;
 }
 
 #menu-button, #extra-panel-button {
@@ -125,6 +131,15 @@ header {
         }
 
     }
+}
+
+#menu-badge {
+    zoom: 80%;
+    position: absolute;
+    left: -10px;
+    bottom: -20px;
+    z-index: 2;
+    background-color: $orange;
 }
 
 #extra-panel-button, #extra-panel {
@@ -445,6 +460,27 @@ section#content {
 
     label {
         font-size: 1em;
+        display: block;
+    }
+
+    #public {
+        position: relative;
+        margin: 10px 0;
+        display: block;
+        width: 100%;
+        height:12px;
+        label {
+            display: inline-block;
+            cursor: pointer;
+        }
+        label#lbl_public_0 {
+            position: absolute;
+            left: 0px;
+        }
+        label#lbl_public_1 {
+            position: absolute;
+            right: 0px;
+        }
     }
 }
 
@@ -519,6 +555,7 @@ $bottom-size: 120px;
             resize: none;
             height: 100%;
             margin-left: 54%;
+            padding: 2%;
             width: 42%;
             outline: none;
 
@@ -593,13 +630,17 @@ $bottom-size: 120px;
             }
             p {
                 width: 100%;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
                 &.other {
+                    padding-right: 33%;
                 }
                 &.myself {
-                    margin-left: 50%;
+                    padding-left: 33%;
                 }
             }
         }
+
         #comptoir-key {
             text-overflow: ellipsis;
             width: 100%;
@@ -609,7 +650,7 @@ $bottom-size: 120px;
     }
 }
 
-#chatbox {
+#chatbox, {
     .content {
         position: relative;
         height: 100%;
@@ -721,28 +762,6 @@ $bottom-size: 120px;
 
         .central-msg {
             float: center;
-
-/*
-            position: relative;
-            z-index: 1;
-    
-            width: 100%;
-            
-            span {
-                &:before {
-                    border-top: 2px solid #dfdfdf;
-                    content: "";
-                    z-index: -1;
-                    width: 100px;
-                }
-                &:after {
-                    border-top: 2px solid #dfdfdf;
-                    content: "";
-                    z-index: -1;
-                    width: 100px;
-                }
-            } 
-*/
         }
     }
 
@@ -751,6 +770,3 @@ $bottom-size: 120px;
     }
 }
 
-a {
-    color: $orange;
-}

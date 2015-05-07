@@ -15,26 +15,21 @@
     </div>
     <div class="cmptr__right enabled">
         <section class="cmptr-options">
-            <div class="cmptr-key content">
+            <div id="cmptr-key-info" class="hidden">
                 <div class="title"><h2>Key of current comptoir</h2></div>
                 <div class="content">
                     <input type="text" id="comptoir-key" value="" placeholder="Please provide the comptoir key">
                     <input type="text" class="hidden" id="comptoir-key-hash" value="" disabled="true">
-                    <input type="button" value="Copy key">
-                    <input type="button" value="Copy comptoir addr">
                 </div>
             </div>
-            <div class="cmptr-links">
+            <div id="cmptr-links" class="hidden">
                 <div class="title"><h2>Links</h2></div>
                 <div class="content">
                 </div>
             </div>
-            <div class="cmptr-stats content">
-                <div class="title"><h2>Stats (last 250 messages)</h2></div>
-                <div class="content">
-                    <p><label>Number of participants</label><span class="stat-nb" id="nb-auth">0</span></p>
-                    <p><label>Number of wizz</label><span id="nb-wizz" class="stat-nb">0</span></p>
-                </div>
+            <div id="cmptr-stats" class="content">
+                <div class="title"><h2>Stats</h2></div>
+                {% include "chat/includes/stats.html" %}
             </div>
         </section>
     </div>

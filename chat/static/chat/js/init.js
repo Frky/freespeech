@@ -142,6 +142,7 @@ $(document).ready(function() {
 
     /* Depending on the location */
     if (window.location.pathname == "/") {
+        create_key();
         /* Button to generate new key */
         $("#generate-key").click(create_key);
     }

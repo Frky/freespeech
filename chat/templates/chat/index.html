@@ -7,9 +7,9 @@
         {% csrf_token %}
         {{ comptoir_form }}
         <br/>
-        <!-- Find a méthod to clean this -->
-        <input type="button" class="btn btn-info input" id="generate-key" value="Generate a random key"/>
-        <input id="comptoir-key" type="text" placeholder="Comptoir key (fill manually or generate one)" value="">
+        <!-- Find a method to clean this -->
+        <input type="button" class="optional btn btn-info input hidden" id="generate-key" value="Generate a random key"/>
+        <input id="comptoir-key" class="optional hidden" type="text" placeholder="Comptoir key (fill manually or generate one)" value="">
         <input type="submit" value="CREATE">
     </form>
 {% endblock %}

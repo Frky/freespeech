@@ -2,10 +2,18 @@
 var getComptoirInfosCallback = function(data) {
     $(".title", "#cmptr-info").text(data.title);
     $(".desc", "#cmptr-info").text(data.description);
+}
 
+var getComptoirStatsCallback = function(data) {
+    $("#cmptr-stats").html(data);
+    stats_init();
+    set_stats();
 }
 
 var ajax_cmptr_callback = function(data, cid) {
+    /* Get statistiques for comptoir */
+    jQuery.get("stats-" + cid, getComptoirStatsCallback);
+
     var old_location = window.location.pathname;
     $("#cid").val(cid);
     $(".cmptr__left", "#content").html(data);
@@ -24,6 +32,12 @@ var ajax_cmptr_callback = function(data, cid) {
     });
     $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     */
+            
+    $("#cmptr-key-info").addClass("hidden");
+    $("#cmptr-links").addClass("hidden");
+
+    reset_stats();
+
     if ($("#chatbox").length != 0) {
         key_init();
         // TODO restore
@@ -46,7 +60,7 @@ var ajax_cmptr_callback = function(data, cid) {
     window.history.replaceState({}, cid, cid);
     // join_comptoir();
 
-    $(".badge", "#my-" + $("#cid").val()).remove();
+    reset_badge($("#cid").val());
     // decipher_cmptr_info();
 
     $("#send-form").removeClass("hidden");

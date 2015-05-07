@@ -5,7 +5,7 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 from chat.models import Comptoir, BugReport
 from chat.labels import SHA3_HINT
-
+from chat.renders import CustomRadioRenderer
 
 class ComptoirForm(forms.ModelForm):
 
@@ -36,17 +36,22 @@ class ComptoirForm(forms.ModelForm):
             'title': '',
             'description': '',
             'public': '',
-            'key_hash': 'SHA3',
+            'key_hash': '',
         }
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': "name", 'class': ""}),
             'description': forms.TextInput(attrs={'placeholder': "description", 'class': ""}),
-            'key_hash': forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "", 'placeholder': "SHA3 of the key (you may generate a key)"}),
-            'public': forms.RadioSelect(attrs={'id': "comptoir-public-switch"}, choices=[('public', 'Public'), ('private', 'Private')]),
+            'key_hash': forms.TextInput(attrs={'id': "comptoir-key-hash", 'class': "optional hidden", 'placeholder': "SHA3 of the key (you may generate a key)"}),
+            'public': forms.RadioSelect(
+                            attrs={'id': "comptoir-public-switch", 'class': "radio"}, 
+                            choices=[('public', 'Public'), ('private', 'Private')],
+                            renderer=CustomRadioRenderer,
+                                ),
         }
-        help_texts = {
-            'key_hash': SHA3_HINT,
-        }
+        
+        # help_texts = {
+        #    'key_hash': SHA3_HINT,
+        # }
 
 
 

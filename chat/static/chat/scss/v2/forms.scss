@@ -104,3 +104,33 @@ label {
         }
     }*/
 }
+
+.radio {
+
+    input[type="radio"] {
+        display:none;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    label:before {
+        content: "";
+        display:inline-block;
+        width:12px;
+        height:12px;
+        margin:-1px 4px 0 0;
+        vertical-align:middle;
+        cursor: pointer;
+        -moz-border-radius:  50%;
+        border-radius:  50%;
+        border-color: $light-grey;
+        border-width: 1px;
+        border-style: solid;
+    }
+    
+    input[type=radio]:checked + label:before {
+        background-color: $light-grey;
+    }
+}

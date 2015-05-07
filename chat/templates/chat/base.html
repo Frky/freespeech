@@ -62,8 +62,8 @@
 	<script src="{% static 'chat/js/form_check.js' %}"></script>
 	<script src="{% static 'chat/js/key_management.js' %}"></script>
     <script src="{% static 'chat/js/websocket.js' %}"></script>
-	<script src="{% static 'chat/js/chat.js' %}"></script>
 	<script src="{% static 'chat/js/stats.js' %}"></script>
+	<script src="{% static 'chat/js/chat.js' %}"></script>
 	<script src="{% static 'chat/js/init.js' %}"></script>
 	{% endblock %}
 </head>
@@ -79,7 +79,7 @@
                 {% if not user.is_authenticated %}
                     <a id="login-button">Log in</a> | <a id="register-button">Register</a>
                 {% else %}
-                <span id="user-name">{{ user|truncatechars:20 }}</span>{% block extra-button %}{% endblock %}<span id="menu-button"><span></span></span>
+                <span id="user-name">{{ user|truncatechars:20 }}</span>{% block extra-button %}{% endblock %}<div id="menu-button-div"><span class="badge hidden" id="menu-badge">0</span><span id="menu-button"><span></span></span></div>
                 {% endif %}
             </nav>
         </header>

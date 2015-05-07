@@ -286,6 +286,8 @@ def join_comptoir(request, cid):
     count = Message.objects.filter(comptoir=comptoir).count()
     msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 250):]
     context["msgs"] = msgs 
+    context["nb_msg"] = count
+    context["nb_auth"] = len(list(set([msg.owner.username for msg in msgs])))
 
     if len(context["msgs"]) > 0:
         context["senti"] = context["msgs"][len(context["msgs"])-1].id
@@ -417,6 +419,27 @@ def remove_msg(request):
     msg.content = ""
     msg.save()
     return HttpResponse("OK")
+
+
+def cmptr_stats(request, cid):
+    template_name = "chat/includes/stats.html"
+
+    context = RequestContext(request)
+    comptoir = get_object_or_404(Comptoir, id=cid)
+    if comptoir is None:
+        return
+
+    if cid not in request.session.keys():
+        request.session[cid] = False
+    
+    if comptoir.public:
+        request.session[cid] = True
+    
+    count = Message.objects.filter(comptoir=comptoir).count()
+    context["nb_msg"] = count
+
+    return render(request, template_name, context)
+
 
 def ajax_comptoir(request, cid):
     template_name = "chat/includes/cmptr.html"
