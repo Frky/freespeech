@@ -37,9 +37,12 @@ var delayed_sound = function(type, cid) {
 var update_title = function() {
     if (unread == 0) {
         $("#favicon").attr("href","static/chat/images/favicon.png");
+        $("#menu-badge").addClass("hidden");
         document.title = page_title;
     } else {
         $("#favicon").attr("href","/static/chat/images/favicon_new.png");
+        $("#menu-badge").text(unread);
+        $("#menu-badge").removeClass("hidden");
         document.title = "(" + unread + ") " + page_title;
     }
 }
@@ -170,17 +173,17 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
         $("#chatbox .content").append($(msg_div));
         /* Scroll down */
         scroll_down(true);
+        /* Increase nb of messages */
+        incr_msg();
         /* TODO réactiver ceci */      
 //        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
 
         /* Notification to the sound alert manager and update window title */
         if (user != $("#user-name").html()) {
-
             if (!document.hasFocus()) {
-                unread += 1;
-                update_title();
+                update_badge($("#cid").val(), null, null);
             }
-            sound_notification("msg", data.cid);
+            sound_notification("msg", $("#cid").val());
         }
 
     } else {
@@ -333,6 +336,18 @@ var keep_history = function(cid) {
 var ctrl_pressed = false;
 
 
+var reset_badge = function(cid) {
+    if ($(".badge", "#my-" + cid).length == 0) {
+        return;
+    } else {
+        var val = parseInt($(".badge", "#my-" + cid).text());
+        console.log(val);
+        $(".badge", "#my-" + cid).remove();
+        unread -= val;
+    }
+    update_title();
+}
+
 var update_badge = function(cid, user, date) {
     if ($(".badge", "#my-" + cid).length == 0) {
         $("#my-" + cid).append("<span class=\"badge\">1</span>");
@@ -342,7 +357,6 @@ var update_badge = function(cid, user, date) {
     }
     unread += 1;
     update_title();
-//    $(".fsp-tooltip", "#my-" + cid).attr("data-original-title", "Last message by " + user +"<br />(" + date +")").tooltip('fixTitle');
 }
 
 
@@ -462,8 +476,7 @@ var decipher_cmptr_info = function(key) {
 
 var init_cmptr = function() {
         $(window).focus(function() {
-            unread = 0;
-            update_title();
+            reset_badge($("#cid").val());
             setTimeout(clear_noties, 7000);
         });
 

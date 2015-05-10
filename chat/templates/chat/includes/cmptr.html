@@ -85,7 +85,9 @@
                 <input data-cid="{{ id }}" type="hidden" id="cid" name="cid" value="{{ id }}">
                 {% if user.is_authenticated %}
                     <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
-                    <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="" autofocus></textarea>
+                    <div class="myself">
+                        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="message" autofocus></textarea>
+                    </div>
                 {% endif %}
             </form>
         </div>

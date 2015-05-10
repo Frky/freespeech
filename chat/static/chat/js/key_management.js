@@ -51,12 +51,16 @@ var update_key = function(cid, key) {
 var key_found = function(key) {
     key_field.val(key);
     update_key($("#cid").val(), key);
+    if (key != "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+        $("#cmptr-key-info").removeClass("hidden");
     Decrypt_all();
 }
 
 var key_unknown = function() {
-    if (test_default_key == true)
+    if (test_default_key == true) {
         key_field.val("");
+        $("#cmptr-key-info").removeClass("hidden");
+    }
     test_default_key = false;
 }
 
@@ -161,15 +165,6 @@ var Decrypt_all = function() {
                     $(this).append(glyphicon_options);
                 }
             }
-            /*
-            else {
-                var author = $( this ).parent().data("author");
-                var el = $( this ).parent();
-                el.html("<td colspan=\"3\" class=\"central-msg me\"></td");
-                $("td", el).text(author + clear);
-                $("td", el).find("").html(smilify(linkify(crlfy($( this ).find(".clear").html()))));
-            }
-            */
         } else {
             $( this ).find(".clear").html("<i class=\"msg-deleted\">Message deleted.</i>");
             $( this ).find(".glyphicon-pencil").remove();
