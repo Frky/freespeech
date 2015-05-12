@@ -215,7 +215,7 @@ $(document).ready(function() {
     */
 
 
-    /*particlesJS('particle', {
+    particlesJS('particle', {
         particles: {
             color: '#fff',
             shape: 'circle', // "circle", "edge" or "triangle"
@@ -249,7 +249,7 @@ $(document).ready(function() {
             mode: 'grab'
         },
         retina_detect: false
-    });*/
+    });
 
     rearrange();
 

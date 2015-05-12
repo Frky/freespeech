@@ -27,6 +27,7 @@ var new_msg = function(data) {
 var acknowledged = function() {
     $("#new-msg").val("");
     $("#new-msg").focus();
+    enable_sendbox();
 }
 
 
@@ -74,17 +75,16 @@ editMessage = function(mid, oldcipher, newcipher) {
 
 
 sendMessage = function() {
+
+
     var msg = $("#new-msg").val();
     var cid = $("#cid").val();
     var me_msg = false
 
-    console.log(msg, cid);
-    /* Does this message contain a link ? */
-    /* to be used in the future to keep trace of links */
-    if (contains_link(msg))
-        console.log("LINK DETECTED");
-    else
-        console.log("No link.");
+    if (msg == "")
+        return;
+
+    disable_sendbox();
 
     /* Do we keep history for this comptoir ? */
     var keep = keep_history(cid);
@@ -96,9 +96,9 @@ sendMessage = function() {
 //        /* Removing the substring '/me ' */
 //        msg = msg.slice(4);
 //    }
-    var local_key = get_key(cid); //localStorage.getItem(key_id);
-    console.log("Key: " + local_key);
-    var local_hash = get_hash(cid); //localStorage.getItem(key_id);
+
+    var local_key = get_key(cid); 
+    var local_hash = get_hash(cid); 
     data = {
             cid: cid, 
             msg: Encrypt_Text(msg, local_key), 
@@ -111,7 +111,6 @@ sendMessage = function() {
         jQuery.post(ws_wizz_url, data, acknowledged);
         break;
     default:
-        console.log(data);
         jQuery.post(ws_msg_url, data, acknowledged);
     }
 }

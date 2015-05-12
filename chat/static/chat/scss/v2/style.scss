@@ -66,6 +66,9 @@ header {
         background-color: $grey;
 
         font-size: 0.7em;
+        @media screen and (max-height:710px) {
+            display: none;
+        }
     }
 
     nav {
@@ -494,19 +497,36 @@ section#content {
     }
 }
 
-$comptoir-width: 1024px;
 $title-size: 35px;
-$bottom-size: 120px;
+$bottom-size: 100px;
 .cmptr__left {
     position: fixed;
     top: $header-size;
     left: 0;
     bottom: 0;
-    width: $comptoir-width;
+    right: $aside-width;
     @media screen and (max-width:1300px) {
         width: 100%;;
     }
     background-color: rgba(255, 255, 255, 0.97);
+
+    .content {
+        position: relative;
+        height: 100%;
+        width: 94%;
+        margin: 0 3%;
+        color: #000000;
+        overflow-y: scroll;
+
+        .myself, .other {
+            width: 100%;
+            margin-bottom: 20px;
+
+            &.author {
+                margin-bottom: 0px;
+            }
+        }
+    }
 
     .panel__top {
         position: absolute;
@@ -524,24 +544,41 @@ $bottom-size: 120px;
             color: $light-grey;
             margin: 10px 0 20px $left-margin;
         }
+        @media screen and (max-height:710px) {
+            display: none;
+        }
     }
     .panel__center {
         position: fixed;
         top: $header-size + $title-size;
         bottom: $bottom-size;
-        width: $comptoir-width;
+        left: 0px;
+        right: $aside-width;
         @media screen and (max-width:1300px) {
             width: 100%;;
         }
-        left: 0;
+        @media screen and (max-height:710px) {
+            top: $header-size;
+        }
         color: #FFFFFF;
+    
+        #chatbox, {
+            img.smiley {
+                height: 1.4em;
+            }
+        }
     }
     .panel__bottom {
-        position: absolute;
-        bottom: 0;
+        position: fixed;
+        bottom: 0px;
         height: $bottom-size;
-        width: 100%;
+        left: 0px;
+        right: $aside-width;
+        @media screen and (max-width:1300px) {
+            width: 100%;;
+        }
 
+        /*
         form {
             position: relative;
             height: $bottom-size - $left-margin * 2;
@@ -563,9 +600,128 @@ $bottom-size: 120px;
                 border-color: orange;
             }
         }
+        */
+    }
+
+    $date-margin: 5px;
+    
+    .myself {
+        &.author .user {
+            margin-top: 10px;
+            width: 46%;
+            margin-left: 54%;
+            text-align: left;
+            font-style: italic;
+        }
+    
+        .message {
+            width: 42%;
+            margin-left: 54%;
+            text-align: left;
+    
+            position: relative;
+            padding: 1.7%;
+            background: #000000;
+            color: #FFFFFF;
+            font-size: 0.9em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+    
+            &:after {
+                content: '';
+                position: absolute;
+                border-style: solid;
+                border-width: 12px 8px 0;
+                border-color: #000000 transparent;
+                display: block;
+                width: 0;
+                z-index: 1;
+                bottom: -12px;
+                left: 9px;
+            }
+    
+            .date {
+                display: block;
+                position: absolute;
+                bottom: $date-margin;
+                right: $date-margin;;
+                font-size: 0.7em;
+            }
+        }
+    }
+    
+    .other {
+        &.author .user {
+            margin-top: 10px;
+            width: 46%;
+            text-align: right;
+            font-style: italic;
+        }
+        .message {
+            width: 42%;
+            margin-left: 4%;
+            text-align: right;
+    
+            position: relative;
+            padding: 2%;
+            background: #cccccc;
+            color: #000000;
+            font-size: 0.9em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+    
+            &:after {
+                content: '';
+                position: absolute;
+                border-style: solid;
+                border-width: 12px 8px 0;
+                border-color: #cccccc transparent;
+                display: block;
+                width: 0;
+                z-index: 1;
+                bottom: -12px;
+                right: 9px;
+            }
+    
+            .date {
+                display: block;
+                position: absolute;
+                bottom: $date-margin;
+                left: $date-margin;;
+                font-size: 0.7em;
+            }
+        }
+    }
+    
+    .central-msg {
+        float: center;
+    }
+    
+    textarea {
+        position: relative;
+        background-color: white;
+        width: 42%;
+        padding: 2%;
+        margin-top: 20px;
+        margin-left: 50%;
+        color: black;
+        outline: none;
+        resize: none;
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+        font-size: 0.9em;
+        &:focus {
+            border-color: $orange;
+        }
+        &:disabled {
+            background-color: black;
+            color: white;
+        }
     }
 }
-
 
 .cmptr__right {
     @media screen and (max-width:1300px) {
@@ -574,24 +730,47 @@ $bottom-size: 120px;
 
     position: fixed;
     top: $header-size;
-    left: $comptoir-width;
-    right: 0;
-    bottom: 0;
+    right: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: $aside-width;
     padding-left: 20px;
     padding-right: 20px;
 
 }
 
 .cmptr-options {
-    
-    margin-top: 15%;
+
+    #cmptr-key-info {
+        position: absolute;
+        top: 0px;
+        height: 150px;
+
+        #comptoir-key {
+            text-overflow: ellipsis;
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
 
     &>div {
        
+        position: absolute;
+        
+        &#cmptr-links-panel {
+            top: 150px;
+            bottom: 200px;
+            .content {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                overflow-y: scroll;
+            }
+        }
+
         width: 70%;
-        margin-right: 15%;
-        margin-left: 15%;
-        margin-bottom: 15%;
+        margin-top: 10%;
 
         .title {
             width: 100%;
@@ -628,6 +807,7 @@ $bottom-size: 120px;
                 display: inline-block;
                 float: right;
             }
+
             p {
                 width: 100%;
                 overflow-x: hidden;
@@ -640,133 +820,12 @@ $bottom-size: 120px;
                 }
             }
         }
-
-        #comptoir-key {
-            text-overflow: ellipsis;
-            width: 100%;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-    }
-}
-
-#chatbox, {
-    .content {
-        position: relative;
-        height: 100%;
-        width: 94%;
-        margin: 0 3%;
-        color: #000000;
-        overflow-y: scroll;
-
-        .myself, .other {
-            width: 100%;
-            margin-bottom: 20px;
-
-
-            &.author {
-                margin-bottom: 0px;
-            }
-        }
-
-        $date-margin: 5px;
-
-        .myself {
-            &.author .user {
-                margin-top: 10px;
-                width: 46%;
-                margin-left: 54%;
-                text-align: left;
-                font-style: italic;
-            }
-
-            .message {
-                width: 42%;
-                margin-left: 54%;
-                text-align: left;
-
-                position: relative;
-                padding: 2%;
-                background: #000000;
-                color: #FFFFFF;
-                font-size: 0.9em;
-                -webkit-border-radius: 2px;
-                -moz-border-radius: 2px;
-                border-radius: 2px;
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    border-style: solid;
-                    border-width: 12px 8px 0;
-                    border-color: #000000 transparent;
-                    display: block;
-                    width: 0;
-                    z-index: 1;
-                    bottom: -12px;
-                    left: 9px;
-                }
-
-                .date {
-                    display: block;
-                    position: absolute;
-                    bottom: $date-margin;
-                    right: $date-margin;;
-                    font-size: 0.7em;
-                }
-            }
-        }
-        .other {
-            &.author .user {
-                margin-top: 10px;
-                width: 46%;
-                text-align: right;
-                font-style: italic;
-            }
-            .message {
-                width: 42%;
-                margin-left: 4%;
-                text-align: right;
-
-                position: relative;
-                padding: 2%;
-                background: #cccccc;
-                color: #000000;
-                font-size: 0.9em;
-                -webkit-border-radius: 2px;
-                -moz-border-radius: 2px;
-                border-radius: 2px;
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    border-style: solid;
-                    border-width: 12px 8px 0;
-                    border-color: #cccccc transparent;
-                    display: block;
-                    width: 0;
-                    z-index: 1;
-                    bottom: -12px;
-                    right: 9px;
-                }
-
-                .date {
-                    display: block;
-                    position: absolute;
-                    bottom: $date-margin;
-                    left: $date-margin;;
-                    font-size: 0.7em;
-                }
-            }
-        }
-
-        .central-msg {
-            float: center;
-        }
     }
 
-    img.smiley {
-        height: 1.4em;
+    #cmptr-stats {
+        position: absolute;
+        bottom: 0px;
+        height: 200px;
     }
 }
 

@@ -56,6 +56,6 @@ var add_link = function(link, auth_is_me) {
     } else {
         auth_cls = "other";
     }
-    $(".content", "#cmptr-links").append("<p class=\"" + auth_cls + "\">" + link + "</p>");
-    $("#cmptr-links").removeClass("hidden");
+    $(".content", "#cmptr-links-panel").append("<p class=\"" + auth_cls + "\">" + link + "</p>");
+    $("#cmptr-links-panel").removeClass("hidden");
 }

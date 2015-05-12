@@ -80,15 +80,17 @@
             </div>
         </div>
         <div class="panel__bottom">
+            <div class="content">
             <form method="post" id="send-form" class="">
                 {% csrf_token %}
                 <input data-cid="{{ id }}" type="hidden" id="cid" name="cid" value="{{ id }}">
                 {% if user.is_authenticated %}
                     <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
                     <div class="myself">
-                        <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" class="message" autofocus></textarea>
+                            <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" rows=1 autofocus></textarea>
                     </div>
                 {% endif %}
             </form>
+            </div>
         </div>
 

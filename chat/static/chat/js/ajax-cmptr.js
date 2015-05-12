@@ -34,7 +34,7 @@ var ajax_cmptr_callback = function(data, cid) {
     */
             
     $("#cmptr-key-info").addClass("hidden");
-    $("#cmptr-links").addClass("hidden");
+    $("#cmptr-links-panel").addClass("hidden");
 
     reset_stats();
 
