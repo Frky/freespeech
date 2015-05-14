@@ -49,7 +49,7 @@ var receiveData = function(data) {
     } else if (data.type == "joined" || data.type == "connected") {
         add_user_online(data.user, data.cid, data.type == "joined");
     } else if (data.type == "left") {
-        remove_user_online(data.user, data.cid);
+        remove_user_online(data.user);
     } else if (data.type == "wizz") {
         wizz(data.user, data.cid);
     } else if (data.type == "edit-msg") {

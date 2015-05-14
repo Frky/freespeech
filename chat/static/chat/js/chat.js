@@ -392,17 +392,17 @@ var add_user_online = function(username, cid, sound) {
             online.push(username);
         }
         $(conline_div, comptoir).text(online_to_string(online));
-    }
-    $(conline_div, comptoir).addClass("not-empty");
-    if (sound) {
-        console.log(username);
-        last_joined = username;
-        sound_notification("joined", cid);
+        $(conline_div, comptoir).addClass("not-empty");
+        if (sound) {
+            last_joined = username;
+            sound_notification("joined", cid);
+        }
     }
 }
 
-var remove_user_online = function(username, cid) {
+var remove_user_online = function(username) {
     var comptoir = "#my-" + cid;
+    var online_div = $(conline_div, "#my-comptoirs");
     /*
     if (comptoir == $("#cid").val()) {
         // online = online_div.text().split(", ");
@@ -412,15 +412,18 @@ var remove_user_online = function(username, cid) {
         online_div.text(online_to_string(online));
     }
     */
-
     if (username != $("#user-name").text()) {
-        online = $(conline_div, comptoir).text().split(" ; ");
-        if (online.indexOf(username) != -1) {
-            online.splice(online.indexOf(username), 1);
-        }
-        $(conline_div, comptoir).text(online_to_string(online));
-        if (online.length == 0)
-            $(conline_div, comptoir).removeClass("not-empty");
+        online_div.each(function() {
+            var online = $( this ).text().split(" ; ");
+            if (online.indexOf(username) != -1) {
+                online.splice(online.indexOf(username), 1);
+            }
+            $( this ).text(online_to_string(online));
+            if (online.length == 0)
+                $( this ).removeClass("not-empty");
+            else 
+                console.log(online);
+        });
     }
 }
 

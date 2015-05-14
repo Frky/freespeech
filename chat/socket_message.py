@@ -59,16 +59,14 @@ class ConnectedMessage(ConnectionMessage):
 
 class DisconnectionMessage(SocketMessage):
 
-    def __init__(self, username, cid):
+    def __init__(self, username):
         self.typ = "left"
         self.username = username
-        self.cid = cid
 
     def json(self):
         data = dict()
         data["type"] = self.typ
         data["user"] = self.username
-        data["cid"] = self.cid
         return json.dumps(data)
 
 

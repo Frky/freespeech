@@ -30,6 +30,7 @@ class Chat(object):
                     audience[cid].append(u)
         return audience
 
+
     @classmethod
     def connect(cls, user):
         u = ChatUser.objects.get(id=user.id)
@@ -81,9 +82,9 @@ class Chat(object):
         u.save()
         user_cmptrs = [c[0].id for c in ComptoirListRequest._comptoir_list(user)]
         audience = cls.get_audience(user_cmptrs)
-        for cmptr in user_cmptrs:
-            publisher = RedisPublisher(facility="fsp", users=audience[cmptr])
-            notif_msg = DisconnectionMessage(user.username, cmptr)
+        for u in set(reduce(lambda a,b: a+b, audience.values(), [])):
+            publisher = RedisPublisher(facility="fsp", users=[u])
+            notif_msg = DisconnectionMessage(user.username)
             publisher.publish_message(notif_msg.redis())
         return
 
