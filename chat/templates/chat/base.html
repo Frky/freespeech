@@ -15,6 +15,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'chat/css/bootstrap-glyph.min.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/css/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/css/jquery.modal.css' %}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/switch.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
@@ -35,6 +36,7 @@
     <script src="{% static 'chat/js/lib/velocity.ui.min.js' %}"></script>
 	<script src="{% static 'chat/js/lib/bootstrap.min.js' %}"></script>
 	<script src="{% static 'chat/js/lib/jquery.noty.packaged.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/jquery.modal.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'chat/js/ui/noty-theme.js' %}"></script>
 	<script src="{% static 'chat/js/lib/particles.js' %}"></script>
     <!-- Cryptographic libraries -->
@@ -61,6 +63,7 @@
 	<script src="{% static 'chat/js/utils/msg.js' %}"></script>
 	<script src="{% static 'chat/js/form_check.js' %}"></script>
 	<script src="{% static 'chat/js/key_management.js' %}"></script>
+	<script src="{% static 'chat/js/msg-management.js' %}"></script>
     <script src="{% static 'chat/js/websocket.js' %}"></script>
 	<script src="{% static 'chat/js/stats.js' %}"></script>
 	<script src="{% static 'chat/js/chat.js' %}"></script>
@@ -124,7 +127,7 @@
         </div>
     </div>
 
-    <aside>
+    <aside class="side-panel">
         <section id="panel-options">
             <div class="panel-option">
                 <div class="option-lbl">
@@ -155,8 +158,9 @@
         </section>
 
         <section id="my-comptoirs">
-
-            <h2>Comptoirs</h2>
+            <div class="title">
+                <h2>Comptoirs</h2>
+            </div>
             <ul>
                 {% for c, n in user.comptoirs reversed %}
                     <a class="cmptr-link" value="{{ c.id }}" href="#"> <!-- {% url "join_comptoir" c.id %}"> -->
@@ -183,7 +187,7 @@
         </section>
     </aside>
 
-    <div id="extra-panel"></div>
+    <div id="extra-panel" class="side-panel"></div>
 
     <script>
         var glyphicon_options = '<span class="glyphicon-options invisible">'
