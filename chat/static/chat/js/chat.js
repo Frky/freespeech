@@ -162,6 +162,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
 
     if (user == $("#user-name").html()) {
         $(msg_div).addClass("myself");
+        add_glyphicons(msg_div); 
     } else {
         $(msg_div).addClass("other");
     }
@@ -175,8 +176,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
         scroll_down(true);
         /* Increase nb of messages */
         incr_msg();
-        /* TODO réactiver ceci */      
-//        msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
+        msg_management_init($(msg_div));
 
         /* Notification to the sound alert manager and update window title */
         if (user != $("#user-name").html()) {
@@ -273,17 +273,21 @@ var message_timeout = function() {
 
 
 var replace_message = function(mid, newcipher, newclear) {
-    $(".ciphered", ".message#" + mid).html(newcipher);
-    if ($(".message#" + mid).is(":first-child")) {
-        if ($("span.glyphicon-pencil", ".message#" + mid).length == 0) {
-            $(".message#" + mid).append(glyph_edited);
-        }
-    } else {
-        if ($("span.glyphicon-pencil", ".message#" + mid).length == 0) {
-            $(".message#" + mid).prepend(glyph_edited);
-        }
+    var msg_div = $("#" + mid, "#chatbox");
+    console.log(mid + " " + newcipher + ".");
+    $(".ciphered", msg_div).html(newcipher);
+    $(".clear", msg_div).html(newclear);
+    if (newcipher == "") {
+        $(msg_div).addClass("deleted");
+        $(msg_div).find(".glyphicon-options").remove();
+        $(msg_div).find(".glyphicon-pencil").remove();
+        return;
     }
-    $(".clear", ".message#" + mid).html(newclear);
+    $(".clear", msg_div).html(newclear);
+    if ($(msg_div).hasClass("edited"))
+        return;
+    $(msg_div).addClass("edited");
+    $(msg_div).append(glyph_edited);
 }
 
 
@@ -519,7 +523,5 @@ var init_cmptr = function() {
             console.log("Changing sound.");
         });
         */
-
-        // msg_management_init_all();
 }
 

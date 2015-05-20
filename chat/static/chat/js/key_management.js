@@ -165,13 +165,14 @@ var Decrypt_all = function() {
                     $(this).append(glyphicon_options);
                 }
             }
-        } else {
-            $( this ).find(".clear").html("<i class=\"msg-deleted\">Message deleted.</i>");
+        } else if ( !$(this).parent().parent().hasClass("template") ) {
+            $( this ).addClass("deleted");
             $( this ).find(".glyphicon-pencil").remove();
 
         }
         $( this ).ready(function() {
             scroll_down(false);
+            msg_management_init_all();
         });
     });
 }

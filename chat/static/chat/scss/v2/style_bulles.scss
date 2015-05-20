@@ -3,7 +3,6 @@
 @import "forms";
 
 $header-size: 70px;
-$nav-height: 25px;
 $left-margin: 20px;
 
 body, html {padding: 0; margin: 0; height: 100%; max-height: 100%;}
@@ -73,6 +72,7 @@ header {
     }
 
     nav {
+        $nav-height: 25px;
         height: $nav-height;
         position: absolute;
         right: 10px;
@@ -169,49 +169,15 @@ $aside-width: 350px;
     transition: right 400ms ease;
 }
 
-.side-panel {
-    width: $aside-width;
-    height: 100%;
-    /*
-    h2 {
-        font-size: 1.9em;
-        text-transform: uppercase;
-        margin-left: 40px;
-        font-weight: 100;
-        color: #767676;
-    }
-    */
-    .title {
-        width: 90%;
-        margin: auto;
-        text-align: right;
-        display: table;
-        margin-bottom: 20px;
-         
-        &:before {
-          border-top: 1px solid $light-grey;;
-          content: '';
-          display: table-cell;
-          position: relative;
-          bottom: -1em;
-          width: 100%;
-        }
-        &:before { right: 1.5%; }
-        h2 {
-            white-space: nowrap;
-            display: table-cell;
-        }
-    }
-}
-
 aside, #extra-panel {
     position: fixed;
+    background-color: #3B3B3B;
+    width: $aside-width;
     top: 0;
-    bottom: 0;
     z-index: 16;
+    height: 100%;
     margin-right: -$aside-width;
     right: 0;
-    background-color: #3B3B3B;
 
     transition: margin 400ms ease;
 
@@ -249,11 +215,13 @@ aside, #extra-panel {
             background-color: $light-grey;
             width: 100%;
             height: 50px;
+            font-family: PT Sans Narrow, sans-serif;
         }
         a {
             display: inline-block;
             width: 50%;
             line-height: 50px;
+            font-size: 1.1em;
             text-align: center;
             height: 100%;
             color: black;
@@ -265,15 +233,16 @@ aside, #extra-panel {
 }
 
 #my-comptoirs {
-    position: absolute;
-    top: $header-size + $nav-height;
-    bottom: 0px;
+    margin-top: 50px;
 
+    h2 {
+        font-size: 1.9em;
+        text-transform: uppercase;
+        margin-left: 40px;
+        font-weight: 100;
+        color: #767676;
+    }
     ul {
-        position: absolute;
-        top: 20px;
-        bottom: 0px;
-        overflow-y: scroll;
         color: #EAEAEA;
         padding: 0;
         list-style: none;
@@ -282,8 +251,10 @@ aside, #extra-panel {
         display: inline-block;
         padding-left: 40px;
         width: 100%;
-        height: 35px;
-        line-height: 35px;
+        height: 50px;
+        font-family: PT Sans Narrow, sans-serif;
+        line-height: 50px;
+        font-size: 1.2em;
         cursor: pointer;
         background-color: transparent;
 
@@ -326,8 +297,8 @@ aside, #extra-panel {
 
         &:hover {
             background-color: $orange;
-                color: $grey2;
                 .txt, .online_users:after, .online_users:before {
+                color: $grey2;
             }
         }
     }
@@ -541,11 +512,11 @@ $bottom-size: 100px;
 
     .content {
         position: relative;
+        height: 100%;
         width: 94%;
         margin: 0 3%;
         color: #000000;
-        overflow: auto;
-        height: 100%;
+        overflow-y: scroll;
 
         .myself, .other {
             width: 100%;
@@ -597,16 +568,7 @@ $bottom-size: 100px;
         }
         color: #FFFFFF;
     
-        /*
-        background-image: url("../../../images/vert-line.png");
-        background-repeat: repeat-y;
-        background-position: center top;
-        background-height: 100%;
-        */
-
-        overflow: hidden;
-
-        #chatbox {
+        #chatbox, {
             img.smiley {
                 height: 1.4em;
             }
@@ -653,50 +615,41 @@ $bottom-size: 100px;
 
     $date-margin: 5px;
     
-    .message {
-        width: 49%;
-        padding: 17px 17px 17px 17px;
-        font-size: 0.9em;
-        position: relative;
-        border-style: solid;
-        -webkit-border-radius: 2px;
-        -moz-border-radius: 2px;
-        border-radius: 2px;
-
-        &.deleted>.clear:after {
-            content: "Message deleted.";
-            font-style: italic;
-            color: $light-grey;
-        }
-
-        .glyphicon-pencil {
-            font-size: 0.7em;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
-        .date {
-            display: block;
-            position: absolute;
-            font-size: 0.7em;
-            color: $light-grey;
-        }
-    }
-
     .myself {
         &.author .user {
             margin-top: 10px;
-            width: 49%;
-            margin-left: 51%;
+            width: 46%;
+            margin-left: 54%;
             text-align: left;
             font-style: italic;
         }
     
         .message {
-            margin-left: 51%;
+            width: 42%;
+            margin-left: 54%;
             text-align: left;
     
-            border-width: 0px 0px 1px 1px;
+            position: relative;
+            padding: 1.7%;
+            background: #000000;
+            color: #FFFFFF;
+            font-size: 0.9em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+    
+            &:after {
+                content: '';
+                position: absolute;
+                border-style: solid;
+                border-width: 12px 8px 0;
+                border-color: #000000 transparent;
+                display: block;
+                width: 0;
+                z-index: 1;
+                bottom: -12px;
+                left: 9px;
+            }
     
             .glyphicon-options {
                 display: block;
@@ -710,14 +663,12 @@ $bottom-size: 100px;
                 }
             }
 
-            .glyphicon-pencil {
-                float: left;
-                margin-right: 5px;
-            }
-
             .date {
+                display: block;
+                position: absolute;
                 bottom: $date-margin;
                 right: $date-margin;;
+                font-size: 0.7em;
             }
         }
     }
@@ -725,24 +676,43 @@ $bottom-size: 100px;
     .other {
         &.author .user {
             margin-top: 10px;
-            width: 49%;
+            width: 46%;
             text-align: right;
             font-style: italic;
         }
         .message {
-            margin-left: 0%;
+            width: 42%;
+            margin-left: 4%;
             text-align: right;
     
-            border-width: 0px 1px 1px 0px;
+            position: relative;
+            padding: 2%;
+            background: #cccccc;
+            color: #000000;
+            font-size: 0.9em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+    
+            &:after {
+                content: '';
+                position: absolute;
+                border-style: solid;
+                border-width: 12px 8px 0;
+                border-color: #cccccc transparent;
+                display: block;
+                width: 0;
+                z-index: 1;
+                bottom: -12px;
+                right: 9px;
+            }
     
             .date {
+                display: block;
+                position: absolute;
                 bottom: $date-margin;
                 left: $date-margin;;
-            }
-
-            .glyphicon-pencil {
-                float: right;
-                margin-left: 5px;
+                font-size: 0.7em;
             }
         }
     }
@@ -752,12 +722,26 @@ $bottom-size: 100px;
     }
     
     textarea {
-        width: 49%;
-        margin-left: 51%;
+        position: relative;
+        background-color: white;
+        width: 42%;
+        padding: 2%;
         margin-top: 20px;
-        background-color: rgba(0,0,0,0);
-        padding: 17px;
-        border-width: 0px 0px 1px 1px;
+        margin-left: 50%;
+        color: black;
+        outline: none;
+        resize: none;
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+        font-size: 0.9em;
+        &:focus {
+            border-color: $orange;
+        }
+        &:disabled {
+            background-color: black;
+            color: white;
+        }
     }
 }
 
@@ -798,23 +782,49 @@ $bottom-size: 100px;
         
         &#cmptr-links-panel {
             top: 150px;
-            bottom: 230px;
+            bottom: 200px;
             .content {
                 position: absolute;
-                top: 40px;
+                top: 0px;
                 bottom: 0px;
                 overflow-y: scroll;
             }
         }
 
+        width: 70%;
         margin-top: 10%;
 
+        .title {
+            width: 100%;
+            text-align: right;
+            display: table;
+            margin-bottom: 20px;
+             
+            &:before {
+              border-top: 2px solid $light-grey;;
+              content: '';
+              display: table-cell;
+              position: relative;
+              bottom: -1em;
+              width: 100%;
+            }
+            &:before { right: 1.5%; }
+            h2 {
+                white-space: nowrap;
+                display: table-cell;
+            }
+        }
 
         .content {
             width: 86%;
             margin: 7%;
-            margin-top: 0px;
+
             text-align: left;
+            /*
+            border-style: solid;
+            border-color: $light-grey;
+            border-width: 0px 0px 0px 1px;
+            */
             .stat-nb {
                 display: inline-block;
                 float: right;
@@ -837,7 +847,7 @@ $bottom-size: 100px;
     #cmptr-stats {
         position: absolute;
         bottom: 0px;
-        height: 230px;
+        height: 200px;
     }
 }
 
@@ -847,41 +857,4 @@ div, section {
 
 ::-webkit-scrollbar {
     display: none;
-}
-
-#edit-msg-box {
-    resize: none;
-    width: 100%;
-    padding: 17px;
-    height: 53px;
-    font-size: 0.9em;
-    position: relative;
-    border-style: solid;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    border-width: 0px 0px 1px 1px;
-}
-
-#confirm-del-msg {
-    .message {
-        text-align: left;
-        border-width: 0px 0px 1px 1px;
-        border-style: solid;
-        padding: 17px;
-    }
-    .button {
-        margin-top: 20px;
-        input {
-            display: inline-block;
-            width: 44%;
-            &#cancel-btn {
-                margin-left: 0px;
-            }
-            &#delete-btn {
-                margin-right: 0px;
-                float: right;
-            }
-        }
-    }
 }

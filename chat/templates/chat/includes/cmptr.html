@@ -29,7 +29,7 @@
                     <div data-author="" class="msg-div">
                         <div class="message" id="">
                             <span class="clear"></span>
-                            <span class="chiphered hidden"></span>
+                            <span class="ciphered hidden"></span>
                             <span class="date"></span>
                         </div>
                     </div>
@@ -65,7 +65,10 @@
                         {% endifchanged %}
                         <div data-author="{{ msg.owner }}" class="{{ msg.owner|ownership:user }}">
                             {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
-                            <div class="message" id="{{ msg.id }}">
+                            <div class="message" id="{{ msg.id }}" {% if msg.edited %}class="edited"{% endif %}>
+                                {% if msg.edited %}
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                {% endif %}
                                 <span class="clear"></span>
                                 <span class="ciphered hidden" >{{ msg.content|unquote_new }}</span>
                                 <span class="date">

@@ -13,7 +13,7 @@
         {% include "chat/includes/cmptr.html" %}
 
     </div>
-    <div class="cmptr__right enabled">
+    <div class="cmptr__right enabled side-panel">
         <section class="cmptr-options">
             <div id="cmptr-key-info" class="hidden">
                 <div class="title"><h2>Key of current comptoir</h2></div>
@@ -34,5 +34,19 @@
         </section>
     </div>
 
+    <div class="modal" id="edit-msg" aria-labelledby="confirm-del-msg-label" aria-hidden="true">
+        <input type="hidden" id="msg-to-edit" value="" />
+        <h4>Edition</h4>
+        <textarea placeholder="What's on your mind ?" name="msg" id="edit-msg-box" class="myself" value=""></textarea>
+    </div>
+    <div class="modal" id="confirm-del-msg">
+        <input type="hidden" id="msg-to-delete" value="" />
+        <h4>Deletion (can't be undone)</h4>
+        <div class="message" id="msg-to-delete-content"></div>
+        <div class="button">
+            <input type="button" value="Cancel" id="cancel-btn">
+            <input type="button" value="Delete" id="delete-btn">
+        </div>
+    </div>
 {% endblock %}
 

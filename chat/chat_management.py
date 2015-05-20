@@ -7,7 +7,7 @@ from ws4redis.redis_store import RedisMessage
 from chat.models import Comptoir, Message, ChatUser, User
 from chat.middlewares.comptoir_list import ComptoirListRequest
 from chat.socket_message import DisconnectionMessage, ConnectionMessage, NewMessage, Wizz, Edition, ConnectedMessage
-from chat.chat_errors import hash_error
+from chat.chat_errors import hash_error, owner_error, old_content_error
 
 class Chat(object):
 
@@ -128,25 +128,27 @@ class Chat(object):
         cmptr = Comptoir.objects.get(id=cid)
         # Check hash
         if cmptr.key_hash != chash:
-            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher = RedisPublisher(facility="fsp", users=[user])
             publisher.publish_message(RedisMessage(hash_error))
             return
         msg = Message.objects.get(id=mid)
         # Check owner
         if msg.owner != user:
-            publisher = RedisPublisher(facility="fsp", users=user)
+            publisher = RedisPublisher(facility="fsp", users=[user])
             publisher.publish_message(RedisMessage(owner_error))
             return
         # Check old content
-        if msg.content != old_content:
-            publisher = RedisPublisher(facility="fsp", users=user)
+        if msg.content != old_content or old_content == "":
+            publisher = RedisPublisher(facility="fsp", users=[user])
             publisher.publish_message(RedisMessage(old_content_error))
             return
+        print "Go on"
         # Editing content
         msg.content = new_content
         msg.edited = True
         msg.save()
-        publisher = RedisPublisher(facility="fsp", users=cls.audience[cid])
+        audience = cls.get_audience([cid])
+        publisher = RedisPublisher(facility="fsp", users=audience[cid])
         edit_msg = Edition(cmptr, msg)
         publisher.publish_message(edit_msg.redis())
 

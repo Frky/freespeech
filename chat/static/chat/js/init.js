@@ -215,6 +215,7 @@ $(document).ready(function() {
     */
 
 
+/*
     particlesJS('particle', {
         particles: {
             color: '#fff',
@@ -250,6 +251,7 @@ $(document).ready(function() {
         },
         retina_detect: false
     });
+*/
 
     rearrange();
 

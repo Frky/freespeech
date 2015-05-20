@@ -134,3 +134,23 @@ label {
         background-color: $light-grey;
     }
 }
+
+textarea {
+    position: relative;
+    background-color: white;
+    padding: 2%;
+    color: black;
+    outline: none;
+    resize: none;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 0.9em;
+    &:focus {
+        border-color: $orange;
+    }
+    &:disabled {
+        background-color: black;
+        color: white;
+    }
+}

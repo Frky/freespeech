@@ -24,7 +24,9 @@ var new_msg = function(data) {
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 } 
 
-var acknowledged = function() {
+var acknowledged = function(data) {
+    if (data == "err")
+        pop_alert("danger", "An error occured.");
     $("#new-msg").val("");
     $("#new-msg").focus();
     enable_sendbox();
@@ -40,9 +42,9 @@ var receiveData = function(data) {
     data = JSON.parse(data)
     /* Perform a verification on mid: avoid multiple reception of same message */
     var last_mid = $(".message:last", "#chatbox").attr("id");
-    if (last_mid >= data.mid)
-        return;
     if (data.type == "new-msg") {
+        if (last_mid >= data.mid)
+            return;
         new_msg(data);
     } else if (data.type == "error") {
          pop_alert("danger", data.error_msg);
@@ -51,10 +53,18 @@ var receiveData = function(data) {
     } else if (data.type == "left") {
         remove_user_online(data.user);
     } else if (data.type == "wizz") {
+        if (last_mid >= data.mid)
+            return;
         wizz(data.user, data.cid);
     } else if (data.type == "edit-msg") {
-        newclear = Decrypt_Text(data.content, localStorage.getItem(key_id));
+        console.log("plop")
+        var newclear = "";
+        if (data.content != "")
+            newclear = Decrypt_Text(data.content, localStorage.getItem(key_id));
         replace_message(data.mid, data.content, newclear);
+    } else if (data.type == "del-msg") {
+        var mid = data.mid;
+        $("#" + mid, "#chatbox").text();
     }
 }
 
@@ -62,7 +72,7 @@ var receiveData = function(data) {
 /*
     This function sends edition relative data to the server and handle the response
 */
-editMessage = function(mid, oldcipher, newcipher) {
+var editMessage = function(mid, oldcipher, newcipher) {
     var data = {
                 cid: $("#cid").val(), 
                 hash: $("#comptoir-key-hash").val(), 
@@ -73,8 +83,18 @@ editMessage = function(mid, oldcipher, newcipher) {
     jQuery.post(ws_edit_url, data, acknowledged);
 }
 
+var deleteMessage = function(mid, oldcipher) {
+    var data = {
+                cid: $("#cid").val(), 
+                hash: $("#comptoir-key-hash").val(), 
+                mid: mid, 
+                oldmsg: oldcipher, 
+                newmsg: "",
+            };
+    jQuery.post(ws_edit_url, data, acknowledged);
+}
 
-sendMessage = function() {
+var sendMessage = function() {
 
 
     var msg = $("#new-msg").val();
