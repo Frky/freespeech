@@ -781,10 +781,7 @@ $bottom-size: 100px;
 .cmptr-options {
 
     #cmptr-key-info {
-        position: absolute;
-        top: 0px;
-        height: 150px;
-        right: 0px;
+        height: 130px;
         width: 100%;
 
         #comptoir-key {
@@ -796,37 +793,29 @@ $bottom-size: 100px;
     }
 
     &>div {
-       
         position: absolute;
-        
-        &#cmptr-links-panel {
-            top: 150px;
-            bottom: 230px;
-            right: 0px;
-            width: 100%;
-            .content {
-                position: absolute;
-                top: 40px;
-                bottom: 0px;
-                right: 0px;
-                width: 100%;
-                overflow-y: scroll;
-            }
-        }
-
         margin-top: 10%;
-
-
         .content {
-            width: 86%;
-            margin: 7%;
+            width: 100%;
+            padding-left: 7%;
+            padding-right: 7%;
             margin-top: 0px;
             text-align: left;
-            .stat-nb {
-                display: inline-block;
-                float: right;
-            }
+        }
+    }
 
+    #cmptr-links-panel {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        top: 130px;
+        left: 0px;
+        .content {
+            position: absolute;
+            top: 30px;
+            bottom: 30px;
+            right: 0px;
+            overflow-y: scroll;
             p {
                 width: 100%;
                 overflow-x: hidden;
@@ -847,6 +836,10 @@ $bottom-size: 100px;
         height: 230px;
         right: 0px;
         width: 100%;
+        .stat-nb {
+            display: inline-block;
+            float: right;
+        }
     }
 }
 
