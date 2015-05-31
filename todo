@@ -1,16 +1,10 @@
 *** PRIORITY 0 ***
-Invert all public value in current DB during migration
 
 
 *** PRIORITY 1 ***
-> form control on register/login
-> page About/Infos
-> page Credits
-> page Help/Support
-
+> bind no history ui -> logic
 
 *** PRIORITY 2 ***
-> UI mobile
 > interface paramétrable
 > 404 / 501 / autre sur raccourci oour éviter voyeurs/patrons
 > Chargement des messages du plus récent au plus ancien
