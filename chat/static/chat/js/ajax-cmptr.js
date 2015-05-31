@@ -1,39 +1,22 @@
 
-
-var getComptoirContent = function(callback, cid) {
-
-    // Creation of an object
-    var xhr = getXMLHttpRequest(); 
-
-    // AJAX function on change    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            // Callback for results
-            callback(xhr.responseText, cid);
-        } else if (xhr.readyState < 4) {
-            // The request is in treatment, displaying loader image
-            //document.getElementById("loader").style.display = "inline";
-        }
-    };
-
-    // Initialisation
-    xhr.open("GET", "ajax-" + cid, true);
-    // Sending request
-    xhr.send();
-}
-
-
 var getComptoirInfosCallback = function(data) {
     $(".title", "#cmptr-info").text(data.title);
     $(".desc", "#cmptr-info").text(data.description);
-
 }
 
+var getComptoirStatsCallback = function(data) {
+    $("#cmptr-stats").html(data);
+    stats_init();
+    set_stats();
+}
 
-var getComptoirContentCallback = function(data, cid) {
+var ajax_cmptr_callback = function(data, cid) {
+    /* Get statistiques for comptoir */
+    jQuery.get("stats-" + cid, getComptoirStatsCallback);
+
     var old_location = window.location.pathname;
     $("#cid").val(cid);
-    $("#content").html(data);
+    $(".cmptr__left", "#content").html(data);
     /*
     $('#chatbox').slimScroll({
         height: 'auto',
@@ -49,17 +32,19 @@ var getComptoirContentCallback = function(data, cid) {
     });
     $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     */
+            
+    $("#cmptr-key-info").addClass("hidden");
+    $("#cmptr-links-panel").addClass("hidden");
+
+    reset_stats();
+
     if ($("#chatbox").length != 0) {
         key_init();
-        msg_management_init_all();
+        // TODO restore
+        // msg_management_init_all();
     }
 
-    $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
-
-    if (old_location == "/") {
-        $("#options-container").removeClass("hidden");
-        init_cmptr();
-    }
+    init_cmptr();
 
     /* Updating connected users */
     online = $("#user-name").text();
@@ -73,25 +58,14 @@ var getComptoirContentCallback = function(data, cid) {
     $("#users-connected").text(online);
 
     window.history.replaceState({}, cid, cid);
-    join_comptoir();
+    // join_comptoir();
 
+    reset_badge($("#cid").val());
     // decipher_cmptr_info();
 
     $("#send-form").removeClass("hidden");
-    bind_keys();
+    // bind_keys();
+
 }
 
 
-$(".cmptr-link").click(function () {
-    /* Get the comptoir id we need to load */
-    var cid =  $(this).text();
-    /* If we already are on a comptoir page */
-    if ($("#chatbox").length > 0) {
-        /* We get the new comptoir asynchronously */
-        getComptoirContent(getComptoirContentCallback, cid);
-        //$.getJSON("cmptrinfo-" + cid, getComptoirInfosCallback);
-    } else {
-        /* Else we get it with a get request */
-        window.location.href = cid;
-    }
-});

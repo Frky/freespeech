@@ -5,253 +5,195 @@
 
 	<title>Freespeech</title>
 
-    <meta charset="iso-8859-1">		
+    <meta charset="utf-8">
 
 	{% load staticfiles %}
 
-    <link rel="stylesheet" href="{% static 'chat/css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'chat/css/bootstrap-switch.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'chat/css/bootstrap.vertical-tabs.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'chat/generated/css/style.css' %}" />
-    <link rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
-    <script src="{% static 'chat/js/ajax.js' %}"></script>
-    <script src="{% static 'chat/js/jquery.min.js' %}"></script>
-    <!-- script src="{% static 'chat/js/jquery-ui-custom.min.js' %}"></script -->
-    <script src="{% static 'chat/js/jquery.velocity.min.js' %}"></script>
-    <script src="{% static 'chat/js/velocity.ui.js' %}"></script>
-	<script src="{% static 'chat/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
-    <script src="{% static 'chat/js/alerts.js' %}"></script>
-	<script src="{% static 'chat/js/aes.js' %}"></script>
-	<script src="{% static 'chat/js/jscrypt.js' %}"></script>
-	<script src="{% static 'chat/js/aesprng.js' %}"></script>
-	<script src="{% static 'chat/js/entropy.js' %}"></script>
-	<script src="{% static 'chat/js/md5.js' %}"></script>
-    <script src="{% static 'chat/js/sha3.js' %}"></script>
-	<script src="{% static 'chat/js/crlfy.js' %}"></script>
-	<script src="{% static 'chat/js/linkify.js' %}"></script>
-	<script src="{% static 'chat/js/smilify.js' %}"></script>
-	<script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
+    <!-- FAVICON -->
+    <link id="favicon" rel="icon" type="image/png" href="{% static 'chat/images/favicon.png' %}">
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'chat/css/bootstrap-glyph.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/css/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/css/jquery.modal.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'chat/generated/css/v2/switch.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- SCRIPTS -->
+    <script type="text/javascript">
+        var ws_msg_url = "{% url "ws_msg" %}";
+        var ws_wizz_url = "{% url "ws_wizz" %}";
+        var ws_edit_url = "{% url "ws_edit" %}";
+        var ws_identicate_url = "{% url "ws_identicate" %}";
+        var ws_uri = "{{ WEBSOCKET_URI }}";
+        var ws_heartbeat = {{ WS4REDIS_HEARTBEAT }};
+    </script>
+    <!-- UI libraries -->
+    <script src="{% static 'chat/js/lib/jquery.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/velocity.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/velocity.ui.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/velocity.ui.min.js' %}"></script>
+	<script src="{% static 'chat/js/lib/bootstrap.min.js' %}"></script>
+	<script src="{% static 'chat/js/lib/jquery.noty.packaged.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/jquery.modal.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'chat/js/ui/noty-theme.js' %}"></script>
+	<script src="{% static 'chat/js/lib/particles.js' %}"></script>
+    <!-- Cryptographic libraries -->
+	<script src="{% static 'chat/js/lib/crypto/aes.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/jscrypt.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/aesprng.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/entropy.js' %}"></script>
+	<script src="{% static 'chat/js/lib/crypto/md5.js' %}"></script>
+    <script src="{% static 'chat/js/lib/crypto/sha3.js' %}"></script>
+    <!-- Other libraries -->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ws4redis.js"></script>
+    <!-- 
+    <script src="{% static 'chat/js/lib/jquery.velocity.min.js' %}"></script>
+    <script src="{% static 'chat/js/lib/jquery.fs.tipper.js' %}"></script>
+    <script src="{% static 'chat/js/bootstrap-switch.min.js' %}"></script>
+	<script src="{% static 'chat/js/jquery.slimscroll.min.js' %}"></script>
+    -->
+    <!-- Other scripts -->
+    <!-- Utils -->
+    <script src="{% static 'chat/js/utils/alerts.js' %}"></script>
+    <!-- General -->
+    <script src="{% static 'chat/js/ui/panel.js' %}"></script>
+    <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
+	<script src="{% static 'chat/js/utils/msg.js' %}"></script>
+	<script src="{% static 'chat/js/form_check.js' %}"></script>
+	<script src="{% static 'chat/js/key_management.js' %}"></script>
+	<script src="{% static 'chat/js/msg-management.js' %}"></script>
+    <script src="{% static 'chat/js/websocket.js' %}"></script>
+	<script src="{% static 'chat/js/stats.js' %}"></script>
+	<script src="{% static 'chat/js/chat.js' %}"></script>
+	<script src="{% static 'chat/js/init.js' %}"></script>
 	{% endblock %}
 </head>
 
 <body>
-    <div id="alertBox">
-        {% if messages %}
-        {% for message in messages %}
-        {% if message.tags == "error" %}
-        <div class="alert alert-danger alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Error!</strong> {{ message }}
-        </div>
-        {% elif message.tags == "warning" %}
-        <div class="alert alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Warning!</strong> {{ message }}
-        </div>
-        {% elif message.tags == "info" %}
-        <div class="alert alert-info alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Info!</strong> {{ message }}
-        </div>
-        {% else %}
-        <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Success!</strong> {{ message }}
-        </div>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-    </div>
+    <div id="main-content-wrapper">
+        <header>
+            <h1><a href="{% url 'home' %}">FreeSpeech</a></h1>
 
-    <section id="content">
-    {% block content %}
-    {% endblock %}
-    </section>
+            <blockquote>« Whereof one cannot speak, thereof one must be silent. »</blockquote>
 
-    <div id="aside-bg" class="invisible"></div>
-    <aside>
-    <header>
-    {% block header %}
+            <nav>
+                {% if not user.is_authenticated %}
+                    <a id="login-button">Log in</a> | <a id="register-button">Register</a>
+                {% else %}
+                <span id="user-name">{{ user|truncatechars:20 }}</span>{% block extra-button %}{% endblock %}<div id="menu-button-div"><span class="badge hidden" id="menu-badge">0</span><span id="menu-button"><span></span></span></div>
+                {% endif %}
+            </nav>
+        </header>
 
-    {% if not user.is_authenticated %}
-    <nav> <span> You are not logged in.</span><!--
-    <span><a id="login-button">Log in</a> | <a id="register-button">Register</a></span>
-    -->
-    <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
-    </nav>
-    {% else %}
-    <nav>
-    <span><span id="user-name">{{ user|truncatechars:20 }}</span> | <a href="{% url "logout" %}">Log out</a> | 
-        <a href="{% url 'password_change' %}">Pwd</a>
-    </span>
-    <h1><a href="{% url "home" %}">FreeSpeech</a></h1>
-    </nav>
-    {% endif %}
+        <section id="content">
+            {% block content %}
+            {% endblock %}
+        </section>
 
-    <blockquote>
-        <p>« Whereof one cannot speak, thereof one must be silent. »<p>
-        <small>L.Wittgenstein in <cite title="Source Title">Tractatus</cite></small>
-    </blockquote>
-
-
-    {% block header_option %}
-    {% endblock %}
-
-    {% endblock %}
-	</header>
-
-
-    <div id="aside-panel">
-        <div class="panel-contents">
-
-            {% if user.is_authenticated %}
-            <div class="content" id="my-comptoirs">
-                {% include "chat/includes/my-comptoirs.html" %}
-            </div>
-            {% endif %}
-
-            {% if user.is_authenticated %}
-            <div class="content hidden" id="option-panel">
-                {% include "chat/includes/option-panel.html" %}
-            </div>
-            {% endif %}
-
-            {% if not user.is_authenticated %}
-            <div class="content" id="login-panel">
-                <form id="login-form" action="{% url "login" %}" method="post">
+        {% if not user.is_authenticated %}
+            <div id="login-panel">
+                <form id="login-form" action="{% url 'login' %}" method="post">
+                    <h3 class="title">Login</h3>
                     {% csrf_token %}
-                    <table>
-                        <tr>
-                            <td class="field-td">
-                                <input name="username" type="login" class="form-control" placeholder="Username">
-                            </td>
-                            <td class="help-td">
-                            </td>
-                            <td class="submit-td">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="field-td">
-                                <input name="password" type="password" class="form-control" placeholder="Password">
-                            </td>
-                            <td class="help-td">
-                            </td>
-                            <td class="submit-td">
-                                <input type="submit" class="btn btn-default" value="> Log in">
-                            </td>
-                        </tr>
-                    </table>
+                    <input name="username" type="login" class="form-control" placeholder="username">
+                    <input name="password" type="password" class="form-control" placeholder="password">
+                    <input type="submit" class="btn btn-default" value="Log in &#8594;">
                 </form>
             </div>
-            {% endif %}
+        {% endif %}
 
-            {% if not user.is_authenticated %}
-            <div class="content" id="register-panel">
-                <form class="formContainer" method="post" action="{% url "register" %}" id="register-form">
+        {% if not user.is_authenticated %}
+            <div id="register-panel">
+                <form class="formContainer" method="post" action="{% url 'register' %}" id="register-form">
+                    <h3 class="title">Register</h3>
                     {% csrf_token %}
-                    <table>
                         {% for field in registerForm %}
-                        <tr>
-                            <td class="field-td">
                                 {{ field }}
-                            </td>
-                            <td class="help-td">
-                            </td>
-                            <td class="submit-td">
-                            </td>
-                        </tr>
                         {% endfor %}
-                        <tr>
-                            <td class="field-td">
-                                <input class="form-control" id="beta_key" name="beta_key" placeholder="Beta key" type="text" />
-                            </td>
-                            <td class="help-td">
-                                <a href="#" class="fsp-popover btn btn-info help-block"id="beta_help" rel="popover" data-trigger="hover" data-original-title="Whut ?" data-html="true" data-content="
-                                    This site is still under development. For now, you need to have an inscription key to be able
-                                    to register. If you don't have one, you can ask for it at fsp@udtq.fr.
-                                    ">
-                                    ?</a>
-                            </td>
-                            <td class="submit-td">
-                                <input class="btn btn-default" type="submit" value="> Register">
-                            </td>
-                        </tr>
-                    </table>
+                        <input class="form-control" id="beta_key" name="beta_key" placeholder="beta key" type="text" />
+                        <p class="hint betakey">This site is still under development. For now, you need to have an inscription key to be able to register. If you don't have one, you can ask for it at fsp@udtq.fr.</p>
+                        <input class="btn btn-default" type="submit" value="Register &#8594;">
                 </form>
             </div>
-            {% endif %}
+        {% endif %}
 
-        </div>
-
-
-        <div class="panel-tabs">
-            
-            {% if user.is_authenticated %}
-            <div class="tab-area active-init">
-                <div class="tab" href="#my-comptoirs">
-                    <span class="left-arrow">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
-                    </span>
-                    <span class="right-arrow">
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                    </span>
-                    My comptoirs
-                </div>
-            </div>
-            {% endif %}
-            
-            
-            {% if user.is_authenticated %}
-            <div class="tab-area">
-                <div class="tab hidden" href="#option-panel" id="option-panel-tab">
-                    <span class="left-arrow">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
-                    </span>
-                    <span class="right-arrow">
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                    </span>
-                    Options
-                </div>
-            </div>
-            {% endif %}
-
-            {% if not user.is_authenticated %}
-            <div class="tab-area active-init">
-                <div class="tab" href="#login-panel">
-                    <span class="left-arrow">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
-                    </span>
-                    <span class="right-arrow">
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                    </span>
-                    Log in
-                </div>
-            </div>
-            {% endif %}
-
-            {% if not user.is_authenticated %}
-            <div class="tab-area">
-                <div class="tab" href="#register-panel">
-                    <span class="left-arrow">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
-                    </span>
-                    <span class="right-arrow">
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                    </span>
-                    Register
-                </div>
-            </div>
-            {% endif %}
-
+        <div class="background">
+            <div class="triangle-1"></div>
+            <div class="triangle-2"></div>
+            <div class="triangle-3"></div>
+            <div class="triangle-4"></div>
         </div>
     </div>
-    {% block footer_option %}
-    {% endblock %}
-    <footer>
-    {% block footer %}
-	{% endblock %}
+
+    <aside class="side-panel">
+        <section id="panel-options">
+            <div class="panel-option">
+                <div class="option-lbl">
+                    SOUND
+                </div>
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="global-sound" checked>
+                    <label class="onoffswitch-label" for="global-sound">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- 
+            <div class="panel-option">
+                <div class="option-lbl">
+                    POP-UPS
+                </div>
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="popups" checked>
+                    <label class="onoffswitch-label" for="popups">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            -->
+        </section>
+
+        <section id="my-comptoirs">
+            <div class="title">
+                <h2>Comptoirs</h2>
+            </div>
+            <ul>
+                {% for c, n in user.comptoirs reversed %}
+                    <a class="cmptr-link" value="{{ c.id }}" href="#"> <!-- {% url "join_comptoir" c.id %}"> -->
+                        <li id="my-{{ c.id }}" {% if c.title_is_ciphered %}class="ciphered"{% endif %}>
+                            <span class="txt">{{ c.title }}</span>
+                            <!-- Users currently connected -->
+                            <span class="online_users"></span>
+                            <span class="options">
+                                <!-- Sound ? -->
+                                <span class="toggle-sound glyphicon glyphicon-volume-up"></span>
+                                <!-- Keep history -->
+                                <!--
+                                <span class="toggle-hist glyphicon glyphicon-floppy-saved"></span>
+                                -->
+                            </span>
+                         </li>
+                    </a> 
+                {% endfor %}
+            </ul>
+        </section>
+        <section id="menu-bottom">
+            {% if user.is_authenticated %}
+            {% endif %}
+        </section>
+    </aside>
+
+    <div id="extra-panel" class="side-panel"></div>
+
+    <script>
+        var glyphicon_options = '<span class="glyphicon-options invisible">'
+            + '<span class="glyphicon glyphicon-edit"></span>'
+            + '<span class="glyphicon glyphicon-remove"></span></span>';
+    </script>
 
     <audio id="msgAlert">
     <source src="{% static 'chat/sounds/msg.ogg' %}" type="audio/ogg">
@@ -268,83 +210,18 @@
     <audio id="joinedAlert">
     <source src="{% static 'chat/sounds/joined.ogg' %}" type="audio/ogg">
     </audio>
-
-    <div id="left-menu">
-        <a href="{% url "about" %}">About</a>
-        •
-        <a href="{% url "report" %}">Report a bug</a>
-        •
-        Version beta {{ version }}
-    </div>
-    </footer>
-    </aside>
-
-    <!-- DELETION Modal -->
-    <div class="modal fade" id="confirm-del-msg" tabindex="-1" role="dialog" aria-labelledby="confirm-del-msg-label" aria-hidden="true">
-        <input type="hidden" id="msg-to-delete" value="" />
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Confirmation required</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this message ("<i><span id="msg-to-delete-content"></span></i>")? <br />
-                    This operation is not reversible.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirm-del-msg-btn">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- EDITION Modal -->
-    <div class="modal fade" id="edit-msg" tabindex="-1" role="dialog" aria-labelledby="confirm-del-msg-label" aria-hidden="true">
-        <input type="hidden" id="msg-to-edit" value="" />
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Edition</h4>
-                </div>
-                <div class="modal-body">
-                    <textarea placeholder="What's on your mind ?" name="msg" id="edit-msg-box" class="form-control" value=""></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirm-edit-msg-btn">Edit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        var glyphicon_options = '<span class="glyphicon-options invisible">' 
-            + '<span class="glyphicon glyphicon-edit"></span>'
-            + '<span class="glyphicon glyphicon-remove"></span></span>';
-    </script>
-
-	<script src="{% static 'chat/js/key_management.js' %}"></script>
-	<script src="{% static 'chat/js/form_check.js' %}"></script>
+    <!-- 
 	<script src="{% static 'chat/js/ZeroClipboard.min.js' %}"></script>
+    -->
 
-    {% if user.is_authenticated %}
-    {% load socketio_tags %}
-    {% socketio %}
+    <!--
     <script src="{% static 'chat/js/msg-management.js' %}"></script>
-	<script src="{% static 'chat/js/chat.js' %}"></script>
-    <script src="{% static 'chat/js/scroll.js' %}"></script>
     <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
-    {% endif %}
+    <script src="{% static 'chat/js/ui/scroll.js' %}"></script>
+    -->
+    
 
-	<script src="{% static 'chat/js/init_page_elements.js' %}"></script>
-
-    {% block additionnal_script %}
-
-    {% endblock %}
-
+    {% block additionnal_script %}{% endblock %}
 </body>
 
 </html>

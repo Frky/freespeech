@@ -1,0 +1,15 @@
+<div class="radio" id="{{ field.name }}">
+{% for choice in field %}
+    <input type="radio"
+           name="{{ field.name }}"
+           value="{{ choice.choice_value }}"
+           id="id_{{ field.name }}_{{ forloop.counter0 }}"
+           {% if field.value == choice.choice_value %}
+               checked='checked'
+           {% endif %}
+    />
+    <label id="lbl_{{ field.name}}_{{ forloop.counter0}}" for="id_{{ field.name }}_{{ forloop.counter0 }}">
+        {{ choice.choice_label }}
+    </label>
+{% endfor %}
+</div>

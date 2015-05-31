@@ -8,7 +8,7 @@ class ComptoirListRequest(object):
     
     @classmethod
     def _comptoir_list(cls, user):
-        
+
         if (not user.is_authenticated() or user.is_anonymous()):
             return list()
         else:
@@ -17,7 +17,7 @@ class ComptoirListRequest(object):
         my_comptoirs = list()
        
         comptoirs = Comptoir.objects.all()
-    
+
         for lv in user.chatuser.last_visits.all():
             cmpt = lv.comptoir
             date = lv.date

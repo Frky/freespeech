@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
 from chat.models import IndependantMessage, Message, BetaKey, BugReport, ChatUser, LastVisit
 from chat.forms import *
@@ -27,12 +28,18 @@ from django.forms.util import ErrorList
 from freespeech.settings import CONTACT_EMAIL 
 
 import datetime, pytz
+import hashlib, sha3
 from freespeech.settings import TIME_ZONE
 from django.utils.timezone import utc
 
 from chat.utils import date_to_tooltip
 
+from chat.chat_management import Chat
+
+import json
+
 VERSION = "0.94"
+
 timezone_local = pytz.timezone(TIME_ZONE)
 
 @register.filter
@@ -43,26 +50,25 @@ def unquote_new(value):
 comptoir_created = False
 
 
-
 def index(request):
-    context = RequestContext(request)
-    context['registerForm'] = RegisterForm()
-    context['version'] = VERSION
     """
-	Home view
-
+    Home view
     """
-
     global comptoir_created
 
-    template_name = "chat/index.html"
+    context = RequestContext(request)
+    context.update({
+        'registerForm': RegisterForm(),
+        'version': VERSION,
+        'title': '',
+        'description': '',
+        'comptoir_form': ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm(initial={'public': 'public'}),
 
-    context["title"] = ""
-    context["description"] = ""
-    context["comptoir_form"] = ComptoirForm(request.POST) if "csrfmiddlewaretoken" in request.POST.keys() and not comptoir_created else ComptoirForm()
+    })
 
     comptoir_created = False
 
+    template_name = "chat/index.html"
     return render(request, template_name, context)
 
 
@@ -184,8 +190,8 @@ def sign_out(request):
     return redirect("home")
 
 
+@login_required(login_url='/', redirect_field_name=None)
 def create_comptoir(request):
-
     global comptoir_created
 
     context = RequestContext(request)
@@ -197,7 +203,7 @@ def create_comptoir(request):
         data = form.cleaned_data
 
         if request.user.is_authenticated and str(request.user) != "AnonymousUser":
-            user = request.user 
+            user = request.user
         else:
             user = None
 
@@ -205,13 +211,17 @@ def create_comptoir(request):
             form._errors['key_hash'] = ErrorList("This field is requested to create a private comptoir.")
             messages.warning(request, "Comptoir not created: no hash given.")
             return index(request)
-
+        if data['public']:
+            key = "ff" * 32
+            sha = hashlib.sha3_512()
+            sha.update(key)
+            data['key_hash'] = sha.hexdigest()
         new_comptoir = Comptoir(owner=user,
-                              title=data['title'],
-                              description=data['description'],
-                              public= not data['public'],
-                              key_hash=data['key_hash'],
-                              title_is_ciphered= True)
+                                title=data['title'],
+                                description=data['description'],
+                                public=not data['public'],
+                                key_hash=data['key_hash'],
+                                title_is_ciphered=True)
 
         new_comptoir.save()
 
@@ -220,18 +230,20 @@ def create_comptoir(request):
         request.user.chatuser.last_visits.add(lv)
         request.user.comptoirs.append((new_comptoir, 0))
 
-        messages.success(request, "The comptoir has been created successfully. You can access your comptoirs by clicking on your nickname.")
+        messages.success(request,
+                         "The comptoir has been created successfully. You can access your comptoirs by clicking on your nickname.")
 
         # Global variable set to True to distinguish between form with error
         # (that will be filled by index) and form treated that as to be cleaned up
         comptoir_created = True
-        
-        return redirect("join_comptoir", new_comptoir.id);
+
+        return HttpResponse("cid_" + str(new_comptoir.id))
+        # return redirect("join_comptoir", new_comptoir.id)
 
     else:
         messages.warning(request, "Comptoir not created: some errors in the form.")
-    
-        return index(request);
+
+        return index(request)
 
 
 def check_hash(request):
@@ -250,6 +262,7 @@ def join_comptoir(request, cid):
     context = RequestContext(request)
     context['registerForm'] = RegisterForm()
     context['version'] = VERSION
+    context['now'] = datetime.datetime.now()
     template_name = "chat/see_comptoir.html"
 
     comptoir = get_object_or_404(Comptoir, id=cid)
@@ -271,8 +284,10 @@ def join_comptoir(request, cid):
     context["title_is_ciphered"] = comptoir.title_is_ciphered
 
     count = Message.objects.filter(comptoir=comptoir).count()
-    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
+    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 250):]
     context["msgs"] = msgs 
+    context["nb_msg"] = count
+    context["nb_auth"] = len(list(set([msg.owner.username for msg in msgs])))
 
     if len(context["msgs"]) > 0:
         context["senti"] = context["msgs"][len(context["msgs"])-1].id
@@ -405,6 +420,27 @@ def remove_msg(request):
     msg.save()
     return HttpResponse("OK")
 
+
+def cmptr_stats(request, cid):
+    template_name = "chat/includes/stats.html"
+
+    context = RequestContext(request)
+    comptoir = get_object_or_404(Comptoir, id=cid)
+    if comptoir is None:
+        return
+
+    if cid not in request.session.keys():
+        request.session[cid] = False
+    
+    if comptoir.public:
+        request.session[cid] = True
+    
+    count = Message.objects.filter(comptoir=comptoir).count()
+    context["nb_msg"] = count
+
+    return render(request, template_name, context)
+
+
 def ajax_comptoir(request, cid):
     template_name = "chat/includes/cmptr.html"
 
@@ -503,3 +539,75 @@ def welcome(request):
             return render(request, "chat/welcome.html", {"request_sent": True})
     else:
         return render(request, "chat/welcome.html")
+
+
+
+
+
+## WEBSOCKET RELATIVE VIEWS
+
+
+#@csrf_exempt
+#def ws_connect(request):
+#    """
+#        This function is used to maintain a consistent list
+#        of connected users. Each user has to connect its socket to 
+#        be able to receive messages.
+#
+#    """
+
+
+@csrf_exempt
+def ws_identicate(request):
+    Chat.connect(request.user)
+    return HttpResponse("ok")
+    
+
+@csrf_exempt
+def ws_msg(request):
+    try:
+        msg = request.POST["msg"]
+        cid = request.POST["cid"]
+        chash = request.POST["hash"]
+        me_msg = request.POST["me_msg"]
+        # TODO no history feature
+        # keep = (request.POST["keep"].lower() == "true")
+        keep = True
+        if me_msg == "true":
+            me_msg = True
+        else:
+            me_msg = False
+    except KeyError:
+        return HttpResponse("err")
+    Chat.message(request.user, cid, chash, msg, me_msg, keep)
+    return HttpResponse("ack")
+
+
+@csrf_exempt
+def ws_wizz(request):
+    try:
+        msg = request.POST["msg"]
+        cid = request.POST["cid"]
+        chash = request.POST["hash"]
+        # TODO no history feature
+        # keep = (request.POST["keep"].lower() == "true")
+        keep = True
+    except KeyError:
+        return HttpResponse("err")
+    Chat.wizz(request.user, cid, chash, msg, keep)
+    return HttpResponse("ack")
+
+
+@csrf_exempt
+def ws_edit(request):
+    try:
+        cid = request.POST["cid"]
+        mid = request.POST["mid"]
+        oldmsg = request.POST["oldmsg"]
+        newmsg = request.POST["newmsg"]
+        chash = request.POST["hash"]
+    except KeyError:
+        return HttpResponse("err")
+    Chat.edit(request.user, cid, chash, mid, oldmsg, newmsg) 
+    return HttpResponse("ok")
+
