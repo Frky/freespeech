@@ -275,6 +275,8 @@ aside, #extra-panel {
         position: absolute;
         top: 20px;
         bottom: 0px;
+        right: 0px;
+        left: 0px;
         overflow-y: scroll;
         color: #EAEAEA;
         padding: 0;
@@ -607,10 +609,8 @@ $bottom-size: 100px;
 
         overflow: hidden;
 
-        #chatbox {
-            img.smiley {
-                height: 1.4em;
-            }
+        img.smiley {
+            height: 1.4em;
         }
     }
     .panel__bottom {
@@ -781,8 +781,11 @@ $bottom-size: 100px;
 .cmptr-options {
 
     #cmptr-key-info {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
         height: 130px;
-        width: 100%;
 
         #comptoir-key {
             text-overflow: ellipsis;
@@ -806,7 +809,7 @@ $bottom-size: 100px;
 
     #cmptr-links-panel {
         position: absolute;
-        bottom: 0px;
+        bottom: 50px;
         right: 0px;
         top: 130px;
         left: 0px;
@@ -818,7 +821,10 @@ $bottom-size: 100px;
             overflow-y: scroll;
             p {
                 width: 100%;
+                line-height: 20px;
+                max-height: 20px;
                 overflow-x: hidden;
+                overflow-y: hidden;
                 text-overflow: ellipsis;
                 &.other {
                     padding-right: 33%;

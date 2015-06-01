@@ -284,7 +284,7 @@ def join_comptoir(request, cid):
     context["title_is_ciphered"] = comptoir.title_is_ciphered
 
     count = Message.objects.filter(comptoir=comptoir).count()
-    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 250):]
+    msgs = Message.objects.filter(comptoir=comptoir).order_by('date')[max(0, count - 150):]
     context["msgs"] = msgs 
     context["nb_msg"] = count
     context["nb_auth"] = len(list(set([msg.owner.username for msg in msgs])))
