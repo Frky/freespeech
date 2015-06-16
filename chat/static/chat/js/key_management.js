@@ -168,12 +168,11 @@ var Decrypt_all = function() {
         } else if ( !$(this).parent().parent().hasClass("template") ) {
             $( this ).addClass("deleted");
             $( this ).find(".glyphicon-pencil").remove();
-
         }
-        $( this ).ready(function() {
-            scroll_down(false);
-            msg_management_init_all();
-        });
+    });
+    $( this ).ready(function() {
+        scroll_down(false);
+        msg_management_init_all();
     });
 }
 

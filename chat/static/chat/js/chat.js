@@ -274,7 +274,6 @@ var message_timeout = function() {
 
 var replace_message = function(mid, newcipher, newclear) {
     var msg_div = $("#" + mid, "#chatbox");
-    console.log(mid + " " + newcipher + ".");
     $(".ciphered", msg_div).html(newcipher);
     $(".clear", msg_div).html(newclear);
     if (newcipher == "") {
@@ -503,14 +502,6 @@ var init_cmptr = function() {
             }
         }); 
 
-        $("#edit-msg-box").keydown(function(e){
-            if (e.which == 13 && !e.ctrlKey){
-                if (!e.crtlKey) {
-                    e.preventDefault();
-                    pre_edition();
-                }
-            }
-        });
         /*
         var init_sound_plop = false;
         sound_alert.parent().click(function() {

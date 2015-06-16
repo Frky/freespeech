@@ -156,6 +156,7 @@ $(document).ready(function() {
         stats_init();
         key_init();
         init_cmptr();
+        init_edit();
     }
 
         /* OBSOLETE WITH NEW DESIGN ?

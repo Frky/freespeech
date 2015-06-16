@@ -36,7 +36,6 @@ var edit_msg_server = function(msgid, oldcipher, newcipher) {
 
 
 var edit_msg_client = function(msg_div) {
-    $("#valid-edit-btn").click(pre_edition);
     var mid = $(".message", msg_div).attr("id");
     $(msg_div).addClass("editing");
     $("#msg-to-edit").val(mid);
@@ -49,6 +48,8 @@ var edit_msg_client = function(msg_div) {
 
 
 var msg_management_init_all = function() {
+    console.log("Edit all");
+    $("#valid-edit-btn").click(pre_edition);
     $(".myself", "#chatbox").each(function() {
         msg_management_init(this);
     });
@@ -87,6 +88,7 @@ var msg_management_init = function(msg_el) {
 
 
 var pre_edition = function() {
+    console.log("Pre-edit");
     $.modal.close();
     mid = $("#msg-to-edit").val();
     oldcipher = $(".ciphered", ".message#" + mid).text();
@@ -96,3 +98,13 @@ var pre_edition = function() {
 }
 
 
+var init_edit = function() {
+    $("#edit-msg-box").keydown(function(e){
+        if (e.which == 13 && !e.ctrlKey){
+            if (!e.crtlKey) {
+                e.preventDefault();
+                pre_edition();
+            }
+        }
+    });
+}

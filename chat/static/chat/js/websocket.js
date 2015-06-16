@@ -57,7 +57,6 @@ var receiveData = function(data) {
             return;
         wizz(data.user, data.cid);
     } else if (data.type == "edit-msg") {
-        console.log("plop")
         var newclear = "";
         if (data.content != "")
             newclear = Decrypt_Text(data.content, localStorage.getItem(key_id));
