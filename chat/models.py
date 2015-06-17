@@ -52,3 +52,4 @@ class ChatUser(models.Model):
     user = models.OneToOneField(User)
     last_visits = models.ManyToManyField(LastVisit)
     connected = models.BooleanField(default=False)
+    nb_ws = models.IntegerField(default=0)

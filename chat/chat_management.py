@@ -9,6 +9,8 @@ from chat.middlewares.comptoir_list import ComptoirListRequest
 from chat.socket_message import DisconnectionMessage, ConnectionMessage, NewMessage, Wizz, Edition, ConnectedMessage
 from chat.chat_errors import hash_error, owner_error, old_content_error
 
+from time import sleep
+
 class Chat(object):
 
     connected_users = list()
@@ -34,7 +36,11 @@ class Chat(object):
     @classmethod
     def connect(cls, user):
         u = ChatUser.objects.get(id=user.id)
+        if u.connected == True:
+            sleep(2)
+        u = ChatUser.objects.get(id=user.id)
         u.connected = True
+        u.nb_ws += 1
         u.save()
         user_cmptrs = [c[0] for c in ComptoirListRequest._comptoir_list(user)]
         audience = dict()
@@ -77,9 +83,16 @@ class Chat(object):
 
     @classmethod
     def disconnect(cls, user):
+        sleep(2)
         u = ChatUser.objects.get(id=user.id)
-        u.connected = False
+        u.nb_ws -= 1
         u.save()
+        if u.nb_ws <= 0:
+            u.nb_ws = 0
+            u.connected = False
+            u.save()
+        else:
+            return
         user_cmptrs = [c[0].id for c in ComptoirListRequest._comptoir_list(user)]
         audience = cls.get_audience(user_cmptrs)
         for u in set(reduce(lambda a,b: a+b, audience.values(), [])):
