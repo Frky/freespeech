@@ -51,15 +51,14 @@ var update_key = function(cid, key) {
 var key_found = function(key) {
     key_field.val(key);
     update_key($("#cid").val(), key);
-    if (key != "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-        $("#cmptr-key-info").removeClass("hidden");
+    if (key == "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+        $("#cmptr-key-info").addClass("hidden");
     Decrypt_all();
 }
 
 var key_unknown = function() {
     if (test_default_key == true) {
         key_field.val("");
-        $("#cmptr-key-info").removeClass("hidden");
     }
     test_default_key = false;
 }
