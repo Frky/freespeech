@@ -168,6 +168,9 @@
                             <span class="txt">{{ c.title }}</span>
                             <!-- Users currently connected -->
                             <span class="online_users"></span>
+                            {% if n != 0 %}
+                                <span class="badge">{{ n }}</span> 
+                            {% endif %}
                             <span class="options">
                                 <!-- Sound ? -->
                                 <span class="toggle-sound glyphicon glyphicon-volume-up"></span>

@@ -88,7 +88,6 @@ var msg_management_init = function(msg_el) {
 
 
 var pre_edition = function() {
-    console.log("Pre-edit");
     $.modal.close();
     mid = $("#msg-to-edit").val();
     oldcipher = $(".ciphered", ".message#" + mid).text();
