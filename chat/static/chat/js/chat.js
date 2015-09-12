@@ -502,6 +502,17 @@ var init_cmptr = function() {
             }
         }); 
 
+        /* Compute number of unread messages */
+        $("li", ".cmptr-link").each(function() {
+            if ($(this).attr("id") == "my-" + $("#cid").val())
+                return;
+            var ntxt = $(".badge", this);
+            if (ntxt != undefined && ntxt.text() != "") {
+                unread += parseInt(ntxt.text());
+            }
+        });
+        update_title();
+
         /*
         var init_sound_plop = false;
         sound_alert.parent().click(function() {
