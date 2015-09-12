@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-from freespeech.settings import UNDER_WORK
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -8,7 +8,7 @@ from freespeech.settings import UNDER_WORK
 
 # handler404 = 'chat.views.error404'
 
-if not UNDER_WORK:
+if not settings.UNDER_WORK:
     urlpatterns = patterns('',
         url("", include('django_socketio.urls')),
     

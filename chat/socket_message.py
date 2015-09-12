@@ -2,12 +2,13 @@
 from ws4redis.redis_store import RedisMessage
 import json
 import pytz
-from freespeech.settings import TIME_ZONE
+
+from django.conf import settings
 
 from chat.models import Message, Comptoir
 from chat.utils import date_to_tooltip
 
-timezone_local = pytz.timezone(TIME_ZONE)
+timezone_local = pytz.timezone(settings.TIME_ZONE)
 
 class SocketMessage(object):
 

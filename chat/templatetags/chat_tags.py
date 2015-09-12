@@ -2,11 +2,11 @@
 import pytz
 
 from django import template
+from django.conf import settings
 
-from freespeech.settings import TIME_ZONE
 from chat.utils import date_to_tooltip
 
-timezone_local = pytz.timezone(TIME_ZONE)
+timezone_local = pytz.timezone(settings.TIME_ZONE)
 register = template.Library()
 
 @register.filter(name='ownership')

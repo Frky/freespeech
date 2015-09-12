@@ -25,11 +25,10 @@ from urllib import unquote
 
 from django.forms.util import ErrorList
 
-from freespeech.settings import CONTACT_EMAIL 
+from django.conf import settings
 
 import datetime, pytz
 import hashlib, sha3
-from freespeech.settings import TIME_ZONE
 from django.utils.timezone import utc
 
 from chat.utils import date_to_tooltip
@@ -40,7 +39,7 @@ import json
 
 VERSION = "0.94"
 
-timezone_local = pytz.timezone(TIME_ZONE)
+timezone_local = pytz.timezone(settings.TIME_ZONE)
 
 @register.filter
 def unquote_new(value):
@@ -137,14 +136,14 @@ def register(request):
 
         key = request.POST['beta_key']
         if key == "":
-            messages.warning(request, "No key specified. You can ask for a beta key at " + CONTACT_EMAIL + ".")
+            messages.warning(request, "No key specified. You can ask for a beta key at " + settings.CONTACT_EMAIL + ".")
             context['form'] = form
             return redirect("home")
 
         try:
             av_key = BetaKey.objects.get(key=key)
         except Exception:
-            messages.error(request, "This key does not exists. You can ask a beta key at " + CONTACT_EMAIL + ".")
+            messages.error(request, "This key does not exists. You can ask a beta key at " + settings.CONTACT_EMAIL + ".")
             context['form'] = form
             return redirect("home")
 
@@ -152,7 +151,7 @@ def register(request):
             av_key.used = True
             av_key.save()
         else:
-            messages.info(request, "This key has already been used. You can ask for a new one at " + CONTACT_EMAIL + ".")
+            messages.info(request, "This key has already been used. You can ask for a new one at " + settings.CONTACT_EMAIL + ".")
             context['form'] = form
             return redirect("home")
 
