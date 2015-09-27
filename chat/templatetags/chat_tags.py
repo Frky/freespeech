@@ -19,7 +19,7 @@ def ownership(owner, me):
 
 @register.filter(name='format_day')
 def format_day(date):
-    return date.astimezone(timezone_local).strftime("%b. %e,")
+    return date.astimezone(timezone_local).strftime("%b. %e")
 
 
 @register.filter(name='format_time')

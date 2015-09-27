@@ -160,7 +160,7 @@ var Decrypt_all = function() {
                 if (contains_link(clear)) {
                     add_link(clear, author == $("#user-name").text());
                 }
-                if ($( this ).is(":last-child", "tr") && !$( this ).hasClass("central-msg")) {
+                if (!$( this ).hasClass("central-msg")) {
                     $(this).append(glyphicon_options);
                 }
             }

@@ -34,6 +34,10 @@ header {
     font-family: Santor, serif;
     color: $white;
 
+    @media screen and (max-height:600px) {
+        display: none;
+    }
+
     a {
         text-decoration: none;
         color: $white;
@@ -532,6 +536,7 @@ section#content {
 
 $title-size: 35px;
 $bottom-size: 100px;
+$bottom-size-min: 60px;
 .cmptr__left {
     position: fixed;
     top: $header-size;
@@ -540,6 +545,9 @@ $bottom-size: 100px;
     right: $aside-width;
     @media screen and (max-width:1300px) {
         width: 100%;;
+    }
+    @media screen and (max-height:600px) {
+        top: 0px;
     }
     background-color: rgba(255, 255, 255, 0.97);
 
@@ -552,10 +560,9 @@ $bottom-size: 100px;
 
         .myself, .other {
             width: 100%;
-            margin-bottom: 20px;
 
             &.author {
-                margin-bottom: 0px;
+                margin-bottom: 5px;
             }
         }
 
@@ -582,7 +589,7 @@ $bottom-size: 100px;
             color: $light-grey;
             margin: 10px 0 20px $left-margin;
         }
-        @media screen and (max-height:710px) {
+        @media screen and (max-height:710px) and (min-height:600px) {
             display: none;
         }
     }
@@ -590,6 +597,9 @@ $bottom-size: 100px;
         position: fixed;
         top: $header-size + $title-size;
         bottom: $bottom-size;
+        @media screen and (max-height:710px) {
+            bottom: $bottom-size-min;
+        }
         left: 0px;
         right: $aside-width;
         @media screen and (max-width:1300px) {
@@ -598,15 +608,11 @@ $bottom-size: 100px;
         @media screen and (max-height:710px) {
             top: $header-size;
         }
+        @media screen and (max-height:600px) {
+            top: $title-size;
+        }
         color: #FFFFFF;
     
-        /*
-        background-image: url("../../../images/vert-line.png");
-        background-repeat: repeat-y;
-        background-position: center top;
-        background-height: 100%;
-        */
-
         overflow: hidden;
 
         img.smiley {
@@ -617,6 +623,9 @@ $bottom-size: 100px;
         position: fixed;
         bottom: 0px;
         height: $bottom-size;
+        @media screen and (max-height:710px) {
+            height: $bottom-size-min;
+        }
         left: 0px;
         right: $aside-width;
         @media screen and (max-width:1300px) {
@@ -655,14 +664,16 @@ $bottom-size: 100px;
     $date-margin: 5px;
     
     .message {
+        padding: 17px;
         width: 49%;
-        padding: 17px 17px 17px 17px;
         font-size: 0.9em;
         position: relative;
         border-style: solid;
-        -webkit-border-radius: 2px;
-        -moz-border-radius: 2px;
-        border-radius: 2px;
+
+        margin-bottom: 20px;
+        @media screen and (max-height: 710px) {
+            margin-bottom: 0px;
+        }
 
         &.deleted>.clear:after {
             content: "Message deleted.";
@@ -694,17 +705,35 @@ $bottom-size: 100px;
         }
     
         .message {
+            @media screen and (max-height: 710px) {
+                padding: 2px 45px 2px 17px;
+            }
             margin-left: 51%;
             text-align: left;
     
             border-width: 0px 0px 1px 1px;
-    
+            @media screen and (max-height: 710px) {
+                border-width: 0px 0px 0px 1px;
+            }
+
+            &:hover {
+                .date {
+                    display: none;
+                }
+            }
+
+            &:last-child {
+//                border-width: 0px 0px 1px 1px;
+            }
+
             .glyphicon-options {
                 display: block;
                 position: absolute;
                 top: $date-margin;
                 right: $date-margin;;
                 font-size: 0.7em;
+                width: 45px;
+                text-align: right;
                 .glyphicon:hover {
                     color: $orange;
                     cursor: pointer;
@@ -731,10 +760,20 @@ $bottom-size: 100px;
             font-style: italic;
         }
         .message {
+            @media screen and (max-height: 710px) {
+                padding: 2px 17px 2px 45px;
+            }
             margin-left: 0%;
             text-align: right;
     
             border-width: 0px 1px 1px 0px;
+            @media screen and (max-height: 710px) {
+                border-width: 0px 1px 0px 0px;
+            }
+
+            &:last-child {
+//                border-width: 0px 1px 1px 0px;
+            }
     
             .date {
                 bottom: $date-margin;
@@ -750,6 +789,8 @@ $bottom-size: 100px;
     
     .central-msg {
         float: center;
+        margin: 15px;
+        color: $orange;
     }
     
     textarea {
@@ -758,6 +799,9 @@ $bottom-size: 100px;
         margin-top: 20px;
         background-color: rgba(0,0,0,0);
         padding: 17px;
+        @media screen and (max-height: 710px) {
+            padding: 5px 5px 5px 17px;
+        }
         border-width: 0px 0px 1px 1px;
     }
 }

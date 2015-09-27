@@ -59,7 +59,7 @@ var receiveData = function(data) {
     } else if (data.type == "edit-msg") {
         var newclear = "";
         if (data.content != "")
-            newclear = Decrypt_Text(data.content, localStorage.getItem(key_id));
+            newclear = Decrypt_Text(data.content, $("#comptoir-key").val());
         replace_message(data.mid, data.content, newclear);
     } else if (data.type == "del-msg") {
         var mid = data.mid;

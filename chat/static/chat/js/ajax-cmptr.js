@@ -33,7 +33,7 @@ var ajax_cmptr_callback = function(data, cid) {
     $("#chatbox").slimScroll({scrollTo: $("#chatbox")[0].scrollHeight + "px"});
     */
             
-    $("#cmptr-key-info").addClass("hidden");
+    $("#cmptr-key-info").removeClass("hidden");
     $("#cmptr-links-panel").addClass("hidden");
 
     reset_stats();

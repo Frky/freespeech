@@ -126,6 +126,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
 
     clear = msgify(clear);
 
+    /* Check for link in text */
     if (contains_link(clear)) add_link(clear, user == $("#user-name").text());
 
     var auth_div, msg_div;

@@ -36,7 +36,7 @@ var edit_msg_server = function(msgid, oldcipher, newcipher) {
 
 
 var edit_msg_client = function(msg_div) {
-    var mid = $(".message", msg_div).attr("id");
+    var mid = $(msg_div).attr("id");
     $(msg_div).addClass("editing");
     $("#msg-to-edit").val(mid);
     $('#edit-msg').modal(modal_options);
@@ -48,23 +48,11 @@ var edit_msg_client = function(msg_div) {
 
 
 var msg_management_init_all = function() {
-    console.log("Edit all");
     $("#valid-edit-btn").click(pre_edition);
-    $(".myself", "#chatbox").each(function() {
+    $(".message", "#chatbox .myself").each(function() {
         msg_management_init(this);
     });
     return;
-    $(".message:last-child", "tr").hover(function() {
-        $("span.glyphicon-options", this).removeClass("invisible");
-    }, function() {
-        $("span.glyphicon-options", this).addClass("invisible");
-    });
-    $(".glyphicon-edit", ".message").click(function() {
-        edit_msg_client($( this ));
-    });
-    $(".glyphicon-remove", ".message").click(function() {
-        del_msg_client($( this ));
-    });
 }
 
 
@@ -92,7 +80,7 @@ var pre_edition = function() {
     mid = $("#msg-to-edit").val();
     oldcipher = $(".ciphered", ".message#" + mid).text();
     newclear = $("#edit-msg-box").val();
-    newcipher = Encrypt_Text(newclear, localStorage.getItem(key_id));
+    newcipher = Encrypt_Text(newclear, get_key($("#cid").val()));
     editMessage(mid, oldcipher, newcipher);
 }
 

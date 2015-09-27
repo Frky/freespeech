@@ -58,11 +58,14 @@
 
                 {% for msg in msgs %}
                         {% ifchanged %}
+                            {% if forloop.counter0 != 0 %}
+                                </div>
+                            {% endif %}
                             <div class="author {{ msg.owner|ownership:user }}">
                                 <div class="user">{{ msg.owner }}</div>
                             </div>
+                            <div data-author="{{ msg.owner }}" class="{{ msg.owner|ownership:user }}">
                         {% endifchanged %}
-                        <div data-author="{{ msg.owner }}" class="{{ msg.owner|ownership:user }}">
                             {# The class attribute is set to "message" if and only if the td is not empty. This is used by the js parser #}
                             <div id="{{ msg.id }}" class="message {% if msg.edited %} edited{% endif %}">
                                 {% if msg.edited %}
@@ -73,12 +76,13 @@
                                 <span class="date">
                                     {% if msg.date.day != now.day %} 
                                         {{ msg.date|format_day }}
+                                    {% else %}
+                                        {{ msg.date|format_time }}
                                     {% endif %}
-                                    {{ msg.date|format_time }}
                                 </span>
                             </div>
-                        </div>
                 {% endfor %}
+                </div>
             </div>
         </div>
         <div class="panel__bottom">
