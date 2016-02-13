@@ -10,9 +10,17 @@
 
     <div class="cmptr__left">
         
-        {% include "chat/includes/cmptr.html" %}
+        <div class="chatbox-wrapper">
+            {% include "chat/includes/cmptr.html" %}
+        </div>
+
+        <div id="chatbox-msg">
+            <p class="msg"></p>
+            <input type="text" id="key-mirror" placeholder="comptoir key" class="hidden" />
+        </div>
 
     </div>
+
     <div class="cmptr__right enabled side-panel">
         <section class="cmptr-options">
             <div id="cmptr-key-info" class="">

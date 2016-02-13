@@ -19,7 +19,11 @@ var init_ui_panel = function() {
             return;
         /* If we already are on a comptoir page */
         if ($("#chatbox").length > 0) {
+            /* We set the loading page */
             /* We get the new comptoir asynchronously */
+            update_chatbox_msg("loading...");
+            enable_chatbox_msg();
+
             jQuery.get("ajax-" + cid, function(data) {
                     ajax_cmptr_callback(data, cid)
             });

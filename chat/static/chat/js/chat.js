@@ -481,6 +481,33 @@ var decipher_cmptr_info = function(key) {
 
 }
 
+
+var update_chatbox_msg = function(msg) {
+    $(".msg", "#chatbox-msg").text(msg);
+}
+
+
+var disable_chatbox_msg = function() {
+    $("#chatbox").removeClass("hidden");
+    $("#send-form").removeClass("hidden");
+    $("#chatbox-msg").addClass("hidden");
+    $("#key-mirror").addClass("hidden");
+}
+
+
+var enable_chatbox_msg = function() {
+    $("#chatbox").addClass("hidden");
+    $("#send-form").addClass("hidden");
+    $("#chatbox-msg").removeClass("hidden");
+    $("#key-mirror").addClass("hidden");
+}
+
+
+var enable_chatbox_msg_input = function() {
+    $("#key-mirror").removeClass("hidden");
+}
+
+
 var init_cmptr = function() {
         $(window).focus(function() {
             reset_badge($("#cid").val());

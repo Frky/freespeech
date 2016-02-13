@@ -134,9 +134,10 @@ $(document).ready(function() {
         cname = $("span.txt", this).text();
         ckey = get_key(cid);
         if (ckey === null || ckey == "" || ckey == "undefined") { 
-            ckey = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+            clear_title = "#" + cid + " (key missing)";
+        } else {
+            clear_title = Decrypt_Text(cname, ckey);
         }
-        clear_title = Decrypt_Text(cname, ckey);
         $("span.txt", this).text(clear_title);
     });
 
@@ -152,7 +153,6 @@ $(document).ready(function() {
 
     /* UI relative to comptoir page */
     if ($("#chatbox").length > 0) {
-        $("#send-form").removeClass("hidden");
         stats_init();
         key_init();
         init_cmptr();

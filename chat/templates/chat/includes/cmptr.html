@@ -21,7 +21,7 @@
                 {% endif %}
             </div>{% endcomment %}
         </div>
-        <div id="chatbox" class="panel__center cmptr-page">
+        <div id="chatbox" class="panel__center cmptr-page hidden">
             <div class="content">
 
                 <div class="hidden template" id="tpl-msg-myself">
@@ -75,9 +75,13 @@
                                 <span class="ciphered hidden" >{{ msg.content|unquote_new }}</span>
                                 <span class="date">
                                     {% if msg.date.day != now.day %} 
-                                        {{ msg.date|format_day }}
+                                        {% ifchanged msg.date.day or msg.owner %}
+                                            {{ msg.date|format_day }}
+                                        {% endifchanged %}
                                     {% else %}
-                                        {{ msg.date|format_time }}
+                                        {% ifchanged msg.date.hour or msg.date.minute %}
+                                            {{ msg.date|format_time }}
+                                        {% endifchanged %}
                                     {% endif %}
                                 </span>
                             </div>
@@ -87,13 +91,13 @@
         </div>
         <div class="panel__bottom">
             <div class="content">
-            <form method="post" id="send-form" class="">
+            <form method="post" id="send-form" class="hidden">
                 {% csrf_token %}
                 <input data-cid="{{ id }}" type="hidden" id="cid" name="cid" value="{{ id }}">
                 {% if user.is_authenticated %}
                     <input type="hidden" id="session_key" value="{{ request.session.session_key }}">
                     <div class="myself">
-                            <textarea placeholder="What's on your mind ?" name="msg" id="new-msg" rows=1 autofocus></textarea>
+                            <textarea placeholder="..." name="msg" id="new-msg" rows=1 autofocus></textarea>
                     </div>
                 {% endif %}
             </form>

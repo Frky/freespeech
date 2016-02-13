@@ -61,6 +61,8 @@ var key_unknown = function() {
         key_field.val("");
     }
     test_default_key = false;
+    update_chatbox_msg("please provide a key for this comptoir:");
+    enable_chatbox_msg_input();
 }
 
 /*
@@ -171,6 +173,7 @@ var Decrypt_all = function() {
     });
     $( this ).ready(function() {
         scroll_down(false);
+        disable_chatbox_msg();
         msg_management_init_all();
     });
 }
@@ -204,7 +207,13 @@ var init_key_management_fields = function() {
         var cid = $("#cid").val();
         update_key(cid, key);
         check_hash(cid, key);
-        Decrypt_all();
+    });
+
+    $("#key-mirror").keyup(function() {
+        if ($("#key-mirror").val().length == 64) {
+            $("#comptoir-key").val($("#key-mirror").val());
+            $("#comptoir-key").trigger("change");
+        }
     });
 }
 

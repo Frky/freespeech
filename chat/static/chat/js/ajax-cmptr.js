@@ -16,7 +16,8 @@ var ajax_cmptr_callback = function(data, cid) {
 
     var old_location = window.location.pathname;
     $("#cid").val(cid);
-    $(".cmptr__left", "#content").html(data);
+    $(".chatbox-wrapper", "#content").html(data);
+    update_chatbox_msg("deciphering...");
     /*
     $('#chatbox').slimScroll({
         height: 'auto',
@@ -35,7 +36,6 @@ var ajax_cmptr_callback = function(data, cid) {
             
     $("#cmptr-key-info").removeClass("hidden");
     $("#cmptr-links-panel").addClass("hidden");
-
     reset_stats();
 
     if ($("#chatbox").length != 0) {
@@ -63,7 +63,6 @@ var ajax_cmptr_callback = function(data, cid) {
     reset_badge($("#cid").val());
     // decipher_cmptr_info();
 
-    $("#send-form").removeClass("hidden");
     // bind_keys();
 
 }
