@@ -37,7 +37,7 @@ from chat.chat_management import Chat
 
 import json
 
-VERSION = "0.94"
+VERSION = "0.94.01"
 
 timezone_local = pytz.timezone(settings.TIME_ZONE)
 
