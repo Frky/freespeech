@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{% static 'chat/css/animate.css' %}" />
     <link rel="stylesheet" href="{% static 'chat/css/jquery.modal.css' %}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{% static 'chat/generated/css/v2/switch.css' %}" />
-    <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/generated/css/v2/style.css' %}?version={{ version }}" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
 
     <!-- SCRIPTS -->
@@ -56,18 +56,18 @@
     -->
     <!-- Other scripts -->
     <!-- Utils -->
-    <script src="{% static 'chat/js/utils/alerts.js' %}"></script>
+    <script src="{% static 'chat/js/utils/alerts.js' %}?version={{ version }}"></script>
     <!-- General -->
-    <script src="{% static 'chat/js/ui/panel.js' %}"></script>
-    <script src="{% static 'chat/js/ajax-cmptr.js' %}"></script>
-	<script src="{% static 'chat/js/utils/msg.js' %}"></script>
-	<script src="{% static 'chat/js/form_check.js' %}"></script>
-	<script src="{% static 'chat/js/key_management.js' %}"></script>
-	<script src="{% static 'chat/js/msg-management.js' %}"></script>
-    <script src="{% static 'chat/js/websocket.js' %}"></script>
-	<script src="{% static 'chat/js/stats.js' %}"></script>
-	<script src="{% static 'chat/js/chat.js' %}"></script>
-	<script src="{% static 'chat/js/init.js' %}"></script>
+    <script src="{% static 'chat/js/ui/panel.js' %}?version={{ version }}"></script>
+    <script src="{% static 'chat/js/ajax-cmptr.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/utils/msg.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/form_check.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/key_management.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/msg-management.js' %}?version={{ version }}"></script>
+    <script src="{% static 'chat/js/websocket.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/stats.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/chat.js' %}?version={{ version }}"></script>
+	<script src="{% static 'chat/js/init.js' %}?version={{ version }}"></script>
 	{% endblock %}
 </head>
 
