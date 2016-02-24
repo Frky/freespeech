@@ -446,6 +446,7 @@ def ajax_comptoir(request, cid):
     context = RequestContext(request)
     context['registerForm'] = RegisterForm()
     context['version'] = VERSION
+    context['now'] = datetime.datetime.now()
     comptoir = get_object_or_404(Comptoir, id=cid)
         
     if comptoir is None:
