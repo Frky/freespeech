@@ -596,10 +596,7 @@ $bottom-size-min: 60px;
     .panel__center {
         position: fixed;
         top: $header-size + $title-size;
-        bottom: $bottom-size;
-        @media screen and (max-height:710px) {
-            bottom: $bottom-size-min;
-        }
+        bottom: $bottom-size-min;
         left: 0px;
         right: $aside-width;
         @media screen and (max-width:1300px) {
@@ -622,10 +619,7 @@ $bottom-size-min: 60px;
     .panel__bottom {
         position: fixed;
         bottom: 0px;
-        height: $bottom-size;
-        @media screen and (max-height:710px) {
-            height: $bottom-size-min;
-        }
+        height: $bottom-size-min;
         left: 0px;
         right: $aside-width;
         @media screen and (max-width:1300px) {
@@ -670,10 +664,8 @@ $bottom-size-min: 60px;
         position: relative;
         border-style: solid;
 
-        margin-bottom: 20px;
-        @media screen and (max-height: 710px) {
-            margin-bottom: 0px;
-        }
+        margin-bottom: 0px;
+        padding-bottom: 5px;
 
         &.deleted>.clear:after {
             content: "Message deleted.";
@@ -705,16 +697,11 @@ $bottom-size-min: 60px;
         }
     
         .message {
-            @media screen and (max-height: 710px) {
-                padding: 2px 45px 2px 17px;
-            }
+            padding: 2px 45px 2px 17px;
             margin-left: 51%;
             text-align: left;
     
-            border-width: 0px 0px 1px 1px;
-            @media screen and (max-height: 710px) {
-                border-width: 0px 0px 0px 1px;
-            }
+            border-width: 0px 0px 0px 1px;
 
             &:hover {
                 .date {
@@ -722,8 +709,13 @@ $bottom-size-min: 60px;
                 }
             }
 
+            &:first-child {
+                padding-top: 8px;
+            }
+
             &:last-child {
-//                border-width: 0px 0px 1px 1px;
+                border-width: 0px 0px 1px 1px;
+                padding-bottom: 8px;
             }
 
             .glyphicon-options {
@@ -760,19 +752,19 @@ $bottom-size-min: 60px;
             color: $light-grey;
         }
         .message {
-            @media screen and (max-height: 710px) {
-                padding: 2px 17px 2px 45px;
-            }
+            padding: 2px 17px 2px 45px;
             margin-left: 0%;
             text-align: right;
     
-            border-width: 0px 1px 1px 0px;
-            @media screen and (max-height: 710px) {
-                border-width: 0px 1px 0px 0px;
+            border-width: 0px 1px 0px 0px;
+
+            &:first-child {
+                padding-top: 8px;
             }
 
             &:last-child {
-//                border-width: 0px 1px 1px 0px;
+                border-width: 0px 1px 1px 0px;
+                padding-bottom: 8px;
             }
     
             .date {
@@ -799,9 +791,7 @@ $bottom-size-min: 60px;
         margin-top: 20px;
         background-color: rgba(0,0,0,0);
         padding: 17px;
-        @media screen and (max-height: 710px) {
-            padding: 5px 5px 5px 17px;
-        }
+        padding: 5px 5px 5px 17px;
         border-width: 0px 0px 1px 1px;
     }
 }
@@ -968,3 +958,10 @@ div, section {
         padding-left: 10px;
     }
 }
+
+
+.pending {
+    font-style: italic;
+    color: $light-grey;
+}
+
