@@ -79,53 +79,13 @@ var sound_notification = function(type, cid) {
 }
 
 
-
-
-/* Function to add a new '/me' message to the chat box.
- * Called at each reception of a message of this type through the socket */
-var addMeMessage = function(user, cipher, clear, msgdate, mid, insert) {
-
-    /* Escaping html code in new messages to avoid XSS */
-    clear = $('<div />').text(clear).html();
-
-    var new_message = "<div data-author=\"" + user + "\">";
-    new_message += "<div colspan=\"3\" class=\"message central-msg me\">";
-    new_message += "<span class=\"author\">" + user + "</span>\n";
-    new_message += "<span class=\"clear\">" + clear + "</span>";
-    new_message += "<span class=\"ciphered hidden\">" + cipher + "</span>";
-    new_message += "</div>";
-    new_message += "</div>";
-
-    if (insert) {
-        /* Append the new message to the chatbox */
-        $("#chatbox table tbody").append(new_message)
-        
-        /* NOTE: for now, no edition/deletion is possible for /me messages */
-        // msg_management_init($(".message:last-child", "tr:last-child", "#chatbox"));
-
-        /* NOTE: For now, no date tooltip on /me messages */
-        // $('.fsp-tooltip').tooltip('destroy').tooltip();
-
-        /* Notification to the sound alert manager */
-        if (user != $("#user-name").html()) {
-            sound_notification("msg");
-        }
-
-    } else {
-        return new_message;
-    }
-}
-
-
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
 var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg, pending_msg) {
     
     /* First check if this is a pending message */
     if (user == $("#user-name").text()) {
-        console.log("Hm ...");
         $(".pending").each(function() {
-            console.log(cipher + " vs. " + $(".ciphered", this).text());
             if ($(".ciphered", this).text() == cipher) {
                 $(".message", this).attr("id", mid);
                 $(".date", this).text(msgdate);
@@ -370,7 +330,6 @@ var reset_badge = function(cid) {
         return;
     } else {
         var val = parseInt($(".badge", "#my-" + cid).text());
-        console.log(val);
         $(".badge", "#my-" + cid).remove();
         unread -= val;
     }
@@ -450,8 +409,6 @@ var remove_user_online = function(username) {
             $( this ).text(online_to_string(online));
             if (online.length == 0)
                 $( this ).removeClass("not-empty");
-            else 
-                console.log(online);
         });
     }
 }
@@ -532,11 +489,14 @@ var enable_chatbox_msg_input = function() {
     $("#key-mirror").removeClass("hidden");
 }
 
-
 var init_cmptr = function() {
         $(window).focus(function() {
             reset_badge($("#cid").val());
             setTimeout(clear_noties, 7000);
+        });
+
+        $("#chatbox").click(function() {
+            $("#new-msg").focus();
         });
 
         msg_alert = $("#msgAlert")[0];
