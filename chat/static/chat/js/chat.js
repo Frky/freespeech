@@ -119,8 +119,22 @@ var addMeMessage = function(user, cipher, clear, msgdate, mid, insert) {
 
 /* Function to add a new message to the chat box.
  * Called at each reception of a message through the socket */
-var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
+var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg, pending_msg) {
     
+    /* First check if this is a pending message */
+    if (user == $("#user-name").text()) {
+        console.log("Hm ...");
+        $(".pending").each(function() {
+            console.log(cipher + " vs. " + $(".ciphered", this).text());
+            if ($(".ciphered", this).text() == cipher) {
+                $(".message", this).attr("id", mid);
+                $(".date", this).text(msgdate);
+                $(this).removeClass("pending");
+            }
+        });
+    }
+    if ($("#" + mid).length > 0) return;
+
     /* Escaping html code in new messages to avoid XSS */
     clear = $('<div />').text(clear).html();
 
@@ -131,7 +145,7 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
 
     var auth_div, msg_div;
     
-    var last_user = $("#chatbox .content div.user:last").text()
+    var last_user = $("#chatbox .content .message:not(.pending):last").parent().attr("data-author");
     /* If the new message is NOT from the same user as the previous one, 
        we need to display the nickname of the new user */
     if (last_user != user && !me_msg) {
@@ -168,11 +182,22 @@ var addMessage = function(user, cipher, clear, msgdate, mid, insert, me_msg) {
         $(msg_div).addClass("other");
     }
         
+    if (pending_msg) {
+        if (auth_div != "") {
+            $(".user", auth_div).addClass("pending");
+        }
+        $(msg_div).addClass("pending");
+    }
+
     if (insert) {
-        /* Append the user to the chatbox */
-        $("#chatbox .content").append($(auth_div));
-        /* Append the new message to the chatbox */
-        $("#chatbox .content").append($(msg_div));
+        if (auth_div === "") {
+            $("div[data-author=\"" + user + "\"]:last", "#chatbox .content").append($(msg_div));
+        } else {
+            /* Append the user to the chatbox */
+            $("#chatbox .content").append($(auth_div));
+            /* Append the new message to the chatbox */
+            $("#chatbox .content").append($(msg_div));
+        }
         /* Scroll down */
         scroll_down(true);
         /* Increase nb of messages */

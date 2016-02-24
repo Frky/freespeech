@@ -17,12 +17,18 @@ var new_msg = function(data) {
     if (msg.substring(0, 4) == "/me ") {
         msg = msg.slice(3);
         msg = data.user + msg;
-        addMessage(data.user, data.content, msg, data.msgdate, data.mid, true, true);
+        addMessage(data.user, data.content, msg, data.msgdate, data.mid, true, true, false);
     } else {
-        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true, false);
+        addMessage(data.user, data.content, Decrypt_Text(data.content, $("#comptoir-key").val()), data.msgdate, data.mid, true, false, false);
     }
     $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 } 
+
+var pending_msg = function(msg, ciph) {
+    console.log("mouahaha");
+    console.log(msg);
+    addMessage($("#user-name").text(), ciph, msg, "...", -1, true, false, true);
+}
 
 var acknowledged = function(data) {
     if (data == "err")
@@ -95,7 +101,6 @@ var deleteMessage = function(mid, oldcipher) {
 
 var sendMessage = function() {
 
-
     var msg = $("#new-msg").val();
     var cid = $("#cid").val();
     var me_msg = false
@@ -131,7 +136,9 @@ var sendMessage = function() {
         break;
     default:
         jQuery.post(ws_msg_url, data, acknowledged);
+        pending_msg(msg, data["msg"]);
     }
+    enable_sendbox();
 }
 
 
