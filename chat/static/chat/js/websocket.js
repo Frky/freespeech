@@ -33,9 +33,7 @@ var pending_msg = function(msg, ciph) {
 var acknowledged = function(data) {
     if (data == "err")
         pop_alert("danger", "An error occured.");
-    $("#new-msg").val("");
     $("#new-msg").focus();
-    enable_sendbox();
 }
 
 
