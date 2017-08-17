@@ -18,3 +18,5 @@ sphinx-me==0.2.1
 tornado==3.1.1
 websocket==0.2.1
 wsgiref==0.1.2
+uwsgi==2.0.15
+sha3==0.2.1

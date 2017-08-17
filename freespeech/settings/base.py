@@ -168,6 +168,9 @@ if WITH_REDIS:
     WEBSOCKET_URL = '/ws/'
     WS4REDIS_EXPIRE = 0
     WS4REDIS_HEARTBEAT = None
+    WS4REDIS_CONNECTION = {
+        'host': 'redis',
+    }
     def DISCONNECTION_HANDLER(usr):
         from chat.chat_management import Chat
         Chat.disconnect(usr)
